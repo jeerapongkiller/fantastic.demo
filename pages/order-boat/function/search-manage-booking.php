@@ -18,7 +18,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
 
     $first_bo = array();
     $first_manage_bo = array();
-    $bookings = $manageObj->showlistboats('manage', 0, $travel, 'all', 'all', 'all', 'all', 'all', '', '', '');
+    $bookings = $manageObj->showlistboats('manage', 0, $travel, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
             # --- get value booking --- #
@@ -26,10 +26,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
                 $first_bo[] = $booking['id'];
                 $bo_id[] = !empty($booking['id']) ? $booking['id'] : 0;
                 $travel_date[] = !empty(!empty($booking['travel_date'])) ? $booking['travel_date'] : '0000-00-00';
-                $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $book_full[] = !empty($booking['book_full']) ? $booking['book_full'] : '';
                 $voucher_no[] = !empty(!empty($booking['voucher_no_agent'])) ? $booking['voucher_no_agent'] : '';
                 $agent_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
@@ -46,10 +46,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
             if (($booking['mange_id'] == $manage_id && $booking['mange_id'] > 0) && in_array($booking['id'], $first_manage_bo) == false) {
                 $first_manage_bo[] = $booking['id'];
                 $manage_bo[] = !empty($booking['id']) ? $booking['id'] : 0;
-                $manage_adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $manage_child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $manage_infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $manage_foc[] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $manage_adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $manage_child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $manage_infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $manage_foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $manage_book_full[] = !empty($booking['book_full']) ? $booking['book_full'] : '';
                 $manage_voucher_no[] = !empty(!empty($booking['voucher_no_agent'])) ? $booking['voucher_no_agent'] : '';
                 $manage_agent_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';

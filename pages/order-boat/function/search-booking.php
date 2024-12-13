@@ -18,7 +18,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
     $first_bo = array();
     $first_prod = array();
     $first_cus = array();
-    $bookings = $manageObj->showlistboats('list', 0, $date_travel_manage, $search_product, 'all', $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name);
+    $bookings = $manageObj->showlistboats('list', 0, $date_travel_manage, $search_product, 'all', $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name, '');
     # --- Check products --- #
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
@@ -36,10 +36,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $status_by_name[$booking['id']] = !empty($booking['status_by']) ? $booking['stabyFname'] . ' ' . $booking['stabyLname'] : '';
                 $status[$booking['id']] = '<span class="badge badge-pill ' . $booking['booksta_class'] . ' text-capitalized"> ' . $booking['booksta_name'] . ' </span>';
                 $category_name[$booking['id']] = !empty($booking['category_name']) ? $booking['category_name'] : '';
-                $adult[$booking['id']] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[$booking['id']] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[$booking['id']] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[$booking['id']] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $adult[$booking['id']] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[$booking['id']] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[$booking['id']] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[$booking['id']] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $cate_transfer[$booking['id']] = !empty($booking['category_transfer']) ? $booking['category_transfer'] : 0;
                 $hotel_name[$booking['id']] = !empty($booking['hotel_name']) ? $booking['hotel_name'] : '';
                 $room_no[$booking['id']] = !empty($booking['room_no']) ? $booking['room_no'] : '';

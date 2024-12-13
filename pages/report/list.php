@@ -131,10 +131,10 @@ function diff_date($today, $diff_date)
                                 $bo_status[] = !empty($booking['booksta_id']) ? $booking['booksta_id'] : 0;
                                 $sender[] = !empty($booking['sender']) ? $booking['sender'] : '';
                                 # --- get value booking products --- #
-                                $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                                $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                                $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                                $foc[] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                                 $discount[] = !empty($booking['discount']) ? $booking['discount'] : 0;
                                 # --- get value booking products --- #
                                 $hotel_pickup_name[] = !empty($booking['hotel_pickup_name']) ? $booking['hotel_pickup_name'] : '';
@@ -142,7 +142,7 @@ function diff_date($today, $diff_date)
                                 # --- get value customers --- #
                                 $cus_name[] = !empty($booking['cus_name']) && $booking['cus_head'] == 1 ? $booking['cus_name'] : '';
                                 # --- calculate amount booking --- #
-                                $total = $booking['bp_private_type'] == 1 ? ($booking['bp_adult'] * $booking['rate_adult']) + ($booking['bp_child'] * $booking['rate_child']) : $booking['rate_total'];
+                                $total = $booking['bp_private_type'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) : $booking['rate_total'];
                                 // $total = $booking['rate_total'];
                                 // $total = ($booking['transfer_type'] == 1) ? $total + ($booking['bt_adult'] * $booking['btr_rate_adult']) + ($booking['bt_child'] * $booking['btr_rate_child']) + ($booking['bt_infant'] * $booking['btr_rate_infant']) : $total;
                                 // $total = ($booking['transfer_type'] == 2) ? $repObj->sumbtrprivate($booking['bt_id'])['sum_rate_private'] + $total : $total;
@@ -177,19 +177,19 @@ function diff_date($today, $diff_date)
                                 $comp_amount[$booking['comp_id']][] = !empty($booking['discount']) ? $total - $booking['discount'] : $total;
                                 $comp_revenue[$booking['comp_id']][] = !empty($booking['rec_id']) ? !empty($booking['discount']) ? $total - $booking['discount'] : $total : 0;
 
-                                $comp_adult[$booking['comp_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                                $comp_child[$booking['comp_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                                $comp_infant[$booking['comp_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                                $comp_foc[$booking['comp_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
-                                $comp_sum[$booking['comp_id']][] = $booking['bp_adult'] + $booking['bp_child'] + $booking['bp_infant'] + $booking['bp_foc'];
+                                $comp_adult[$booking['comp_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                                $comp_child[$booking['comp_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                                $comp_infant[$booking['comp_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                                $comp_foc[$booking['comp_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                                $comp_sum[$booking['comp_id']][] = $booking['bpr_adult'] + $booking['bpr_child'] + $booking['bpr_infant'] + $booking['bpr_foc'];
                                 # --- Programe --- #
                                 $prod_id[] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
                                 $product_name[$booking['product_id']] = !empty($booking['product_name']) ? $booking['product_name'] : '';
                                 $category_name[$booking['product_id']] = !empty($booking['category_name']) ? $booking['category_name'] : '';
-                                $product_adult[$booking['product_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                                $product_child[$booking['product_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                                $product_infant[$booking['product_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                                $product_foc[$booking['product_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                                $product_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                                $product_child[$booking['product_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                                $product_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                                $product_foc[$booking['product_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                                 # --- order boat --- #
                                 if (!empty(!empty($booking['orboat_id'])) && !empty($booking['orboat_id']) > 0) {
                                     $total_park = 0;
@@ -207,10 +207,10 @@ function diff_date($today, $diff_date)
                                     $boat_name[$booking['boat_id']] = !empty($booking['boat_name']) ? $booking['boat_name'] : '';
                                     $boat_order_id[$booking['orboat_id']][] = !empty($booking['boat_id']) ? $booking['boat_id'] : 0;
                                     $boat_product[$booking['orboat_id']] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
-                                    $boat_adult[$booking['orboat_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                                    $boat_child[$booking['orboat_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                                    $boat_infant[$booking['orboat_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                                    $bp_foc[$booking['orboat_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                                    $boat_adult[$booking['orboat_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                                    $boat_child[$booking['orboat_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                                    $boat_infant[$booking['orboat_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                                    $bpr_foc[$booking['orboat_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                                 }
                                 # --- order car --- #
                                 if (!empty(!empty($booking['ortran_id'])) && !empty($booking['ortran_id']) > 0) {

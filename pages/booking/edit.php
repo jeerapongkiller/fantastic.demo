@@ -100,6 +100,7 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                             <input type="hidden" name="mange_transfer" value="<?php echo $mange_transfer; ?>" /> <!-- manage transfer id -->
                                             <input type="hidden" name="mange_boat_id" value="<?php echo $mange_boat_id; ?>" /> <!-- manage boat booking id -->
                                             <input type="hidden" name="mange_boat" value="<?php echo $mange_boat; ?>" /> <!-- manage boat id -->
+                                            <input type="hidden" name="confirm_id" value="<?php echo $confirm_id; ?>" /> <!-- confirm agent id -->
                                             <div class="row">
                                                 <div class="form-group col-md-3">
                                                     <label class="form-label" for="booking_no">Booking No.</label>
@@ -195,10 +196,12 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                             <h5>Program Detail</h5>
                                         </div>
                                         <div class="card-body mt-2">
+                                            <input type="hidden" id="customer_thai" name="customer_thai" value="0" />
+                                            <input type="hidden" id="customer_foreign" name="customer_foreign" value="0" />
                                             <input type="hidden" id="pror_id" name="pror_id" value="" />
                                             <input type="hidden" id="bo_id" name="bo_id" value="<?php echo $bo_id; ?>">
                                             <input type="hidden" id="bp_id" name="bp_id" value="<?php echo $bp_id; ?>">
-                                            <input type="hidden" id="bpr_id" name="bpr_id" value="<?php echo $bpr_id; ?>">
+                                            <!-- <input type="hidden" id="bpr_id" name="bpr_id" value="<?php echo $bpr_id; ?>"> -->
                                             <input type="hidden" id="bt_id" name="bt_id" value="<?php echo $bt_id; ?>">
                                             <input type="hidden" id="btr_id" name="btr_id" value="<?php echo $btr_id; ?>">
                                             <input type="hidden" id="bopa_id" name="bopa_id" value="<?php echo $bopa_id; ?>">
@@ -206,14 +209,16 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                             <input type="hidden" id="search_travel" name="search_travel" value="<?php echo !empty($_GET['search_travel']) ? $_GET['search_travel'] : ''; ?>">
                                             <input type="hidden" id="search_agent" name="search_agent" value="<?php echo !empty($_GET['search_agent']) ? $_GET['search_agent'] : ''; ?>">
                                             <!-- get value default  -->
-                                            <input type="hidden" id="prod_rate_id" name="prod_rate_id" value="<?php echo $prod_rate_id; ?>">
                                             <input type="hidden" id="prod_id" name="prod_id" value="<?php echo $product_id; ?>">
-                                            <input type="hidden" id="cate_id" name="cate_id" value="<?php echo $category_id; ?>">
+                                            <input type="hidden" id="cate_id" name="cate_id" value="<?php echo json_encode($rates['category'], true); ?>">
                                             <input type="hidden" id="travel" name="travel" value="<?php echo $travel_date; ?>">
-                                            <input type="hidden" id="rate_ad" value="<?php echo $rate_adult; ?>">
+                                            <input type="hidden" id="bpr_array" name="bpr_array" value='<?php echo json_encode($rates); ?>'>
+                                            <!-- <input type="hidden" id="cate_id" name="cate_id" value="<?php echo $category_id; ?>"> -->
+                                            <!-- <input type="hidden" id="prod_rate_id" name="prod_rate_id" value="<?php echo $prod_rate_id; ?>"> -->
+                                            <!-- <input type="hidden" id="rate_ad" value="<?php echo $rate_adult; ?>">
                                             <input type="hidden" id="rate_chd" value="<?php echo $rate_child; ?>">
                                             <input type="hidden" id="rate_int" value="<?php echo $rate_infant; ?>">
-                                            <input type="hidden" id="rate_tt" value="<?php echo $rate_total; ?>">
+                                            <input type="hidden" id="rate_tt" value="<?php echo $rate_total; ?>"> -->
                                             <div class="row">
                                                 <div class="col-md-3 col-12">
                                                     <div class="form-group">
@@ -238,12 +243,16 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                                 <div class="col-md-3 col-12">
                                                     <div class="form-group">
                                                         <label for="category_id">Categorys</label>
-                                                        <select class="form-control select2" id="category_id" name="category_id" onchange="check_category();">
+                                                        <select class="form-control select2" id="category_id" name="category_id[]" multiple="multiple" multiple onchange="check_category();">
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row mt-1">
+                                            <div class="row" id="div-thai" hidden>
+                                            </div>
+                                            <div class="row" id="div-foreign" hidden>
+                                            </div>
+                                            <div class="row mt-1" hidden>
                                                 <div class="form-group col-md-3 col-12">
                                                     <table>
                                                         <tr>
@@ -337,10 +346,9 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-4" id="div-total">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="rate_total">Total Price (Program)</label>
-                                                        <input type="text" class="form-control numeral-mask" id="rate_total" name="rate_total" onchange="check_rate('input');" value="<?php echo number_format($rate_total); ?>" />
-                                                    </div>
+                                                    <label for="rate_total">Total Price</label>
+                                                    <p id="text-total-price"></p>
+                                                    <input type="hidden" id="rate_total" name="rate_total" value="0" />
                                                 </div>
                                             </div>
                                         </div>
@@ -1506,7 +1514,7 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                                         </dl>
                                                         <dl class="row" style="margin-bottom: 0;">
                                                             <dt class="col-sm-4 text-right">
-                                                                ชื่อลูค้า <br>
+                                                                ชื่อลูกค้า <br>
                                                                 <small>(Customer Name)</small>
                                                             </dt>
                                                             <dd class="col-sm-8"><?php echo $customers['name'][0]; ?></dd>

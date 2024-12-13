@@ -26,10 +26,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 
                 $book_full[] = !empty($order['book_full']) ? $order['book_full'] : '';
                 $product_name[] = !empty(!empty($order['product_name'])) ? $order['product_name'] : '';
-                $adult[] = !empty($order['bp_adult']) ? $order['bp_adult'] : '0';
-                $child[] = !empty($order['bp_child']) ? $order['bp_child'] : '0';
-                $infant[] = !empty($order['bp_infant']) ? $order['bp_infant'] : '0';
-                $foc[] = !empty($order['bp_foc']) ? $order['bp_foc'] : '0';
+                $adult[] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : '0';
+                $child[] = !empty($order['bpr_child']) ? $order['bpr_child'] : '0';
+                $infant[] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : '0';
+                $foc[] = !empty($order['bpr_foc']) ? $order['bpr_foc'] : '0';
                 $pickup_name[] = !empty($order['pickup_name']) ? $order['pickup_name'] : '';
                 $hotel_pickup[] = empty($order['hotel_pickup']) ? !empty($order['hotel_name_th']) ? $order['hotel_name_th'] : 'ไม่ได้ระบุ' : $order['hotel_pickup'];
                 $room_no[] = !empty($order['room_no']) ? $order['room_no'] : 'ไม่ได้ระบุ';

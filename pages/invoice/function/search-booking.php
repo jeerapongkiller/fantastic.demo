@@ -24,10 +24,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $agent_license[] = !empty($booking['tat_license']) ? $booking['tat_license'] : '';
                 $agent_telephone[] = !empty($booking['comp_telephone']) ? $booking['comp_telephone'] : '';
                 $agent_address[] = !empty($booking['comp_address']) ? $booking['comp_address'] : '';
-                $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
                 $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
                 $cot[] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
@@ -52,14 +52,14 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $arr_bo[$booking['id']]['cus_name'] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
                 $arr_bo[$booking['id']]['product_name'] = !empty($booking['product_name']) ? $booking['product_name'] : '';
                 $arr_bo[$booking['id']]['voucher_no'] = !empty($booking['voucher_no']) ? $booking['voucher_no'] : $booking['book_full'];
-                $arr_bo[$booking['id']]['adult'] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : '-';
-                $arr_bo[$booking['id']]['child'] = !empty($booking['bp_child']) ? $booking['bp_child'] : '-';
-                $arr_bo[$booking['id']]['rate_adult'] = !empty($booking['rate_adult']) && $booking['bp_adult'] > 0 ? $booking['rate_adult'] : '-';
-                $arr_bo[$booking['id']]['rate_child'] = !empty($booking['rate_child']) && $booking['bp_child'] > 0 ? $booking['rate_child'] : '-';
-                $arr_bo[$booking['id']]['foc'] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : '-';
+                $arr_bo[$booking['id']]['adult'] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : '-';
+                $arr_bo[$booking['id']]['child'] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : '-';
+                $arr_bo[$booking['id']]['rate_adult'] = !empty($booking['rate_adult']) && $booking['bpr_adult'] > 0 ? $booking['rate_adult'] : '-';
+                $arr_bo[$booking['id']]['rate_child'] = !empty($booking['rate_child']) && $booking['bpr_child'] > 0 ? $booking['rate_child'] : '-';
+                $arr_bo[$booking['id']]['foc'] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : '-';
                 $arr_bo[$booking['id']]['discount'] = !empty($booking['discount']) ? $booking['discount'] : '-';
                 $arr_bo[$booking['id']]['cot'] = !empty($booking['total_paid']) ? $booking['total_paid'] : '-';
-                $arr_bo[$booking['id']]['total'] = $booking['bp_private_type'] == 1 ? ($booking['bp_adult'] * $booking['rate_adult']) + ($booking['bp_child'] * $booking['rate_child']) : $booking['rate_total'];
+                $arr_bo[$booking['id']]['total'] = $booking['bp_private_type'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) : $booking['rate_total'];
             }
             # --- get value booking --- #
             if (in_array($booking['bec_id'], $first_extar) == false && !empty($booking['bec_id'])) {

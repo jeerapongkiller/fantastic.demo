@@ -52,10 +52,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $agent_license[] = !empty($invoice['tat_license']) ? $invoice['tat_license'] : '';
                 $agent_telephone[] = !empty($invoice['comp_telephone']) ? $invoice['comp_telephone'] : '';
                 $agent_address[] = !empty($invoice['comp_address']) ? $invoice['comp_address'] : '';
-                $adult[] = !empty($invoice['bp_adult']) ? $invoice['bp_adult'] : 0;
-                $child[] = !empty($invoice['bp_child']) ? $invoice['bp_child'] : 0;
-                $infant[] = !empty($invoice['bp_infant']) ? $invoice['bp_infant'] : 0;
-                $foc[] = !empty($invoice['bp_foc']) ? $invoice['bp_foc'] : 0;
+                $adult[] = !empty($invoice['bpr_adult']) ? $invoice['bpr_adult'] : 0;
+                $child[] = !empty($invoice['bpr_child']) ? $invoice['bpr_child'] : 0;
+                $infant[] = !empty($invoice['bpr_infant']) ? $invoice['bpr_infant'] : 0;
+                $foc[] = !empty($invoice['bpr_foc']) ? $invoice['bpr_foc'] : 0;
                 $cot[] = !empty($invoice['total_paid']) ? $invoice['total_paid'] : 0;
                 $start_pickup[] = !empty($invoice['start_pickup']) ? date('H:i', strtotime($invoice['start_pickup'])) : '00:00:00';
                 $car_name[] = !empty($invoice['car_name']) ? $invoice['car_name'] : '';
@@ -77,14 +77,14 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $arr_bo[$invoice['id']]['cus_name'] = !empty($invoice['cus_name']) ? $invoice['cus_name'] : '';
                 $arr_bo[$invoice['id']]['product_name'] = !empty($invoice['product_name']) ? $invoice['product_name'] : '';
                 $arr_bo[$invoice['id']]['voucher_no'] = !empty($invoice['voucher_no']) ? $invoice['voucher_no'] : $invoice['book_full'];
-                $arr_bo[$invoice['id']]['adult'] = !empty($invoice['bp_adult']) ? $invoice['bp_adult'] : '-';
-                $arr_bo[$invoice['id']]['child'] = !empty($invoice['bp_child']) ? $invoice['bp_child'] : '-';
-                $arr_bo[$invoice['id']]['rate_adult'] = !empty($invoice['rate_adult']) && $invoice['bp_adult'] > 0 ? $invoice['rate_adult'] : '-';
-                $arr_bo[$invoice['id']]['rate_child'] = !empty($invoice['rate_child']) && $invoice['bp_child'] > 0 ? $invoice['rate_child'] : '-';
-                $arr_bo[$invoice['id']]['foc'] = !empty($invoice['bp_foc']) ? $invoice['bp_foc'] : '-';
+                $arr_bo[$invoice['id']]['adult'] = !empty($invoice['bpr_adult']) ? $invoice['bpr_adult'] : '-';
+                $arr_bo[$invoice['id']]['child'] = !empty($invoice['bpr_child']) ? $invoice['bpr_child'] : '-';
+                $arr_bo[$invoice['id']]['rate_adult'] = !empty($invoice['rate_adult']) && $invoice['bpr_adult'] > 0 ? $invoice['rate_adult'] : '-';
+                $arr_bo[$invoice['id']]['rate_child'] = !empty($invoice['rate_child']) && $invoice['bpr_child'] > 0 ? $invoice['rate_child'] : '-';
+                $arr_bo[$invoice['id']]['foc'] = !empty($invoice['bpr_foc']) ? $invoice['bpr_foc'] : '-';
                 $arr_bo[$invoice['id']]['discount'] = !empty($invoice['discount']) ? $invoice['discount'] : '-';
                 $arr_bo[$invoice['id']]['cot'] = !empty($invoice['total_paid']) ? $invoice['total_paid'] : '-';
-                $arr_bo[$invoice['id']]['total'] = $invoice['bp_private_type'] == 1 ? ($invoice['bp_adult'] * $invoice['rate_adult']) + ($invoice['bp_child'] * $invoice['rate_child']) : $invoice['rate_total'];
+                $arr_bo[$invoice['id']]['total'] = $invoice['bp_private_type'] == 1 ? ($invoice['bpr_adult'] * $invoice['rate_adult']) + ($invoice['bpr_child'] * $invoice['rate_child']) : $invoice['rate_total'];
             }
             # --- get value booking --- #
             if (in_array($invoice['bec_id'], $first_extar) == false && (!empty($invoice['extra_id']) || !empty($invoice['bec_name']))) {

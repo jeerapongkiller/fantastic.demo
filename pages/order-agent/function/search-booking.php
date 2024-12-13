@@ -18,7 +18,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
 
     $first_booking = array();
     $first_ext = array();
-    $bookings = $bookingObj->showlistboats('agent', $agent_id, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '');
+    $bookings = $bookingObj->showlistboats('agent', $agent_id, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
             # --- get value booking --- #
@@ -26,10 +26,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $first_booking[] = $booking['id'];
                 $bo_id[] = !empty($booking['id']) ? $booking['id'] : 0;
                 $agent_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
-                $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
                 $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
                 $cot[] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
@@ -48,7 +48,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $zone_dropoff[] = !empty($booking['zoned_name']) ? ' (' . $booking['zoned_name'] . ')' : '';
                 $bp_note[] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
                 $product_name[] = !empty($booking['product_name']) ? $booking['product_name'] : '';
-                $total[] = $booking['booktye_id'] == 1 ? ($booking['bp_adult'] * $booking['rate_adult']) + ($booking['bp_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
+                $total[] = $booking['booktye_id'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
             }
             # --- get value booking extra chang --- #
             if ((in_array($booking['bec_id'], $first_ext) == false) && !empty($booking['bec_id'])) {
@@ -97,12 +97,12 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
         <table class="table table-striped text-uppercase table-vouchure-t2">
             <thead class="bg-light">
                 <tr>
-                    <th width="7%">เวลารับ</th>
-                    <th width="14%">โปรแกรม</th>
-                    <th width="15%">ชื่อลูกค้า</th>
+                    <th width="7%">Time</th>
+                    <th width="14%">Programe</th>
+                    <th width="15%">Name</th>
                     <th width="5%">V/C</th>
-                    <th width="20%">โรงแรม</th>
-                    <th width="5%">ห้อง</th>
+                    <th width="20%">Hotel</th>
+                    <th width="5%">Room</th>
                     <th class="text-center" width="1%">A</th>
                     <th class="text-center" width="1%">C</th>
                     <th class="text-center" width="1%">Inf</th>

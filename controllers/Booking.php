@@ -71,16 +71,16 @@ class Booking extends DB
                         COMP.id as comp_id, COMP.name as comp_name,
                         CUS.id as cus_id, CUS.name as cus_name, CUS.birth_date as birth_date, CUS.id_card as id_card, CUS.telephone as telephone, CUS.address as cus_address, CUS.head as cus_head, CUS.nationality_id as nationality_id,
                         NATION.id as nation_id, NATION.name as nation_name,
-                        BP.id as bp_id, BP.travel_date as travel_date, BP.adult as bp_adult, BP.child as bp_child, BP.infant as bp_infant, BP.foc as bp_foc, BP.note as bp_note,
-                        BP.private_type as bp_private_type,
+                        BP.id as bp_id, BP.travel_date as travel_date,  BP.note as bp_note, BP.private_type as bp_private_type,
                         PROD.id as product_id, PROD.name as product_name,
                         CATE.id as category_id, CATE.name as category_name, CATE.transfer as category_transfer,
-                        BPR.id as bpr_id, BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_total,   
+                        BPR.id as bpr_id, BPR.adult as bpr_adult, BPR.child as bpr_child, BPR.infant as bpr_infant, BPR.foc as bpr_foc, 
+                        BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_private as rate_private, BPR.rate_total as rate_total,  
                         BT.id as bt_id, BT.adult as bt_adult, BT.child as bt_child, BT.infant as bt_infant, BT.foc as bt_foc, BT.start_pickup as start_pickup, BT.end_pickup as end_pickup,
                         BT.hotel_pickup as hotel_pickup, BT.hotel_dropoff as hotel_dropoff, BT.room_no as room_no, BT.note as bt_note, BT.transfer_type as transfer_type,
                         BT.pickup_type as pickup_type,
                         BTR.id as btr_id, BTR.rate_adult as btr_rate_adult, BTR.rate_child as btr_rate_child, BTR.rate_infant as btr_rate_infant, BTR.cars_category_id as cars_category,
-                        BTR.rate_private as rate_private,
+                        BTR.rate_private as btr_rate_private,
                         PICKUP.id as pickup_id, PICKUP.name_th as hotel_pickup_name,
                         DROPOFF.id as dropoff_id, DROPOFF.name_th as hotel_dropoff_name,
                         CARC.id as carc_id, CARC.name as carc_name,
@@ -97,13 +97,8 @@ class Booking extends DB
                         MANGE.id as mange_id, MANGE.time as manage_time,
                         COLOR.id as color_id, COLOR.name as color_name, COLOR.name_th as color_name_th, COLOR.hex_code as color_hex,
                         GUIDE.id as guide_id, GUIDE.name as guide_name,
-                        BOAT.id as boat_id, BOAT.name as boat_name, BOAT.refcode as boat_refcode
-                        -- MANGET.id as ortran_id, MANGET.driver as driver_name, MANGET.license as license, MANGET.telephone as ortran_telephone,
-                        -- CAR.id as car_id, CAR.name as car_name,
-                        -- BOBOAT.id as boboat_id,
-                        -- ORBOAT.id as orboat_id, ORBOAT.note as orboat_note,
-                        -- COLOR.id as color_id, COLOR.name as color_name, COLOR.name_th as color_name_th, COLOR.hex_code as color_hex, 
-                        -- BOAT.id as boat_id, BOAT.name as boat_name, BOAT.refcode as boat_refcode
+                        BOAT.id as boat_id, BOAT.name as boat_name, BOAT.refcode as boat_refcode,
+                        CONFIRM.id as confirm_id
                     FROM bookings BO
                     LEFT JOIN bookings_no BONO
                         ON BO.id = BONO.booking_id
@@ -125,10 +120,10 @@ class Booking extends DB
                         ON BO.id = BP.booking_id
                     LEFT JOIN products PROD
                         ON BP.product_id = PROD.id
-                    LEFT JOIN product_category CATE
-                        ON BP.category_id = CATE.id
                     LEFT JOIN booking_product_rates BPR
                         ON BP.id = BPR.booking_products_id
+                    LEFT JOIN product_category CATE
+                        ON BPR.category_id = CATE.id
                     LEFT JOIN booking_transfer BT
                         ON BP.id = BT.booking_products_id
                     LEFT JOIN booking_transfer_rates BTR
@@ -147,7 +142,6 @@ class Booking extends DB
                         ON BT.pickup_id = PICK.id
                     LEFT JOIN zones DROF
                         ON BT.dropoff_id = DROF.id
-
                     LEFT JOIN booking_order_transfer BOMANGE
                         ON BT.id = BOMANGE.booking_transfer_id
                     LEFT JOIN order_transfer MANGET 
@@ -165,18 +159,8 @@ class Booking extends DB
                         ON MANGE.guide_id = GUIDE.id
                     LEFT JOIN boats BOAT
                         ON MANGE.boat_id = BOAT.id
-                    -- LEFT JOIN order_transfer MANGET 
-                    --     ON BT.manage_id = MANGET.id
-                    -- LEFT JOIN cars CAR 
-                    --     ON MANGET.car_id = CAR.id
-                    -- LEFT JOIN booking_order_boat BOBOAT
-                    --     ON BO.id = BOBOAT.booking_id
-                    -- LEFT JOIN order_boat ORBOAT
-                    --     ON BOBOAT.manage_id = ORBOAT.id
-                    -- LEFT JOIN colors COLOR 
-                    --     ON ORBOAT.color_id = COLOR.id
-                    -- LEFT JOIN boats BOAT
-                    --     ON ORBOAT.boat_id = BOAT.id
+                    LEFT JOIN confirm_agent CONFIRM
+                        ON COMP.id = CONFIRM.agent_id
                     LEFT JOIN users BOOKER 
                         ON BO.booker_id = BOOKER.id
                     WHERE BO.id > 0
@@ -599,11 +583,12 @@ class Booking extends DB
                 COMP.id as comp_id, COMP.name as comp_name, COMP.tat_license as tat_license, COMP.telephone as comp_telephone, COMP.address as comp_address,
                 CUS.id as cus_id, CUS.name as cus_name, CUS.birth_date as birth_date, CUS.id_card as id_card, CUS.telephone as telephone, CUS.address as cus_address, CUS.age as cus_age, CUS.type as cus_type, CUS.head as cus_head, CUS.nationality_id as nationality_id,
                 NATION.id as nation_id, NATION.name as nation_name,
-                BP.id as bp_id, BP.travel_date as travel_date, BP.adult as bp_adult, BP.child as bp_child, BP.infant as bp_infant, BP.foc as bp_foc, BP.note as bp_note,
+                BP.id as bp_id, BP.travel_date as travel_date, BP.note as bp_note,
                 BP.private_type as bp_private_type,
                 PROD.id as product_id, PROD.name as product_name,
-                CATE.id as category_id, CATE.name as category_name,
-                BPR.id as bpr_id, BPR.product_rates_id as product_rates_id, BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_total,   
+                CATE.id as category_id, CATE.name as category_name, CATE.customer as category_cus,
+                BPR.id as bpr_id, BPR.adult as bpr_adult, BPR.child as bpr_child, BPR.infant as bpr_infant, BPR.foc as bpr_foc, 
+                BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_private as rate_private, BPR.rate_total as rate_total,  
                 BT.id as bt_id, BT.adult as bt_adult, BT.child as bt_child, BT.infant as bt_infant, BT.foc as bt_foc, BT.start_pickup as start_pickup, BT.end_pickup as end_pickup,
                 BT.hotel_pickup as hotel_pickup, BT.hotel_dropoff as hotel_dropoff, BT.room_no as room_no, BT.note as bt_note, BT.transfer_type as transfer_type,
                 BT.pickup_type as pickup_type,
@@ -624,7 +609,8 @@ class Booking extends DB
                 BOMANGE.id as bomange_id,
                 MANGET.id as manget_id,
                 BORDB.id as boman_id, 
-                MANGE.id as mange_id
+                MANGE.id as mange_id,
+                CONFIRM.id as confirm_id
             FROM bookings BO
             LEFT JOIN bookings_no BONO
                 ON BO.id = BONO.booking_id
@@ -648,10 +634,10 @@ class Booking extends DB
                 ON BO.id = BP.booking_id
             LEFT JOIN products PROD
                 ON BP.product_id = PROD.id
-            LEFT JOIN product_category CATE
-                ON BP.category_id = CATE.id
             LEFT JOIN booking_product_rates BPR
                 ON BP.id = BPR.booking_products_id
+            LEFT JOIN product_category CATE
+                ON BPR.category_id = CATE.id
             LEFT JOIN booking_transfer BT
                 ON BP.id = BT.booking_products_id
             LEFT JOIN booking_transfer_rates BTR
@@ -685,6 +671,9 @@ class Booking extends DB
                 ON BO.id = BORDB.booking_id
             LEFT JOIN order_boat MANGE 
                 ON BORDB.manage_id = MANGE.id
+            LEFT JOIN confirm_agent CONFIRM
+                ON COMP.id = CONFIRM.agent_id
+                AND CONFIRM.travel_date = BP.travel_date
             WHERE BO.id = ? AND BO.is_deleted = 0
         ";
 
@@ -718,6 +707,20 @@ class Booking extends DB
         } else {
             $data = false;
         }
+
+        return $data;
+    }
+
+    public function get_values(string $select, string $from, string $where)
+    {
+        $query = "SELECT $select
+            FROM $from 
+            WHERE $where
+        ";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        $result = $statement->get_result();
+        $data = $result->fetch_assoc();
 
         return $data;
     }
@@ -1668,28 +1671,16 @@ class Booking extends DB
         return $this->response;
     }
 
-    public function insert_booking_product(string $travel_date, int $adult, int $child, int $infant, int $foc, string $note, int $private_type, int $booking_type_id, int $booking_id, int $product_id, int $category_id)
+    public function insert_booking_product(string $travel_date, string $note, int $private_type, int $booking_type_id, int $booking_id, int $product_id)
     {
         $bind_types = "";
         $params = array();
 
-        $query = "INSERT INTO  booking_products (travel_date, adult, child, infant, foc, note, private_type, booking_type_id, booking_id, product_id, category_id, is_approved, is_deleted, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0, NOW(), NOW())";
+        $query = "INSERT INTO  booking_products (travel_date, note, private_type, booking_type_id, booking_id, product_id, is_approved, is_deleted, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, 1, 0, NOW(), NOW())";
 
         $bind_types .= "s";
         array_push($params, $travel_date);
-
-        $bind_types .= "i";
-        array_push($params, $adult);
-
-        $bind_types .= "i";
-        array_push($params, $child);
-
-        $bind_types .= "i";
-        array_push($params, $infant);
-
-        $bind_types .= "i";
-        array_push($params, $foc);
 
         $bind_types .= "s";
         array_push($params, $note);
@@ -1705,9 +1696,6 @@ class Booking extends DB
 
         $bind_types .= "i";
         array_push($params, $product_id);
-
-        $bind_types .= "i";
-        array_push($params, $category_id);
 
         $statement = $this->connection->prepare($query);
         !empty($bind_types) ? $statement->bind_param($bind_types, ...$params) : '';
@@ -1774,13 +1762,25 @@ class Booking extends DB
         return $this->response;
     }
 
-    public function insert_booking_rate(string $rate_adult, string $rate_child, string $rate_infant, string $rate_total, int $booking_products_id, int $product_rates_id)
+    public function insert_booking_rate(int $adult, int $child, int $infant, int $foc, string $rate_adult, string $rate_child, string $rate_infant, string $rate_private, string $rate_total, int $category_id, int $booking_products_id, int $product_rates_id)
     {
         $bind_types = "";
         $params = array();
 
-        $query = "INSERT INTO booking_product_rates (rate_adult, rate_child, rate_infant, rate_group, pax_group, rate_total, booking_products_id, product_rates_id, created_at, updated_at)
-        VALUES (?, ?, ?, 0, 0, ?, ?, ?, NOW(), NOW())";
+        $query = "INSERT INTO `booking_product_rates`(`adult`, `child`, `infant`, `foc`, `rate_adult`, `rate_child`, `rate_infant`, `rate_private`, `rate_total`, `category_id`, `booking_products_id`, `product_rates_id`, `created_at`, `updated_at`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+
+        $bind_types .= "i";
+        array_push($params, $adult);
+
+        $bind_types .= "i";
+        array_push($params, $child);
+
+        $bind_types .= "i";
+        array_push($params, $infant);
+
+        $bind_types .= "i";
+        array_push($params, $foc);
 
         $bind_types .= "d";
         array_push($params, $rate_adult);
@@ -1792,7 +1792,13 @@ class Booking extends DB
         array_push($params, $rate_infant);
 
         $bind_types .= "d";
+        array_push($params, $rate_private);
+
+        $bind_types .= "d";
         array_push($params, $rate_total);
+
+        $bind_types .= "i";
+        array_push($params, $category_id);
 
         $bind_types .= "i";
         array_push($params, $booking_products_id);
@@ -2563,6 +2569,19 @@ class Booking extends DB
         $query = "DELETE FROM booking_order_boat WHERE manage_id = ? AND booking_id = ? AND id = ?";
         $statement = $this->connection->prepare($query);
         $statement->bind_param("iii", $mange_id, $bo_id, $id);
+        $statement->execute();
+        if ($statement->execute()) {
+            $this->response = true;
+        }
+
+        return $this->response;
+    }
+
+    public function delete_confirm(int $id)
+    {
+        $query = "DELETE FROM `confirm_agent` WHERE `id` = ? ";
+        $statement = $this->connection->prepare($query);
+        $statement->bind_param("i", $id);
         $statement->execute();
         if ($statement->execute()) {
             $this->response = true;

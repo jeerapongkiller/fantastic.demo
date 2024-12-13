@@ -65,9 +65,9 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                     $inv_status[] = (diff_date($today, $booking['rec_date'])['day'] > 0) ? '<span class="badge badge-pill badge-light-success text-capitalized">ครบกำหนดชำระในอีก ' . diff_date($today, $booking['rec_date'])['num'] . ' วัน</span>' : '<span class="badge badge-pill badge-light-danger text-capitalized">เกินกำหนดชำระ</span>';
                     $bo_status[] = !empty($booking['booksta_id']) ? $booking['booksta_id'] : 0;
                     # --- get value booking products --- #
-                    $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                    $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                    $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
+                    $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                    $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                    $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                     # --- get value customers --- #
                     $cus_name[] = !empty($booking['cus_name']) && $booking['cus_head'] == 1 ? $booking['cus_name'] : '';
                     # --- get value --- #
@@ -103,15 +103,15 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                     $comp_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
                     $comp_amount[$booking['comp_id']][] = $amount;
                     $comp_revenue[$booking['comp_id']][] = !empty($booking['rec_id']) ? $total : 0;
-                    $comp_adult[$booking['comp_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                    $comp_child[$booking['comp_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                    $comp_infant[$booking['comp_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
+                    $comp_adult[$booking['comp_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                    $comp_child[$booking['comp_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                    $comp_infant[$booking['comp_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                     # --- Programe --- #
                     $prod_id[] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
                     $product_name[$booking['product_id']] = !empty($booking['product_name']) ? $booking['product_name'] : '';
-                    $product_adult[$booking['product_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                    $product_child[$booking['product_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                    $product_infant[$booking['product_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
+                    $product_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                    $product_child[$booking['product_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                    $product_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                     # --- order boat --- #
                     if (!empty(!empty($booking['orboat_id'])) && !empty($booking['orboat_id']) > 0) {
                         $total_park = 0;
@@ -127,9 +127,9 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                         $boat_name[$booking['boat_id']] = !empty($booking['boat_name']) ? $booking['boat_name'] : '';
                         $boat_order_id[$booking['orboat_id']][] = !empty($booking['boat_id']) ? $booking['boat_id'] : 0;
                         $boat_product[$booking['orboat_id']] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
-                        $boat_adult[$booking['orboat_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                        $boat_child[$booking['orboat_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                        $boat_infant[$booking['orboat_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
+                        $boat_adult[$booking['orboat_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                        $boat_child[$booking['orboat_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                        $boat_infant[$booking['orboat_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                     }
                     # --- order car --- #
                     if (!empty(!empty($booking['ortran_id'])) && !empty($booking['ortran_id']) > 0) {

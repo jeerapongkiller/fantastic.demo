@@ -131,9 +131,9 @@ function diff_date($today, $diff_date)
                                     $bp_id[] = !empty($invoice['bp_id']) ? $invoice['bp_id'] : 0;
                                     $product_name[] = !empty($invoice['product_name']) ? $invoice['product_name'] : 0;
                                     $travel_date[] = !empty($invoice['travel_date']) ? $invoice['travel_date'] : '0000-00-00';
-                                    $adult[] = !empty($invoice['bp_adult']) ? $invoice['bp_adult'] : 0;
-                                    $child[] = !empty($invoice['bp_child']) ? $invoice['bp_child'] : 0;
-                                    $infant[] = !empty($invoice['bp_infant']) ? $invoice['bp_infant'] : 0;
+                                    $adult[] = !empty($invoice['bpr_adult']) ? $invoice['bpr_adult'] : 0;
+                                    $child[] = !empty($invoice['bpr_child']) ? $invoice['bpr_child'] : 0;
+                                    $infant[] = !empty($invoice['bpr_infant']) ? $invoice['bpr_infant'] : 0;
                                     $private_type[] = !empty($invoice['bp_private_type']) ? $invoice['bp_private_type'] : 0;
                                     # --- get value booking product rate --- #
                                     $bpr_id[] = !empty($invoice['bpr_id']) ? $invoice['bpr_id'] : 0;
@@ -523,7 +523,7 @@ function diff_date($today, $diff_date)
                                                 </dl>
                                                 <dl class="row" style="margin-bottom: 0;">
                                                     <dt class="col-sm-4 text-right">
-                                                        ชื่อลูค้า <br>
+                                                        ชื่อลูกค้า <br>
                                                         <small>(Customer Name)</small>
                                                     </dt>
                                                     <dd class="col-sm-8" id="cus_name_text"></dd>
@@ -592,7 +592,7 @@ function diff_date($today, $diff_date)
                                                 </td>
                                                 <td class="text-center" bgcolor="#333" style="color: #fff;" width="6%"><b>Voucher No.</b>
                                                 </td>
-                                                <td class="text-center" bgcolor="#333" style="color: #fff;" width="18%"><b>ชื่อลูค้า</b><br>
+                                                <td class="text-center" bgcolor="#333" style="color: #fff;" width="18%"><b>ชื่อลูกค้า</b><br>
                                                     <small>Customer's Name</small>
                                                 </td>
                                                 <td class="text-center" bgcolor="#333" style="color: #fff;" width="18%"><b>โปรแกรม</b><br>

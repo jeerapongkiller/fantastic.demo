@@ -427,22 +427,22 @@
                             contentType: false,
                             data: formData,
                             success: function(response) {
-                                // $('#div-show').html(response);
-                                if (response != false && response > 0) {
-                                    Swal.fire({
-                                        title: "The information has been updated.",
-                                        icon: "success",
-                                    }).then(function(isConfirm) {
-                                        if (isConfirm) {
-                                            window.location.href = './?pages=booking/list';
-                                        }
-                                    })
-                                } else {
-                                    Swal.fire({
-                                        title: "Please try again.",
-                                        icon: "error",
-                                    });
-                                }
+                                $('#div-show').html(response);
+                                // if (response != false && response > 0) {
+                                //     Swal.fire({
+                                //         title: "The information has been updated.",
+                                //         icon: "success",
+                                //     }).then(function(isConfirm) {
+                                //         if (isConfirm) {
+                                //             window.location.href = './?pages=booking/list';
+                                //         }
+                                //     })
+                                // } else {
+                                //     Swal.fire({
+                                //         title: "Please try again.",
+                                //         icon: "error",
+                                //     });
+                                // }
                             }
                         });
                     }
@@ -461,6 +461,10 @@
             search_start_date('day6', 'booking', '<?php echo $day6; ?>');
             search_start_date('day7', 'booking', '<?php echo $day7; ?>');
         });
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        }
 
         function search_start_date(type_date, type, date) {
             var formData = new FormData();
@@ -489,19 +493,6 @@
         function search_program() {
             var open_rates = document.getElementById('open-rates').value;
             var book_type = document.getElementById('book_type1').checked == true ? 1 : 2;
-            document.getElementById('div-adult').hidden = (book_type == 1 && open_rates == 1) ? true : false;
-            document.getElementById('table-adult').hidden = (book_type == 1 && open_rates == 1) ? false : true;
-            document.getElementById('div-child').hidden = (book_type == 1 && open_rates == 1) ? true : false;
-            document.getElementById('table-child').hidden = (book_type == 1 && open_rates == 1) ? false : true;
-            document.getElementById('div-infant').hidden = (book_type == 1 && open_rates == 1) ? true : false;
-            document.getElementById('table-infant').hidden = (book_type == 1 && open_rates == 1) ? false : true;
-            if (open_rates == 1) {
-                document.getElementById('rate_total').readOnly = (book_type == 1) ? true : false;
-            } else {
-                document.getElementById('div-total').hidden = true;
-            }
-
-
             var agent = document.getElementById('agent').value;
             var product_id = document.getElementById('product_id').value;
 
@@ -524,10 +515,10 @@
                         var countcate = Object.keys(res.id).length;
                         if (countcate) {
                             for (let index = 0; index < countcate; index++) {
-                                $('#category_id').append("<option value=\"" + res.id[index] + "\" data-customer=\"" + res.customer[index] + "\" >" + res.name[index] + "</option>");
+                                $('#category_id').append("<option value=\"" + res.id[index] + "\" data-transfer=\"" + res.transfer[index] + "\" data-customer=\"" + res.customer[index] + "\">" + res.name[index] + "</option>");
                             }
                         } else {
-                            $('#category_id').append("<option value=\"0\" data-customer=\"0\"></option>");
+                            $('#category_id').append("<option value=\"0\" data-transfer=\"0\" data-customer=\"0\"></option>");
                         }
 
                         check_category();
@@ -537,66 +528,137 @@
         }
 
         function check_category() {
-            var open_rates = document.getElementById('open-rates').value;
             var book_type = document.getElementsByName('booking_type')[0].checked == true ? 1 : 2;
             var agent = document.getElementById('agent').value;
             var product_id = document.getElementById('product_id').value;
-            var category_id = document.getElementById('category_id').value;
             var travel_date = document.getElementById('travel_date').value;
-            var formData = new FormData();
-            formData.append('action', 'search');
-            formData.append('agent_id', agent);
-            formData.append('product_id', product_id);
-            formData.append('category_id', category_id);
-            formData.append('travel_date', travel_date);
-            $.ajax({
-                url: "pages/booking/function/search-rate.php",
-                type: "POST",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(response) {
-                    if (response != '' && response != false && open_rates == 1) {
-                        var res = $.parseJSON(response);
-                        if (book_type == 1) {
-                            document.getElementById('pror_id').value = res.prodrid;
-                            document.getElementById('rate_adult').value = res.rate_adult;
-                            document.getElementById('rate_child').value = res.rate_child;
-                            document.getElementById('rate_infant').value = res.rate_infant;
-                        } else if (book_type == 2) {
-                            document.getElementById('rate_total').value = res.rate_private;
-                        }
-                        document.getElementById('div-transfer').hidden = (res.transfer == 0) ? true : false;
-                        document.getElementById('start_pickup').value = (res.transfer == 0) ? '08:15' : '';
-                        document.getElementById('end_pickup').value = (res.transfer == 0) ? '08:15' : '';
-                        document.getElementById('include').value = (res.transfer === 1) ? '1' : '2';
 
-                        check_rate();
-                    }
+            const selectElement = document.getElementById('category_id');
+            const selectedOptions = Array.from(selectElement.selectedOptions);
+
+            let showThai = false;
+            let showForeign = false;
+            let transfer = false;
+
+            selectedOptions.forEach(option => {
+                const dataCustomer = option.getAttribute('data-customer');
+                const dataTransfer = option.getAttribute('data-transfer');
+                transfer = dataTransfer == 1 ? true : false;
+                if (dataCustomer == 1) {
+                    showThai = true;
+                    var formData = new FormData();
+                    formData.append('action', 'search');
+                    formData.append('agent_id', agent);
+                    formData.append('product_id', product_id);
+                    formData.append('category_id', option.value);
+                    formData.append('travel_date', travel_date);
+                    formData.append('book_type', book_type);
+                    formData.append('dataCustomer', dataCustomer);
+                    $.ajax({
+                        url: "pages/booking/function/search-rate.php",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function(response) {
+                            if (response != '' && response != false) {
+                                document.getElementById('div-thai').innerHTML = response;
+                                check_rate();
+                            }
+                        }
+                    });
+                }
+                if (dataCustomer == 2) {
+                    showForeign = true;
+                    var formData = new FormData();
+                    formData.append('action', 'search');
+                    formData.append('agent_id', agent);
+                    formData.append('product_id', product_id);
+                    formData.append('category_id', option.value);
+                    formData.append('travel_date', travel_date);
+                    formData.append('book_type', book_type);
+                    formData.append('dataCustomer', dataCustomer);
+                    $.ajax({
+                        url: "pages/booking/function/search-rate.php",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function(response) {
+                            if (response != '' && response != false) {
+                                document.getElementById('div-foreign').innerHTML = response;
+                                check_rate();
+                            }
+                        }
+                    });
                 }
             });
+
+            document.getElementById('div-thai').hidden = !showThai;
+            document.getElementById('div-foreign').hidden = !showForeign;
+            document.getElementById('customer_thai').value = !showThai == false ? 1 : 0;
+            document.getElementById('customer_foreign').value = !showForeign == false ? 1 : 0;
+
+            document.getElementById('div-transfer').hidden = (transfer == false) ? true : false;
+            document.getElementById('start_pickup').value = (transfer == true) ? '08:15' : '';
+            document.getElementById('end_pickup').value = (transfer == true) ? '08:15' : '';
+            document.getElementById('include').value = (transfer === false) ? '1' : '2';
         }
 
         function check_rate() {
-            var total_product = 0;
-            var book_type = document.getElementById('book_type1').checked == true ? 1 : 2;
-            var rate_total = document.getElementById('rate_total');
-            var adult = book_type == 2 ? document.getElementById('adult') : document.getElementById('cover-adult');
-            var child = book_type == 2 ? document.getElementById('child') : document.getElementById('cover-child');
-            var infant = book_type == 2 ? document.getElementById('infant') : document.getElementById('cover-infant');
-            if (book_type == 1) {
-                var rate_adult = document.getElementById('rate_adult').value.replace(/,/g, '');
-                var rate_child = document.getElementById('rate_child').value.replace(/,/g, '');
-                var rate_infant = document.getElementById('rate_infant').value.replace(/,/g, '');
+            let total_thai = 0;
+            let total_foreign = 0;
+            let amount = 0;
+
+            const book_type = document.getElementById('book_type1').checked ? 1 : 2;
+
+            // ฟังก์ชันย่อยสำหรับคำนวณยอดรวม
+            function calculateTotal(adult, child, infant, rateAdult, rateChild, rateInfant, privateRates, bookType) {
+                if (bookType === 1) {
+                    return (
+                        parseFloat(rateAdult) * parseInt(adult || 0) +
+                        parseFloat(rateChild) * parseInt(child || 0) +
+                        parseFloat(rateInfant) * parseInt(infant || 0)
+                    );
+                } else {
+                    return parseFloat(privateRates || 0);
+                }
             }
-            if (book_type == 1) {
-                total_product = Number(total_product) + Number(rate_adult) * Number(adult.value);
-                total_product = Number(total_product) + Number(rate_child) * Number(child.value);
-                total_product = Number(total_product) + Number(rate_infant) * Number(infant.value);
-            } else {
-                total_product = Number(rate_total.value.replace(/,/g, ''));
+
+            // คำนวณสำหรับ Thai
+            if (document.getElementById('customer_thai').value == 1) {
+                const adult = document.getElementById('adult_thai')?.value || 0;
+                const child = document.getElementById('child_thai')?.value || 0;
+                const infant = document.getElementById('infant_thai')?.value || 0;
+
+                const rateAdult = document.getElementById('rate_adult_thai')?.value.replace(/,/g, '') || 0;
+                const rateChild = document.getElementById('rate_child_thai')?.value.replace(/,/g, '') || 0;
+                const rateInfant = document.getElementById('rate_infant_thai')?.value.replace(/,/g, '') || 0;
+                const privateRates = book_type == 2 ? document.getElementById('private_rates_thai')?.value.replace(/,/g, '') || 0 : 0;
+
+                total_thai = calculateTotal(adult, child, infant, rateAdult, rateChild, rateInfant, privateRates, book_type);
+                document.getElementById('rate_total_thai') && (document.getElementById('rate_total_thai').value = total_thai);
             }
-            rate_total.value = numberWithCommas(total_product);
+
+            // คำนวณสำหรับ Foreign
+            if (document.getElementById('customer_foreign').value == 1) {
+                const adult = document.getElementById('adult_foreign')?.value || 0;
+                const child = document.getElementById('child_foreign')?.value || 0;
+                const infant = document.getElementById('infant_foreign')?.value || 0;
+
+                const rateAdult = document.getElementById('rate_adult_foreign')?.value.replace(/,/g, '') || 0;
+                const rateChild = document.getElementById('rate_child_foreign')?.value.replace(/,/g, '') || 0;
+                const rateInfant = document.getElementById('rate_infant_foreign')?.value.replace(/,/g, '') || 0;
+                const privateRates = book_type == 2 ? document.getElementById('private_rates_foreign')?.value.replace(/,/g, '') || 0 : 0;
+
+                total_foreign = calculateTotal(adult, child, infant, rateAdult, rateChild, rateInfant, privateRates, book_type);
+                document.getElementById('rate_total_foreign') && (document.getElementById('rate_total_foreign').value = total_foreign);
+            }
+
+            // คำนวณยอดรวม
+            amount = total_thai + total_foreign;
+            document.getElementById('rate_total').value = amount;
+            document.getElementById('text-total-price').innerHTML = numberWithCommas(amount);
         }
 
         function check_time(params) {
@@ -655,10 +717,6 @@
             }
         }
 
-        function numberWithCommas(x) {
-            return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        }
-
         function check_no_agent(voucher_no) {
             var agent = document.getElementById('agent');
 
@@ -691,9 +749,6 @@
 
         function rows_customer() {
             check_rate();
-            // if (open_rates == 1) {
-            //     check_rate();
-            // }
             return false; // ปิดการมใช้งาน
             var open_rates = document.getElementById('open-rates').value;
             var book_type = document.getElementById('book_type1').checked == true ? 1 : 2;

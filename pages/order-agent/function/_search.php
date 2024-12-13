@@ -35,10 +35,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $product_name[$order['comp_id']][] = !empty(!empty($order['product_name'])) ? $order['product_name'] : '';
                 $cus_name[$order['comp_id']][] = !empty($order['cus_name']) ? $order['cus_name'] : 'ไม่ได้ระบุ';
                 $sender[$order['comp_id']][] = !empty($order['sender']) ? $order['sender'] : 'ไม่ได้ระบุ';
-                $adult[$order['comp_id']][] = !empty($order['bp_adult']) ? $order['bp_adult'] : '0';
-                $child[$order['comp_id']][] = !empty($order['bp_child']) ? $order['bp_child'] : '0';
-                $infant[$order['comp_id']][] = !empty($order['bp_infant']) ? $order['bp_infant'] : '0';
-                $foc[$order['comp_id']][] = !empty($order['bp_foc']) ? $order['bp_foc'] : '0';
+                $adult[$order['comp_id']][] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : '0';
+                $child[$order['comp_id']][] = !empty($order['bpr_child']) ? $order['bpr_child'] : '0';
+                $infant[$order['comp_id']][] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : '0';
+                $foc[$order['comp_id']][] = !empty($order['bpr_foc']) ? $order['bpr_foc'] : '0';
                 $rate_adult[$order['comp_id']][] = !empty($order['rate_adult']) ? $order['rate_adult'] : '0';
                 $rate_child[$order['comp_id']][] = !empty($order['rate_child']) ? $order['rate_child'] : '0';
                 $rate_infant[$order['comp_id']][] = !empty($order['rate_infant']) ? $order['rate_infant'] : '0';

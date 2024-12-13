@@ -24,7 +24,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
     $first_bomanage = array();
     $first_bo = [];
     $first_trans = [];
-    $bookings = $manageObj->showlistboats('list', 0, $date_travel, $search_boat, 'all', $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name);
+    $bookings = $manageObj->showlistboats('list', 0, $date_travel, $search_boat, 'all', $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name, '');
     # --- Check products --- #
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
@@ -43,10 +43,10 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                 $status_by_name[$booking['id']] = !empty($booking['status_by']) ? $booking['stabyFname'] . ' ' . $booking['stabyLname'] : '';
                 $status[$booking['id']] = '<span class="badge badge-pill ' . $booking['booksta_class'] . ' text-capitalized"> ' . $booking['booksta_name'] . ' </span>';
                 $category_name[$booking['id']] = !empty($booking['category_name']) ? $booking['category_name'] : '';
-                $adult[$booking['id']] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[$booking['id']] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[$booking['id']] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[$booking['id']] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $adult[$booking['id']] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[$booking['id']] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[$booking['id']] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[$booking['id']] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $cate_transfer[$booking['id']] = !empty($booking['category_transfer']) ? $booking['category_transfer'] : 0;
                 $cate_transfer[$booking['id']] = !empty($booking['category_transfer']) ? $booking['category_transfer'] : 0;
                 $hotel_name[$booking['id']] = !empty($booking['pickup_name']) ? $booking['pickup_name'] : '';
@@ -74,10 +74,10 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                 $color_id[$booking['id']] = !empty($booking['color_id']) ? $booking['color_id'] : '';
                 # --- array programe --- #
                 $check_mange[$booking['product_id']][] = !empty($booking['mange_id']) ? $booking['mange_id'] : 0;
-                $prod_adult[$booking['product_id']][] = !empty($booking['bp_adult']) && $booking['mange_id'] == 0 ? $booking['bp_adult'] : 0;
-                $prod_child[$booking['product_id']][] = !empty($booking['bp_child']) && $booking['mange_id'] == 0 ? $booking['bp_child'] : 0;
-                $prod_infant[$booking['product_id']][] = !empty($booking['bp_infant']) && $booking['mange_id'] == 0 ? $booking['bp_infant'] : 0;
-                $prod_foc[$booking['product_id']][] = !empty($booking['bp_foc']) && $booking['mange_id'] == 0 ? $booking['bp_foc'] : 0;
+                $prod_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) && $booking['mange_id'] == 0 ? $booking['bpr_adult'] : 0;
+                $prod_child[$booking['product_id']][] = !empty($booking['bpr_child']) && $booking['mange_id'] == 0 ? $booking['bpr_child'] : 0;
+                $prod_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) && $booking['mange_id'] == 0 ? $booking['bpr_infant'] : 0;
+                $prod_foc[$booking['product_id']][] = !empty($booking['bpr_foc']) && $booking['mange_id'] == 0 ? $booking['bpr_foc'] : 0;
             }
             # --- get value customer --- #
             if (in_array($booking['cus_id'], $first_cus) == false) {
@@ -102,10 +102,10 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                 $book['cus_name'][$booking['mange_id']][] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
                 $book['telephone'][$booking['mange_id']][] = !empty($booking['telephone']) ? $booking['telephone'] : '';
                 $book['comp_name'][$booking['mange_id']][] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
-                $book['adult'][$booking['mange_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $book['child'][$booking['mange_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $book['infant'][$booking['mange_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $book['foc'][$booking['mange_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $book['adult'][$booking['mange_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $book['child'][$booking['mange_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $book['infant'][$booking['mange_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $book['foc'][$booking['mange_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $book['rate_adult'][$booking['mange_id']][] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
                 $book['rate_child'][$booking['mange_id']][] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
                 $book['rate_infant'][$booking['mange_id']][] = !empty($booking['rate_infant']) ? $booking['rate_infant'] : 0;
@@ -113,7 +113,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                 $book['discount'][$booking['mange_id']][] = !empty(!empty($booking['bp_discount'])) ? $booking['bp_discount'] : 0;
                 $book['note'][$booking['mange_id']][] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
                 $book['cot'][$booking['mange_id']][] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
-                $book['total'][$booking['mange_id']][] = $booking['booktye_id'] == 1 ? ($booking['bp_adult'] * $booking['rate_adult']) + ($booking['bp_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
+                $book['total'][$booking['mange_id']][] = $booking['booktye_id'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
                 $book['bo_mange_id'][$booking['mange_id']][] = !empty($booking['boman_id']) ? $booking['boman_id'] : 0;
             }
             # --- get value booking extra chang --- #
@@ -159,6 +159,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                 $mange['time'][] = !empty($manage['time']) ? date('H:i', strtotime($manage['time'])) : '00:00';
                 $mange['boat_id'][] = !empty($manage['boat_id']) ? $manage['boat_id'] : 0;
                 $mange['boat_name'][] = !empty($manage['boat_id']) ? !empty($manage['boat_name']) ? $manage['boat_name'] : '' : $manage['outside_boat'];
+                $mange['counter'][] = !empty($manage['counter']) ? $manage['counter'] : '';
                 $mange['guide_id'][] = !empty($manage['guide_id']) ? $manage['guide_id'] : 0;
                 $mange['guide_name'][] = !empty($manage['guide_id']) ? $manage['guide_name'] : '';
                 $mange['captain_id'][] = !empty($manage['captain_id']) ? $manage['captain_id'] : 0;
@@ -206,7 +207,8 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                     <table class="tableprint">
                         <thead class="">
                             <tr>
-                                <td colspan="10">ไกด์ : <?php echo $mange['guide_name'][$i]; ?></td>
+                                <td colspan="5">ไกด์ : <?php echo $mange['guide_name'][$i]; ?></td>
+                                <td colspan="6">เคาน์เตอร์ : <?php echo $mange['counter'][$i]; ?></td>
                                 <td colspan="3" style="background-color: <?php echo $mange['color_hex'][$i]; ?>; <?php echo $mange['text_color'][$i] != '' ? 'color: ' . $mange['text_color'][$i] . ';' : ''; ?>">
                                     สี : <?php echo $mange['color_name'][$i]; ?>
                                 </td>
@@ -319,7 +321,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
     $first_bomanage = array();
     $first_bo = [];
     $first_trans = [];
-    $bookings = $manageObj->showlistboats('list', 0, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '');
+    $bookings = $manageObj->showlistboats('list', 0, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
             if ($booking['mange_id'] == $manage_id) {
@@ -337,10 +339,10 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                     $book['cus_name'][$booking['mange_id']][] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
                     $book['telephone'][$booking['mange_id']][] = !empty($booking['telephone']) ? $booking['telephone'] : '';
                     $book['comp_name'][$booking['mange_id']][] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
-                    $book['adult'][$booking['mange_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                    $book['child'][$booking['mange_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                    $book['infant'][$booking['mange_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                    $book['foc'][$booking['mange_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                    $book['adult'][$booking['mange_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                    $book['child'][$booking['mange_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                    $book['infant'][$booking['mange_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                    $book['foc'][$booking['mange_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                     $book['rate_adult'][$booking['mange_id']][] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
                     $book['rate_child'][$booking['mange_id']][] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
                     $book['rate_infant'][$booking['mange_id']][] = !empty($booking['rate_infant']) ? $booking['rate_infant'] : 0;
@@ -348,7 +350,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                     $book['discount'][$booking['mange_id']][] = !empty(!empty($booking['bp_discount'])) ? $booking['bp_discount'] : 0;
                     $book['note'][$booking['mange_id']][] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
                     $book['cot'][$booking['mange_id']][] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
-                    $book['total'][$booking['mange_id']][] = $booking['booktye_id'] == 1 ? ($booking['bp_adult'] * $booking['rate_adult']) + ($booking['bp_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
+                    $book['total'][$booking['mange_id']][] = $booking['booktye_id'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
                     $book['bo_mange_id'][$booking['mange_id']][] = !empty($booking['boman_id']) ? $booking['boman_id'] : 0;
 
                     $boat_name[$booking['mange_id']] = !empty($booking['boat_name']) ? $booking['boat_name'] : '';

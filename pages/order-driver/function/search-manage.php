@@ -22,10 +22,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
             if ((in_array($transfer['id'], $first_bo) == false) && !empty($transfer['id'])) {
                 $first_bo[] = $transfer['id'];
                 $bo_id[] = !empty($transfer['id']) ? $transfer['id'] : 0;
-                $bp_adult[] = !empty($transfer['bp_adult']) ? $transfer['bp_adult'] : 0;
-                $bp_child[] = !empty($transfer['bp_child']) ? $transfer['bp_child'] : 0;
-                $bp_infant[] = !empty($transfer['bp_infant']) ? $transfer['bp_infant'] : 0;
-                $bp_foc[] = !empty($transfer['bp_foc']) ? $transfer['bp_foc'] : 0;
+                $bpr_adult[] = !empty($transfer['bpr_adult']) ? $transfer['bpr_adult'] : 0;
+                $bpr_child[] = !empty($transfer['bpr_child']) ? $transfer['bpr_child'] : 0;
+                $bpr_infant[] = !empty($transfer['bpr_infant']) ? $transfer['bpr_infant'] : 0;
+                $bpr_foc[] = !empty($transfer['bpr_foc']) ? $transfer['bpr_foc'] : 0;
                 $outside[] = !empty($transfer['outside']) ? $transfer['outside'] : '';
                 $room_no[] = !empty($transfer['room_no']) ? $transfer['room_no'] : '';
                 $voucher_no[] = !empty($transfer['voucher_no_agent']) ? $transfer['voucher_no_agent'] : '';
@@ -103,7 +103,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 }
                 echo !empty($manage_id) ? '<input type="hidden" name="before_bt_id[]" value="' . $bt_id . '" />' : '';
 ?>
-                <li class="list-group-item draggable mt-1" data-booking="<?php echo $bt_id; ?>" data-adult="<?php echo $bp_adult[$i]; ?>" data-child="<?php echo $bp_child[$i]; ?>" data-infant="<?php echo $bp_infant[$i]; ?>" data-foc="<?php echo $bp_foc[$i]; ?>">
+                <li class="list-group-item draggable mt-1" data-booking="<?php echo $bt_id; ?>" data-adult="<?php echo $bpr_adult[$i]; ?>" data-child="<?php echo $bpr_child[$i]; ?>" data-infant="<?php echo $bpr_infant[$i]; ?>" data-foc="<?php echo $bpr_foc[$i]; ?>">
                     <div class="card shadow-none bg-transparent border-secondary border-lighten-5 mb-0">
                         <div class="card-header card-img-top <?php echo $bg_light; ?> p-50">
                             <h5 class="<?php echo $text_light; ?> text-darken-4 mb-0"><?php echo $product_name[$i]; ?> </h5>
@@ -137,23 +137,23 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                                     <td height="30px">
                                         <div class="text-center">
                                             <div class="badge badge-light-warning mr-50 mt-1">
-                                                <h6 class="m-0 text-warning"> AD : <?php echo $bp_adult[$i]; ?></h6>
+                                                <h6 class="m-0 text-warning"> AD : <?php echo $bpr_adult[$i]; ?></h6>
                                             </div>
                                             <div class="badge badge-light-warning mr-50">
-                                                <h6 class="m-0 text-warning"> CHD : <?php echo $bp_child[$i]; ?></h6>
+                                                <h6 class="m-0 text-warning"> CHD : <?php echo $bpr_child[$i]; ?></h6>
                                             </div>
                                             <div class="badge badge-light-warning mr-50">
-                                                <h6 class="m-0 text-warning"> INF : <?php echo $bp_infant[$i]; ?></h6>
+                                                <h6 class="m-0 text-warning"> INF : <?php echo $bpr_infant[$i]; ?></h6>
                                             </div>
                                             <div class="badge badge-light-warning mr-50">
-                                                <h6 class="m-0 text-warning"> FOC : <?php echo $bp_foc[$i]; ?></h6>
+                                                <h6 class="m-0 text-warning"> FOC : <?php echo $bpr_foc[$i]; ?></h6>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center align-middle">
-                                        <div class="display-3 text-success"><?php echo $bp_adult[$i] + $bp_child[$i] + $bp_infant[$i] + $bp_foc[$i]; ?> <h5 class="d-inline-block">PAX</h5>
+                                        <div class="display-3 text-success"><?php echo $bpr_adult[$i] + $bpr_child[$i] + $bpr_infant[$i] + $bpr_foc[$i]; ?> <h5 class="d-inline-block">PAX</h5>
                                         </div>
                                     </td>
                                 </tr>

@@ -29,7 +29,7 @@ class Invoice extends DB
                     COMP.id as comp_id, COMP.name as comp_name, COMP.address as comp_address, COMP.telephone as comp_telephone, COMP.tat_license as comp_tat,
                     BOPA.id as bopa_id, BOPA.date_paid as date_paid, BOPA.total_paid as total_paid, BOPA.card_no as card_no, BOPA.photo as bopa_photo, BOPA.note as bopa_note, BOPA.payment_type_id as payment_type_id,
                     BOPAY.id as bopay_id, BOPAY.name as bopay_name, BOPAY.name_class as bopay_name_class, BOPAY.created_at as bopay_created,
-                    BP.id as bp_id, BP.travel_date as travel_date, BP.adult as bp_adult, BP.child as bp_child, BP.infant as bp_infant, BP.note as bp_note,
+                    BP.id as bp_id, BP.travel_date as travel_date, BP.adult as bpr_adult, BP.child as bpr_child, BP.infant as bpr_infant, BP.note as bp_note,
                     BP.private_type as bp_private_type,
                     BPR.id as bpr_id, BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_total, 
                     PROD.id as product_id, PROD.name as product_name,
@@ -37,7 +37,8 @@ class Invoice extends DB
                     BT.id as bt_id, BT.adult as bt_adult, BT.child as bt_child, BT.infant as bt_infant, BT.start_pickup as start_pickup, BT.end_pickup as end_pickup,
                     BT.hotel_pickup as hotel_pickup, BT.hotel_dropoff as hotel_dropoff, BT.room_no as room_no, BT.note as bt_note, BT.transfer_type as transfer_type,
                     BT.pickup_type as pickup_type,
-                    BTR.id as btr_id, BTR.rate_adult as btr_rate_adult, BTR.rate_child as btr_rate_child, BTR.rate_infant as btr_rate_infant, BTR.rate_private as rate_private,
+                    BPR.id as bpr_id, BPR.adult as bpr_adult, BPR.child as bpr_child, BPR.infant as bpr_infant, BPR.foc as bpr_foc, 
+                        BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_total,  
                     CARC.id as cars_category_id, CARC.name as cars_category,
                     BEC.id as bec_id, BEC.name as bec_name, BEC.adult as bec_adult, BEC.child as bec_child, BEC.infant as bec_infant, BEC.privates as bec_privates, BEC.type as bec_type,
                     BEC.rate_adult as bec_rate_adult, BEC.rate_child as bec_rate_child, BEC.rate_infant as bec_rate_infant, BEC.rate_private as bec_rate_private, 
@@ -135,7 +136,7 @@ class Invoice extends DB
                     COMP.id as comp_id, COMP.name as comp_name, COMP.tat_license as tat_license, COMP.telephone as comp_telephone, COMP.address as comp_address,
                     BOPA.id as bopa_id, BOPA.date_paid as date_paid, BOPA.total_paid as total_paid, BOPA.card_no as card_no, BOPA.photo as bopa_photo, BOPA.note as bopa_note, BOPA.payment_type_id as payment_type_id,
                     BOPAY.id as bopay_id, BOPAY.name as bopay_name, BOPAY.name_class as bopay_name_class, BOPAY.created_at as bopay_created,
-                    BP.id as bp_id, BP.travel_date as travel_date, BP.adult as bp_adult, BP.child as bp_child, BP.infant as bp_infant, BP.foc as bp_foc, BP.note as bp_note,
+                    BP.id as bp_id, BP.travel_date as travel_date,  BP.note as bp_note,
                     BP.private_type as bp_private_type,
                     BPR.id as bpr_id, BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_total, 
                     PROD.id as product_id, PROD.name as product_name,
@@ -147,7 +148,8 @@ class Invoice extends DB
                     DROPOFF.id as dropoff_id, DROPOFF.name_th as dropoff_name,
                     ZONE_P.id as zonep_id, ZONE_P.name_th as zonep_name,
                     ZONE_D.id as zoned_id, ZONE_D.name_th as zoned_name,
-                    BTR.id as btr_id, BTR.rate_adult as btr_rate_adult, BTR.rate_child as btr_rate_child, BTR.rate_infant as btr_rate_infant, BTR.rate_private as rate_private,
+                    BPR.id as bpr_id, BPR.adult as bpr_adult, BPR.child as bpr_child, BPR.infant as bpr_infant, BPR.foc as bpr_foc, 
+                        BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_total,  
                     CARC.id as cars_category_id, CARC.name as cars_category,
                     BEC.id as bec_id, BEC.name as bec_name, BEC.adult as bec_adult, BEC.child as bec_child, BEC.infant as bec_infant, BEC.privates as bec_privates, BEC.type as bec_type,
                     BEC.rate_adult as bec_rate_adult, BEC.rate_child as bec_rate_child, BEC.rate_infant as bec_rate_infant, BEC.rate_private as bec_rate_private, 
@@ -256,7 +258,7 @@ class Invoice extends DB
                 array_push($params, $agent);
             }
 
-            $query .= " ORDER BY COMP.name ASC, BT.pickup_type DESC, CATE.name DESC";
+            $query .= " ORDER BY COMP.name ASC, BP.travel_date ASC, BT.pickup_type DESC, CATE.name DESC";
         }
 
         if (isset($type) && $type == "invoices") {
@@ -274,7 +276,7 @@ class Invoice extends DB
                 array_push($params, $cover_id);
             }
 
-            $query .= " ORDER BY COMP.name ASC, BT.pickup_type DESC, CATE.name DESC";
+            $query .= " ORDER BY COMP.name ASC, BP.travel_date ASC, BT.pickup_type DESC, CATE.name DESC";
         }
 
         $statement = $this->connection->prepare($query);

@@ -23,7 +23,7 @@ $first_ext = array();
 $first_bomanage = array();
 $first_bo = [];
 $first_trans = [];
-$bookings = $bookObj->showlistboats('list', 0, $get_date, $search_boat, 'all', $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name);
+$bookings = $bookObj->showlistboats('list', 0, $get_date, $search_boat, 'all', $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name, '');
 # --- Check products --- #
 if (!empty($bookings)) {
     foreach ($bookings as $booking) {
@@ -42,10 +42,10 @@ if (!empty($bookings)) {
             $status_by_name[$booking['id']] = !empty($booking['status_by']) ? $booking['stabyFname'] . ' ' . $booking['stabyLname'] : '';
             $status[$booking['id']] = '<span class="badge badge-pill ' . $booking['booksta_class'] . ' text-capitalized"> ' . $booking['booksta_name'] . ' </span>';
             $category_name[$booking['id']] = !empty($booking['category_name']) ? $booking['category_name'] : '';
-            $adult[$booking['id']] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-            $child[$booking['id']] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-            $infant[$booking['id']] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-            $foc[$booking['id']] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+            $adult[$booking['id']] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+            $child[$booking['id']] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+            $infant[$booking['id']] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+            $foc[$booking['id']] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
             $rate_adult[$booking['id']] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
             $rate_child[$booking['id']] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
             $cate_transfer[$booking['id']] = !empty($booking['category_transfer']) ? $booking['category_transfer'] : 0;
@@ -75,10 +75,10 @@ if (!empty($bookings)) {
             $color_id[$booking['id']] = !empty($booking['color_id']) ? $booking['color_id'] : '';
             # --- array programe --- #
             $check_mange[$booking['product_id']][] = !empty($booking['mange_id']) ? $booking['mange_id'] : 0;
-            $prod_adult[$booking['product_id']][] = !empty($booking['bp_adult']) && $booking['mange_id'] == 0 ? $booking['bp_adult'] : 0;
-            $prod_child[$booking['product_id']][] = !empty($booking['bp_child']) && $booking['mange_id'] == 0 ? $booking['bp_child'] : 0;
-            $prod_infant[$booking['product_id']][] = !empty($booking['bp_infant']) && $booking['mange_id'] == 0 ? $booking['bp_infant'] : 0;
-            $prod_foc[$booking['product_id']][] = !empty($booking['bp_foc']) && $booking['mange_id'] == 0 ? $booking['bp_foc'] : 0;
+            $prod_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) && $booking['mange_id'] == 0 ? $booking['bpr_adult'] : 0;
+            $prod_child[$booking['product_id']][] = !empty($booking['bpr_child']) && $booking['mange_id'] == 0 ? $booking['bpr_child'] : 0;
+            $prod_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) && $booking['mange_id'] == 0 ? $booking['bpr_infant'] : 0;
+            $prod_foc[$booking['product_id']][] = !empty($booking['bpr_foc']) && $booking['mange_id'] == 0 ? $booking['bpr_foc'] : 0;
         }
         # --- get value customer --- #
         if (in_array($booking['cus_id'], $first_cus) == false) {
@@ -102,10 +102,10 @@ if (!empty($bookings)) {
             $book['room_no'][$booking['mange_id']][] = !empty($booking['room_no']) ? $booking['room_no'] : '';
             $book['cus_name'][$booking['mange_id']][] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
             $book['comp_name'][$booking['mange_id']][] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
-            $book['adult'][$booking['mange_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-            $book['child'][$booking['mange_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-            $book['infant'][$booking['mange_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-            $book['foc'][$booking['mange_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+            $book['adult'][$booking['mange_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+            $book['child'][$booking['mange_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+            $book['infant'][$booking['mange_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+            $book['foc'][$booking['mange_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
             $book['rate_adult'][$booking['mange_id']][] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
             $book['rate_child'][$booking['mange_id']][] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
             $book['rate_infant'][$booking['mange_id']][] = !empty($booking['rate_infant']) ? $booking['rate_infant'] : 0;
@@ -113,7 +113,7 @@ if (!empty($bookings)) {
             $book['discount'][$booking['mange_id']][] = !empty(!empty($booking['bp_discount'])) ? $booking['bp_discount'] : 0;
             $book['note'][$booking['mange_id']][] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
             $book['cot'][$booking['mange_id']][] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
-            $book['total'][$booking['mange_id']][] = $booking['booktye_id'] == 1 ? ($booking['bp_adult'] * $booking['rate_adult']) + ($booking['bp_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
+            $book['total'][$booking['mange_id']][] = $booking['booktye_id'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
             $book['bo_mange_id'][$booking['mange_id']][] = !empty($booking['boman_id']) ? $booking['boman_id'] : 0;
         }
 
@@ -159,7 +159,7 @@ if (!empty($manages)) {
             $mange['time'][] = !empty($manage['time']) ? date('H:i', strtotime($manage['time'])) : '00:00';
             $mange['boat_id'][] = !empty($manage['boat_id']) ? $manage['boat_id'] : 0;
             $mange['boat_name'][] = !empty($manage['boat_id']) ? !empty($manage['boat_name']) ? $manage['boat_name'] : '' : $manage['outside_boat'];
-            // $mange['guide_name'][] = !empty($manage['guide']) ? $manage['guide'] : '';
+            $mange['counter'][] = !empty($manage['counter']) ? $manage['counter'] : '';
             $mange['guide_id'][] = !empty($manage['guide_id']) ? $manage['guide_id'] : 0;
             $mange['guide_name'][] = !empty($manage['guide_name']) ? $manage['guide_name'] : '';
             $mange['captain_id'][] = !empty($manage['captain_id']) ? $manage['captain_id'] : 0;
@@ -259,7 +259,7 @@ if (!empty($programed)) {
                                         <?php
                                         $bookstype = $bookObj->showliststatus();
                                         foreach ($bookstype as $booktype) {
-                                            $selected = $search_status == $booktype['id'] ? 'selected' : '' ;
+                                            $selected = $search_status == $booktype['id'] ? 'selected' : '';
                                         ?>
                                             <option value="<?php echo $booktype['id']; ?>" <?php echo $selected; ?>><?php echo $booktype['name']; ?></option>
                                         <?php } ?>
@@ -274,7 +274,7 @@ if (!empty($programed)) {
                                         <?php
                                         $agents = $bookObj->showlistagent();
                                         foreach ($agents as $agent) {
-                                            $selected = $search_agent == $agent['id'] ? 'selected' : '' ;
+                                            $selected = $search_agent == $agent['id'] ? 'selected' : '';
                                         ?>
                                             <option value="<?php echo $agent['id']; ?>" <?php echo $selected; ?>><?php echo $agent['name']; ?></option>
                                         <?php } ?>
@@ -289,7 +289,7 @@ if (!empty($programed)) {
                                         <?php
                                         $products = $bookObj->showlistproduct();
                                         foreach ($products as $product) {
-                                            $selected = $search_product == $product['id'] ? 'selected' : '' ;
+                                            $selected = $search_product == $product['id'] ? 'selected' : '';
                                         ?>
                                             <option value="<?php echo $product['id']; ?>" <?php echo $selected; ?>><?php echo $product['name']; ?></option>
                                         <?php } ?>
@@ -350,8 +350,9 @@ if (!empty($programed)) {
                                     <table class="table table-bordered table-striped">
                                         <thead class="bg-light">
                                             <tr>
-                                                <th colspan="7">เวลา : <?php echo $mange['time'][$i]; ?></th>
-                                                <th colspan="7">ไกด์ : <?php echo $mange['guide_name'][$i]; ?></th>
+                                                <th colspan="4">เวลา : <?php echo $mange['time'][$i]; ?></th>
+                                                <th colspan="6">ไกด์ : <?php echo $mange['guide_name'][$i]; ?></th>
+                                                <th colspan="4">เคาน์เตอร์ : <?php echo $mange['counter'][$i]; ?></th>
                                                 <th colspan="2" style="background-color: <?php echo $mange['color_hex'][$i]; ?>;">
                                                     สี : <?php echo $mange['color_name'][$i]; ?>
                                                 </th>
@@ -632,6 +633,12 @@ if (!empty($programed)) {
                                             <div class="form-group">
                                                 <label class="form-label" for="note">Note</label></br>
                                                 <textarea name="note" id="note" class="form-control" cols="30" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="counter">เคาน์เตอร์</label>
+                                                <input type="text" class="form-control" id="counter" name="counter" value="" />
                                             </div>
                                         </div>
                                     </div>

@@ -31,11 +31,11 @@ if (isset($_POST['action']) && $_POST['action'] == "search-invoice" && !empty($_
             if (in_array($invoice['id'], $first_booking) == false) {
                 $first_booking[] = $invoice['id'];
                 $bo_id[$invoice['comp_id']][] = !empty($invoice['id']) ? $invoice['id'] : 0;
-                $adult[$invoice['comp_id']][] = !empty($invoice['bp_adult']) ? $invoice['bp_adult'] : 0;
-                $child[$invoice['comp_id']][] = !empty($invoice['bp_child']) ? $invoice['bp_child'] : 0;
-                $infant[$invoice['comp_id']][] = !empty($invoice['bp_infant']) ? $invoice['bp_infant'] : 0;
-                $foc[$invoice['comp_id']][] = !empty($invoice['bp_foc']) ? $invoice['bp_foc'] : 0;
-                $tourrist[$invoice['comp_id']][] = $invoice['bp_adult'] + $invoice['bp_child'] + $invoice['bp_infant'] + $invoice['bp_foc'];
+                $adult[$invoice['comp_id']][] = !empty($invoice['bpr_adult']) ? $invoice['bpr_adult'] : 0;
+                $child[$invoice['comp_id']][] = !empty($invoice['bpr_child']) ? $invoice['bpr_child'] : 0;
+                $infant[$invoice['comp_id']][] = !empty($invoice['bpr_infant']) ? $invoice['bpr_infant'] : 0;
+                $foc[$invoice['comp_id']][] = !empty($invoice['bpr_foc']) ? $invoice['bpr_foc'] : 0;
+                $tourrist[$invoice['comp_id']][] = $invoice['bpr_adult'] + $invoice['bpr_child'] + $invoice['bpr_infant'] + $invoice['bpr_foc'];
                 $cot[$invoice['comp_id']][] = !empty($invoice['total_paid']) ? $invoice['total_paid'] : 0;
             }
         }
@@ -111,10 +111,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search-invoice" && !empty($_
             if (in_array($invoice['id'], $first_booking) == false) {
                 $first_booking[] = $invoice['id'];
                 $bo_id[$invoice['comp_id']][] = !empty($invoice['id']) ? $invoice['id'] : 0;
-                $adult[$invoice['comp_id']][] = !empty($invoice['bp_adult']) ? $invoice['bp_adult'] : 0;
-                $child[$invoice['comp_id']][] = !empty($invoice['bp_child']) ? $invoice['bp_child'] : 0;
-                $infant[$invoice['comp_id']][] = !empty($invoice['bp_infant']) ? $invoice['bp_infant'] : 0;
-                $foc[$invoice['comp_id']][] = !empty($invoice['bp_foc']) ? $invoice['bp_foc'] : 0;
+                $adult[$invoice['comp_id']][] = !empty($invoice['bpr_adult']) ? $invoice['bpr_adult'] : 0;
+                $child[$invoice['comp_id']][] = !empty($invoice['bpr_child']) ? $invoice['bpr_child'] : 0;
+                $infant[$invoice['comp_id']][] = !empty($invoice['bpr_infant']) ? $invoice['bpr_infant'] : 0;
+                $foc[$invoice['comp_id']][] = !empty($invoice['bpr_foc']) ? $invoice['bpr_foc'] : 0;
                 $cot[$invoice['comp_id']][] = !empty($invoice['total_paid']) ? $invoice['total_paid'] : 0;
             }
         }

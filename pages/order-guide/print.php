@@ -32,7 +32,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print") {
     $name_img .= $search_guide != 'all' ? ' [' . $search_guide_name . '] ' : '';
     $name_img .= $date_travel_form != '0000-00-00' ? ' [' . date('j F Y', strtotime($date_travel_form)) . '] ' : '';
     # --- get data --- #
-    $orders = $orderObj->showlistboats('list', 0, $date_travel_form, $search_boat, $search_guide, $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name);
+    $orders = $orderObj->showlistboats('guide', 0, $date_travel_form, $search_boat, $search_guide, $search_status, $search_agent, $search_product, $search_voucher_no, $refcode, $name, '');
     # --- Check products --- #
     if (!empty($orders)) {
         foreach ($orders as $order) {
@@ -43,7 +43,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print") {
                 $order_boat_name[] = empty($order['boat_id']) ? !empty($order['orboat_boat_name']) ? $order['orboat_boat_name'] : '' : $order['boat_name'];
                 $order_boat_refcode[] = !empty($order['boat_refcode']) ? $order['boat_refcode'] : '';
                 $order_capt_id[] = !empty($order['capt_id']) ? $order['capt_id'] : 0;
-                // $order_capt_name[] = empty($order['capt_id']) ? $order['captain_name'] : '';
+                $order_counter[] = !empty($order['manage_counter']) ? $order['manage_counter'] : '';
                 $order_guide_id[] = !empty($order['guide_id']) ? $order['guide_id'] : 0;
                 $order_guide_name[] = !empty($order['guide_id']) ? $order['guide_name'] : '';
                 $order_note[] = !empty($order['orboat_note']) ? $order['orboat_note'] : '';
@@ -57,6 +57,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print") {
             if ((in_array($order['id'], $first_bo) == false)  && !empty($order['mange_id'])) {
                 $first_bo[] = $order['id'];
                 $bo_id[$order['mange_id']][] = !empty($order['id']) ? $order['id'] : 0;
+                $check_id[$order['mange_id']][] = !empty($order['check_id']) ? $order['check_id'] : 0;
                 $book_full[$order['mange_id']][] = !empty($order['book_full']) ? $order['book_full'] : '';
                 $agent[$order['mange_id']][] = !empty($order['comp_name']) ? $order['comp_name'] : '';
                 $voucher_no[$order['mange_id']][] = !empty($order['voucher_no_agent']) ? $order['voucher_no_agent'] : '';
@@ -69,16 +70,16 @@ if (isset($_GET['action']) && $_GET['action'] == "print") {
                 $bp_note[$order['mange_id']][] = !empty($order['bp_note']) ? $order['bp_note'] : '';
                 $product_name[$order['mange_id']][] = !empty($order['product_name']) ? $order['product_name'] : '';
                 $booking_type[$order['mange_id']][] = !empty($order['bp_private_type']) && $order['bp_private_type'] == 2 ? 'Private' : 'Join';
-                $adult[$order['mange_id']][] = !empty($order['bp_adult']) ? $order['bp_adult'] : 0;
-                $child[$order['mange_id']][] = !empty($order['bp_child']) ? $order['bp_child'] : 0;
-                $infant[$order['mange_id']][] = !empty($order['bp_infant']) ? $order['bp_infant'] : 0;
-                $foc[$order['mange_id']][] = !empty($order['bp_foc']) ? $order['bp_foc'] : 0;
+                $adult[$order['mange_id']][] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : 0;
+                $child[$order['mange_id']][] = !empty($order['bpr_child']) ? $order['bpr_child'] : 0;
+                $infant[$order['mange_id']][] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : 0;
+                $foc[$order['mange_id']][] = !empty($order['bpr_foc']) ? $order['bpr_foc'] : 0;
                 $rate_adult[$order['mange_id']][] = !empty($order['rate_adult']) ? $order['rate_adult'] : 0;
                 $rate_child[$order['mange_id']][] = !empty($order['rate_child']) ? $order['rate_child'] : 0;
                 $car_name[$order['mange_id']][] = !empty($order['car_id']) ? $order['car_name'] : '';
                 $start_pickup[$order['mange_id']][] = !empty($order['start_pickup']) ? date('H:i', strtotime($order['start_pickup'])) : '00:00:00';
                 $pickup_type[$order['mange_id']][] = !empty($order['pickup_type']) ? $order['pickup_type'] : 0;
-                $total[$order['mange_id']][] = $order['booktye_id'] == 1 ? ($order['bp_adult'] * $order['rate_adult']) + ($order['bp_child'] * $order['rate_child']) + ($order['rate_infant'] * $order['rate_infant']) : $order['rate_private'];
+                $total[$order['mange_id']][] = $order['booktye_id'] == 1 ? ($order['bpr_adult'] * $order['rate_adult']) + ($order['bpr_child'] * $order['rate_child']) + ($order['rate_infant'] * $order['rate_infant']) : $order['rate_private'];
             }
 
             $bopay_name[$order['id']] = !empty($order['bopay_name']) ? $order['bopay_name'] : '';
@@ -162,12 +163,14 @@ if (isset($_GET['action']) && $_GET['action'] == "print") {
                     <table>
                         <thead>
                             <tr>
-                                <td colspan="12">ไกด์ : <?php echo $order_guide_name[$i]; ?></td>
+                                <td colspan="6">ไกด์ : <?php echo $order_guide_name[$i]; ?></td>
+                                <td colspan="7">เคาน์เตอร์ : <?php echo $order_counter[$i]; ?></td>
                                 <td colspan="3" style="background-color: <?php echo $color_hex[$i]; ?>; <?php echo $text_color[$i] != '' ? 'color: ' . $text_color[$i] . ';' : ''; ?>">
                                     สี : <?php echo $color_name[$i]; ?>
                                 </td>
                             </tr>
                             <tr>
+                                <th class="text-center" width="3%"></th>
                                 <th class="text-center" width="1%"></th>
                                 <th width="5%">เวลารับ</th>
                                 <th width="5%">Driver</th>
@@ -202,7 +205,8 @@ if (isset($_GET['action']) && $_GET['action'] == "print") {
                                     $class_tr = ($a % 2 == 1) ? 'table-active' : '';
                             ?>
                                     <tr class="<?php echo $class_tr; ?>">
-                                        <td><?php echo $a + 1; ?></td>
+                                        <td class="text-center"><?php echo $check_id[$mange_id[$i]][$a] > 0 ? '<i data-feather="check"></i>' : ''; ?></td>
+                                        <td class="text-center"><?php echo $a + 1; ?></td>
                                         <td class="text-center"><?php echo $pickup_time[$mange_id[$i]][$a]; ?></td>
                                         <td style="padding: 5px;"><?php echo (!empty($managet['car'][$id][1])) ? $managet['car'][$id][1] : ''; ?></td>
                                         <td><?php echo $agent[$mange_id[$i]][$a]; ?></td>

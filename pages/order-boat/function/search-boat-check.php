@@ -10,18 +10,18 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['tr
 
     # --- show list boats booking --- #
     $first_booking = array();
-    $bookings = $manageObj->showlistboats('list', 0, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '');
+    $bookings = $manageObj->showlistboats('list', 0, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
             # --- get value booking --- #
             if (in_array($booking['id'], $first_booking) == false) {
                 $first_booking[] = $booking['id'];
                 $bo_id[$booking['mange_id']][] = !empty($booking['id']) ? $booking['id'] : 0;
-                $adult[$booking['mange_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[$booking['mange_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[$booking['mange_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[$booking['mange_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
-                $total[$booking['mange_id']][] = $booking['bp_adult'] + $booking['bp_child'] + $booking['bp_infant'] + $booking['bp_foc'];
+                $adult[$booking['mange_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[$booking['mange_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[$booking['mange_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[$booking['mange_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                $total[$booking['mange_id']][] = $booking['bpr_adult'] + $booking['bpr_child'] + $booking['bpr_infant'] + $booking['bpr_foc'];
 
                 $arr_bo[$booking['mange_id']]['id'][] = !empty($booking['id']) ? $booking['id'] : 0;
                 $arr_bo[$booking['mange_id']]['check'][] = !empty($booking['check_id']) ? $booking['check_id'] : 0;
@@ -30,10 +30,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['tr
                 $arr_bo[$booking['mange_id']]['cus_name'][] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
                 $arr_bo[$booking['mange_id']]['product_name'][] = !empty($booking['product_name']) ? $booking['product_name'] : '';
                 $arr_bo[$booking['mange_id']]['voucher_no'][] = !empty($booking['voucher_no']) ? $booking['voucher_no'] : $booking['book_full'];
-                $arr_bo[$booking['mange_id']]['adult'][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : '-';
-                $arr_bo[$booking['mange_id']]['child'][] = !empty($booking['bp_child']) ? $booking['bp_child'] : '-';
-                $arr_bo[$booking['mange_id']]['infant'][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : '-';
-                $arr_bo[$booking['mange_id']]['foc'][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : '-';
+                $arr_bo[$booking['mange_id']]['adult'][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : '-';
+                $arr_bo[$booking['mange_id']]['child'][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : '-';
+                $arr_bo[$booking['mange_id']]['infant'][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : '-';
+                $arr_bo[$booking['mange_id']]['foc'][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : '-';
                 $arr_bo[$booking['mange_id']]['discount'][] = !empty($booking['discount']) ? $booking['discount'] : '-';
                 $arr_bo[$booking['mange_id']]['cot'][] = !empty($booking['total_paid']) ? $booking['total_paid'] : '-';
                 $arr_bo[$booking['mange_id']]['time_pickup'][] = !empty($booking['start_pickup']) ? !empty($booking['end_pickup']) ? date('H:i', strtotime($booking['start_pickup'])) . '-' .  date('H:i', strtotime($booking['end_pickup'])) : date('H:i', strtotime($booking['start_pickup'])) : '00:00';

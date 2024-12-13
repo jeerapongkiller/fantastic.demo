@@ -11,8 +11,9 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['pr
     $cate_arr = array();
     foreach ($cates as $cate) {
         $cate_arr['id'][] = !empty($cate['id']) ? $cate['id'] : 0;
-        $cate_arr['name'][] = !empty($cate['name']) ? $cate['name'] : '';
         $cate_arr['customer'][] = !empty($cate['customer']) ? $cate['customer'] : 0;
+        $cate_arr['transfer'][] = !empty($cate['transfer']) ? $cate['transfer'] : 0;
+        $cate_arr['name'][] = !empty($cate['name']) ? $cate['name'] : '';
     }
 
     echo !empty($cate_arr) ? json_encode($cate_arr) : false;

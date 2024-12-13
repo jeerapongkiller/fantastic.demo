@@ -51,10 +51,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $status_by_name[] = !empty($booking['status_by']) ? $booking['stabyFname'] . ' ' . $booking['stabyLname'] : '';
                 $status[] = '<span class="badge badge-pill ' . $booking['booksta_class'] . ' text-capitalized"> ' . $booking['booksta_name'] . ' </span>';
                 $category_transfer[] = !empty(!empty($booking['category_transfer'])) ? $booking['category_transfer'] : 0;
-                $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $foc[] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $note[] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
                 $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
                 $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
@@ -79,10 +79,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 # --- Programe --- #
                 $prod_id[] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
                 $prod_name[$booking['product_id']] = !empty($booking['product_name']) ? $booking['product_name'] : '';
-                $prod_adult[$booking['product_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                $prod_child[$booking['product_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                $prod_infant[$booking['product_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                $prod_foc[$booking['product_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                $prod_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $prod_child[$booking['product_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $prod_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $prod_foc[$booking['product_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 # --- order boat --- #
                 if (!empty(!empty($booking['mange_id'])) && !empty($booking['mange_id']) > 0) {
                     # --- Boat --- #
@@ -92,10 +92,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                     $capt_name[$booking['boat_id']] = !empty($booking['capt_name']) ? $booking['capt_name'] : '';
                     $boat_order_id[$booking['mange_id']][] = !empty($booking['boat_id']) ? $booking['boat_id'] : 0;
                     $boat_product[$booking['mange_id']] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
-                    $boat_adult[$booking['mange_id']][] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                    $boat_child[$booking['mange_id']][] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                    $boat_infant[$booking['mange_id']][] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
-                    $boat_foc[$booking['mange_id']][] = !empty($booking['bp_foc']) ? $booking['bp_foc'] : 0;
+                    $boat_adult[$booking['mange_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                    $boat_child[$booking['mange_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                    $boat_infant[$booking['mange_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                    $boat_foc[$booking['mange_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 }
             }
             # --- get value manage transfer --- #

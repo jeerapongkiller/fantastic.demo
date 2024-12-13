@@ -67,9 +67,9 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $company_name[$order['orboat_id']][] = !empty($order['comp_name']) ? $order['comp_name'] : '';
                 $voucher[$order['orboat_id']][] = !empty($order['voucher_no_agent']) ? $order['voucher_no_agent'] : '';
                 $sender[$order['orboat_id']][] = !empty($order['sender']) ? $order['sender'] : '';
-                $adult[$order['orboat_id']][] = !empty($order['bp_adult']) ? $order['bp_adult'] : 0;
-                $child[$order['orboat_id']][] = !empty($order['bp_child']) ? $order['bp_child'] : 0;
-                $infant[$order['orboat_id']][] = !empty($order['bp_infant']) ? $order['bp_infant'] : 0;
+                $adult[$order['orboat_id']][] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : 0;
+                $child[$order['orboat_id']][] = !empty($order['bpr_child']) ? $order['bpr_child'] : 0;
+                $infant[$order['orboat_id']][] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : 0;
                 $cus_name[$order['orboat_id']][] = !empty($order['cus_name']) ? $order['cus_name'] : '';
                 $car_registration[$order['orboat_id']][] = !empty($order['car_registration']) ? $order['car_registration'] : '';
                 $driver_name[$order['orboat_id']][] = !empty($order['driver_fname']) ? $order['driver_fname'] . ' ' . $order['driver_lname'] : '';
@@ -80,8 +80,8 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $total_paid[$order['orboat_id']][] = !empty($order['total_paid']) ? $order['total_paid'] : '';
                 $total = $order['rate_total'];
                 $total = $order['transfer_type'] == 1 ? $total + ($order['bt_adult'] * $order['btr_rate_adult']) : $total;
-                $total = $order['transfer_type'] == 1 ? $total + ($order['bp_child'] * $order['btr_rate_child']) : $total;
-                $total = $order['transfer_type'] == 1 ? $total + ($order['bp_infant'] * $order['btr_rate_infant']) : $total;
+                $total = $order['transfer_type'] == 1 ? $total + ($order['bpr_child'] * $order['btr_rate_child']) : $total;
+                $total = $order['transfer_type'] == 1 ? $total + ($order['bpr_infant'] * $order['btr_rate_infant']) : $total;
                 $total = $order['transfer_type'] == 2 ? $orderObj->sumbtrprivate($order['bt_id'])['sum_rate_private'] + $total : $total;
                 $total = $orderObj->sumbectotal($order['id'])['sum_rate_total'] + $total;
                 $total = !empty($order['discount']) ? $total - $order['discount'] : $total;

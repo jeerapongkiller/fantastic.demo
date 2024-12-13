@@ -47,9 +47,9 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                     $bp_id[] = !empty($booking['bp_id']) ? $booking['bp_id'] : 0;
                     $product_name[] = !empty($booking['product_name']) ? $booking['product_name'] : 0;
                     $travel_date[] = !empty($booking['travel_date']) ? $booking['travel_date'] : '0000-00-00';
-                    $adult[] = !empty($booking['bp_adult']) ? $booking['bp_adult'] : 0;
-                    $child[] = !empty($booking['bp_child']) ? $booking['bp_child'] : 0;
-                    $infant[] = !empty($booking['bp_infant']) ? $booking['bp_infant'] : 0;
+                    $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                    $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                    $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                     $private_type[] = !empty($booking['bp_private_type']) ? $booking['bp_private_type'] : 0;
                     # --- get value booking product rate --- #
                     $bpr_id[] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;

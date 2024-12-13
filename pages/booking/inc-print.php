@@ -24,6 +24,7 @@ if ($bookings[0]['id'] > 0) {
     $book_type_name = !empty(!empty($bookings[0]['booking_type_id'])) ? $bookings[0]['booktye_name'] : '';
     $book_status = !empty(!empty($bookings[0]['booking_status_id'])) ? $bookings[0]['booking_status_id'] : 0;
     $book_status_name = !empty(!empty($bookings[0]['booksta_name'])) ? $bookings[0]['booksta_name'] : 0;
+    $confirm_id = !empty($bookings[0]['confirm_id']) ? $bookings[0]['confirm_id'] : 0;
     $created_at = date('j F Y', strtotime($bookings[0]['created_at']));
     $guests_type = $agent_id == 0 ? 'Supplier' : 'Agent';
     # --- get value manage boat and transfer --- #
@@ -38,21 +39,21 @@ if ($bookings[0]['id'] > 0) {
     $category_id = !empty($bookings[0]['category_id']) ? $bookings[0]['category_id'] : 0;
     $category_name = !empty($bookings[0]['category_name']) ? $bookings[0]['category_name'] : 0;
     $travel_date = !empty($bookings[0]['travel_date']) ? $bookings[0]['travel_date'] : '0000-00-00';
-    $adult = !empty($bookings[0]['bp_adult']) ? $bookings[0]['bp_adult'] : 0;
-    $child = !empty($bookings[0]['bp_child']) ? $bookings[0]['bp_child'] : 0;
-    $infant = !empty($bookings[0]['bp_infant']) ? $bookings[0]['bp_infant'] : 0;
-    $foc = !empty($bookings[0]['bp_foc']) ? $bookings[0]['bp_foc'] : 0;
+    // $adult = !empty($bookings[0]['bpr_adult']) ? $bookings[0]['bpr_adult'] : 0;
+    // $child = !empty($bookings[0]['bpr_child']) ? $bookings[0]['bpr_child'] : 0;
+    // $infant = !empty($bookings[0]['bpr_infant']) ? $bookings[0]['bpr_infant'] : 0;
+    // $foc = !empty($bookings[0]['bpr_foc']) ? $bookings[0]['bpr_foc'] : 0;
     $bp_note = !empty($bookings[0]['bp_note']) ? $bookings[0]['bp_note'] : '';
     $private_type = !empty($bookings[0]['bp_private_type']) ? $bookings[0]['bp_private_type'] : 0;
     # --- get value booking product rate --- #
-    $bpr_id = !empty($bookings[0]['bpr_id']) ? $bookings[0]['bpr_id'] : 0;
-    $prod_rate_id = !empty($bookings[0]['product_rates_id']) ? $bookings[0]['product_rates_id'] : 0;
-    $rate_adult = !empty($bookings[0]['rate_adult']) ? $bookings[0]['rate_adult'] : 0;
-    $rate_child = !empty($bookings[0]['rate_child']) ? $bookings[0]['rate_child'] : 0;
-    $rate_infant = !empty($bookings[0]['rate_infant']) ? $bookings[0]['rate_infant'] : 0;
-    $rate_total = !empty($bookings[0]['rate_total']) ? $bookings[0]['rate_total'] : 0;
-    $total_sum = $total_sum + $rate_total;
-    $total_product = $total_product + $rate_total;
+    // $bpr_id = !empty($bookings[0]['bpr_id']) ? $bookings[0]['bpr_id'] : 0;
+    // $prod_rate_id = !empty($bookings[0]['product_rates_id']) ? $bookings[0]['product_rates_id'] : 0;
+    // $rate_adult = !empty($bookings[0]['rate_adult']) ? $bookings[0]['rate_adult'] : 0;
+    // $rate_child = !empty($bookings[0]['rate_child']) ? $bookings[0]['rate_child'] : 0;
+    // $rate_infant = !empty($bookings[0]['rate_infant']) ? $bookings[0]['rate_infant'] : 0;
+    // $rate_total = !empty($bookings[0]['rate_total']) ? $bookings[0]['rate_total'] : 0;
+    // $total_sum = $total_sum + $rate_total;
+    // $total_product = $total_product + $rate_total;
     # --- get value booking transfer --- #
     $bt_id = !empty($bookings[0]['bt_id']) ? $bookings[0]['bt_id'] : 0;
     $bt_adult = !empty($bookings[0]['bt_adult']) ? $bookings[0]['bt_adult'] : 0;
@@ -101,10 +102,27 @@ if ($bookings[0]['id'] > 0) {
     $inv_full = !empty($bookings[0]['inv_full']) ? $bookings[0]['inv_full'] : '';
     # --- get value in array !foreach! --- #
     $first_cus = array();
-    $first_btr = array();
+    $first_bpr = array();
     $first_ext = array();
     $first_pay = array();
     foreach ($bookings as $booking) {
+        # --- get value rates --- #
+        if ((in_array($booking['bpr_id'], $first_bpr) == false) && !empty($booking['bpr_id'])) {
+            $first_bpr[] = $booking['bpr_id'];
+            $rates['id'][] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;
+            $rates['category'][] = !empty($booking['category_id']) ? $booking['category_id'] : 0;
+            $rates['name'][] = !empty($booking['category_name']) ? $booking['category_name'] : 0;
+            $rates['customer'][] = !empty($booking['category_cus']) ? $booking['category_cus'] : 0;
+            $rates['adult'][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+            $rates['child'][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+            $rates['infant'][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+            $rates['foc'][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+            $rates['rate_adult'][] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
+            $rates['rate_child'][] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
+            $rates['rate_infant'][] = !empty($booking['rate_infant']) ? $booking['rate_infant'] : 0;
+            $rates['rate_total'][] = !empty($booking['rate_total']) ? $booking['rate_total'] : 0;
+            $rates['rate_private'][] = !empty($booking['rate_private']) ? $booking['rate_private'] : 0;
+        }
         # --- get value customers --- #
         if ((in_array($booking['cus_id'], $first_cus) == false) && !empty($booking['cus_id'])) {
             $first_cus[] = $booking['cus_id'];
@@ -160,6 +178,8 @@ if ($bookings[0]['id'] > 0) {
         }
         $payment_name = !empty($booking['bopay_name']) ? $booking['bopay_name'] : '';
     }
+    $total_sum = !empty($rates['rate_total']) ? array_sum($rates['rate_total']) + $total_product : $total_product;
+    $total_product = !empty($rates['rate_total']) ? array_sum($rates['rate_total']) + $total_product : $total_product;
     $product_total = ($adult * $rate_adult) + ($child * $rate_child) + ($infant * $rate_infant);
     $payment_total = !empty($cot) ? $cot : 0;
     $transfer_total = ($transfer_type == 1) ? ($bt_adult * $btr_rate_adult) + ($bt_child * $btr_rate_child) + ($bt_infant * $btr_rate_infant) : $btr_rate_private;
@@ -169,234 +189,6 @@ if (!empty($bookings[0]['bp_id'])) {
 ?>
 
     <div id="div-inc-print" style="background-color: #fff;">
-
-        <!-- Header starts -->
-        <div class="row" hidden>
-            <div class="col-6">
-                <span class="brand-logo"><img src="app-assets/images/logo/logo-500.png" height="120"></span>
-            </div>
-            <div class="col-6 text-right mt-md-0 mt-2">
-                <span style="color: #000;">
-                    <?php echo $main_document; ?>
-                </span>
-                <table width="100%" class="mt-50">
-                    <tr>
-                        <td rowspan="2" class="text-center" bgcolor="#c28f26" style="color: #fff; border-radius: 15px 0px 0px 0px;">
-                            VOUCHER
-                        </td>
-                        <td class="text-center">
-                            Voucher No.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <?php echo $voucher_no_agent; ?>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <!-- Header ends -->
-
-        <!-- Header 2 starts -->
-        <table width="100%" hidden class="mt-1">
-            <tr class="default-td">
-                <td width="34%" align="left" colspan="4">
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Booking No.
-                        </dt>
-                        <dd class="col-sm-8"><?php echo $book_full; ?></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Programe
-                        </dt>
-                        <dd class="col-sm-8"></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Travel Date
-                        </dt>
-                        <dd class="col-sm-8"><?php echo date('j F Y', strtotime($travel_date)); ?></dd>
-                    </dl>
-                    <?php $position_cus = !empty($customers['head']) ? array_search(1, $customers['head'], true) : ''; ?>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            ชื่อลูกค้า
-                        </dt>
-                        <dd class="col-sm-8"><?php echo !empty($customers['name'][$position_cus]) ? $customers['name'][$position_cus] : ''; ?></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            โทร
-                        </dt>
-                        <dd class="col-sm-8"><?php echo !empty($customers['telephone'][$position_cus]) ? $customers['telephone'][$position_cus] : ''; ?></dd>
-                    </dl>
-                </td>
-                <td align="left" colspan="2">
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Created
-                        </dt>
-                        <dd class="col-sm-8"><?php echo date('j F Y', strtotime($created_at)); ?></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Booker
-                        </dt>
-                        <dd class="col-sm-8"><?php echo $booker_name; ?></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Payment
-                        </dt>
-                        <dd class="col-sm-8"><?php echo !empty($payment_name) ? $payment_name : '-'; ?></dd>
-                    </dl>
-                </td>
-                <td width="34%" align="left" colspan="2">
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Company
-                        </dt>
-                        <dd class="col-sm-8"><?php echo $agent_name; ?></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Tel
-                        </dt>
-                        <dd class="col-sm-8"><?php echo $agent_telephone; ?></dd>
-                    </dl>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-right">
-                            Sender
-                        </dt>
-                        <dd class="col-sm-8"><?php echo $sender; ?></dd>
-                    </dl>
-                </td>
-            </tr>
-        </table>
-        <!-- Header 2 ends -->
-
-        <table width="100%" hidden class="mt-1">
-            <tr>
-                <td colspan="5">Detail</td>
-            </tr>
-            <tr>
-                <td>1.</td>
-                <td>Adult(s)</td>
-                <td>3</td>
-                <td>1,000</td>
-                <td>3,000</td>
-            </tr>
-            <tr>
-                <td>2.</td>
-                <td>Child(s)</td>
-                <td>2</td>
-                <td>500</td>
-                <td>1,000</td>
-            </tr>
-            <tr>
-                <td>3.</td>
-                <td>Infant(s)</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>4.</td>
-                <td>FOC</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr colspan="5">
-                <td>Amount 0</td>
-            </tr>
-        </table>
-
-        <table width="100%" hidden class="mt-1">
-            <tr>
-                <td colspan="6">Extra Charge</td>
-            </tr>
-            <tr>
-                <td>5.</td>
-                <td>name</td>
-                <td>Adult(s)</td>
-                <td>3</td>
-                <td>1,000</td>
-                <td>3,000</td>
-            </tr>
-            <tr>
-                <td>6.</td>
-                <td>name</td>
-                <td>Child(s)</td>
-                <td>2</td>
-                <td>500</td>
-                <td>1,000</td>
-            </tr>
-            <tr>
-                <td>7.</td>
-                <td>name</td>
-                <td>Infant(s)</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>8.</td>
-                <td>name</td>
-                <td>FOC</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr colspan="6">
-                <td>Amount 0</td>
-            </tr>
-        </table>
-
-        <table width="100%" hidden class="mt-1">
-            <tr>
-                <td colspan="6">Extra Charge</td>
-            </tr>
-            <tr>
-                <td>5.</td>
-                <td>name</td>
-                <td>Adult(s)</td>
-                <td>3</td>
-                <td>1,000</td>
-                <td>3,000</td>
-            </tr>
-            <tr>
-                <td>6.</td>
-                <td>name</td>
-                <td>Child(s)</td>
-                <td>2</td>
-                <td>500</td>
-                <td>1,000</td>
-            </tr>
-            <tr>
-                <td>7.</td>
-                <td>name</td>
-                <td>Infant(s)</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>8.</td>
-                <td>name</td>
-                <td>FOC</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr colspan="6">
-                <td>Amount 0</td>
-            </tr>
-        </table>
-
         <div class="card-body invoice-padding pb-0">
             <!-- Header starts -->
             <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0 mb-1">
@@ -504,50 +296,55 @@ if (!empty($bookings[0]['bp_id'])) {
                     </td>
                     <td class="inc_td_padding" style="border-bottom: 1px solid #ddd;">
                         <!-- Products rate -->
-                        <table class="table table-bordered mb-1">
-                            <tr bgcolor="#d9d9d9">
-                                <th colspan="4" class="text-center"><b>Tour</b></th>
-                            </tr>
-                            <tr>
-                                <td>Adult(s):</td>
-                                <td align="right" class="text-nowrap"><?php echo $adult; ?> x</td>
-                                <td>
-                                    <?php
-                                    echo number_format($rate_adult);
-                                    ?>
-                                </td>
-                                <td class="text-nowrap text-right"><b>฿ <?php echo number_format($adult * $rate_adult); ?></b></td>
-                            </tr>
-                            <tr>
-                                <td>Child(s):</td>
-                                <td align="right" class="text-nowrap"><?php echo $child; ?> x</td>
-                                <td>
-                                    <?php
-                                    echo number_format($rate_child);
-                                    ?>
-                                </td>
-                                <td class="text-nowrap text-right"><b>฿ <?php echo number_format($child * $rate_child); ?></b></td>
-                            </tr>
-                            <tr>
-                                <td>Infant(s):</td>
-                                <td align="right" class="text-nowrap"><?php echo $infant; ?> x</td>
-                                <td>
-                                    <?php
-                                    echo number_format($rate_infant);
-                                    ?>
-                                </td>
-                                <td class="text-nowrap text-right"><b>฿ <?php echo number_format($infant * $rate_infant); ?></b></td>
-                            </tr>
-                            <tr>
-                                <td>Foc(s):</td>
-                                <td align="right" class="text-nowrap"><?php echo $foc; ?> x</td>
-                                <td>0</td>
-                                <td class="text-nowrap text-right"><b>฿ 0</b></td>
-                            </tr>
-                        </table>
+                        <?php if ($rates['id']) {
+                            for ($i = 0; $i < count($rates['id']); $i++) { ?>
+                                <table class="table table-bordered table-sm mb-1">
+                                    <tr bgcolor="#d9d9d9">
+                                        <th colspan="4" class="text-center"><b>Tour (<?php echo $rates['name'][$i]; ?>)</b></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Adult(s):</td>
+                                        <td align="right" class="text-nowrap"><?php echo $rates['adult'][$i]; ?> x</td>
+                                        <td>
+                                            <?php
+                                            echo number_format($rates['rate_adult'][$i]);
+                                            ?>
+                                        </td>
+                                        <td class="text-nowrap text-right"><b>฿ <?php echo number_format($rates['adult'][$i] * $rates['rate_adult'][$i]); ?></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Child(s):</td>
+                                        <td align="right" class="text-nowrap"><?php echo $rates['child'][$i]; ?> x</td>
+                                        <td>
+                                            <?php
+                                            echo number_format($rates['rate_child'][$i]);
+                                            ?>
+                                        </td>
+                                        <td class="text-nowrap text-right"><b>฿ <?php echo number_format($rates['child'][$i] * $rates['rate_child'][$i]); ?></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Infant(s):</td>
+                                        <td align="right" class="text-nowrap"><?php echo $rates['infant'][$i]; ?> x</td>
+                                        <td>
+                                            <?php
+                                            echo number_format($rates['rate_infant'][$i]);
+                                            ?>
+                                        </td>
+                                        <td class="text-nowrap text-right"><b>฿ <?php echo number_format($rates['infant'][$i] * $rates['rate_infant'][$i]); ?></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Foc(s):</td>
+                                        <td align="right" class="text-nowrap"><?php echo $rates['foc'][$i]; ?> x</td>
+                                        <td>0</td>
+                                        <td class="text-nowrap text-right"><b>฿ 0</b></td>
+                                    </tr>
+                                </table>
+                        <?php }
+                        } ?>
+
                         <!-- Transfer Join transfer type !1! -->
                         <?php if (!empty($transfer_type) && $transfer_type == 1) { ?>
-                            <table class="table table-bordered mb-1">
+                            <table class="table table-bordered table-sm mb-1">
                                 <tr bgcolor="#d9d9d9">
                                     <th colspan="4" class="text-center"><b>Transfer Join</b></th>
                                 </tr>
@@ -585,7 +382,7 @@ if (!empty($bookings[0]['bp_id'])) {
                         <?php } ?>
                         <!-- Transfer Private transfer type !2! -->
                         <?php if (!empty($transfer_type) && $transfer_type == 2) { ?>
-                            <table class="table table-bordered mb-1">
+                            <table class="table table-bordered table-sm mb-1">
                                 <tr bgcolor="#d9d9d9">
                                     <th colspan="4" class="text-center"><b>Transfer Private</b></th>
                                 </tr>
@@ -615,7 +412,7 @@ if (!empty($bookings[0]['bp_id'])) {
                             </td>
                             <td class="inc_td_padding" style="border-bottom: 1px solid #ddd;">
                                 <?php if ($extar['bec_type'][$i] == 1) { ?>
-                                    <table class="table table-bordered mb-1">
+                                    <table class="table table-bordered table-sm mb-1">
                                         <tr bgcolor="#d9d9d9">
                                             <th colspan="4" class="text-center"><b>Extra Charge Per Pax</b></th>
                                         </tr>

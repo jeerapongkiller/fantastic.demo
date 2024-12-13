@@ -59,17 +59,17 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $book['room_no'][$manage['mange_id']][] = !empty($manage['room_no']) ? $manage['room_no'] : '';
                 $book['cus_name'][$manage['mange_id']][] = !empty($manage['cus_name']) ? $manage['cus_name'] : '';
                 $book['comp_name'][$manage['mange_id']][] = !empty($manage['comp_name']) ? $manage['comp_name'] : '';
-                $book['adult'][$manage['mange_id']][] = !empty($manage['bp_adult']) ? $manage['bp_adult'] : 0;
-                $book['child'][$manage['mange_id']][] = !empty($manage['bp_child']) ? $manage['bp_child'] : 0;
-                $book['infant'][$manage['mange_id']][] = !empty($manage['bp_infant']) ? $manage['bp_infant'] : 0;
-                $book['foc'][$manage['mange_id']][] = !empty($manage['bp_foc']) ? $manage['bp_foc'] : 0;
+                $book['adult'][$manage['mange_id']][] = !empty($manage['bpr_adult']) ? $manage['bpr_adult'] : 0;
+                $book['child'][$manage['mange_id']][] = !empty($manage['bpr_child']) ? $manage['bpr_child'] : 0;
+                $book['infant'][$manage['mange_id']][] = !empty($manage['bpr_infant']) ? $manage['bpr_infant'] : 0;
+                $book['foc'][$manage['mange_id']][] = !empty($manage['bpr_foc']) ? $manage['bpr_foc'] : 0;
                 $book['rate_adult'][$manage['mange_id']][] = !empty($manage['rate_adult']) ? $manage['rate_adult'] : 0;
                 $book['rate_child'][$manage['mange_id']][] = !empty($manage['rate_child']) ? $manage['rate_child'] : 0;
                 $book['rate_infant'][$manage['mange_id']][] = !empty($manage['rate_infant']) ? $manage['rate_infant'] : 0;
                 $book['rate_private'][$manage['mange_id']][] = !empty($manage['rate_private']) ? $manage['rate_private'] : 0;
                 $book['discount'][$manage['mange_id']][] = !empty(!empty($manage['bp_discount'])) ? $manage['bp_discount'] : 0;
                 $book['note'][$manage['mange_id']][] = !empty($manage['bp_note']) ? $manage['bp_note'] : '';
-                $book['total'][$manage['mange_id']][] = $manage['booktye_id'] == 1 ? ($manage['bp_adult'] * $manage['rate_adult']) + ($manage['bp_child'] * $manage['rate_child']) + ($manage['rate_infant'] * $manage['rate_infant']) : $manage['rate_private'];
+                $book['total'][$manage['mange_id']][] = $manage['booktye_id'] == 1 ? ($manage['bpr_adult'] * $manage['rate_adult']) + ($manage['bpr_child'] * $manage['rate_child']) + ($manage['rate_infant'] * $manage['rate_infant']) : $manage['rate_private'];
             }
 
             if ((in_array($manage['bopa_id'], $first_paid) == false) && !empty($manage['bopa_id'])) {
