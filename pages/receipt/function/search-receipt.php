@@ -28,6 +28,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
     $first_rec = array();
     $first_cover = array();
     $first_booking = array();
+    $first_bpr = array();
     $first_extar = array();
     $receipts = $recObj->showlist('receipts', $travel_date, $agent_id, 0);
     if (!empty($receipts)) {
@@ -73,10 +74,10 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $agent_license[] = !empty($receipt['tat_license']) ? $receipt['tat_license'] : '';
                 $agent_telephone[] = !empty($receipt['comp_telephone']) ? $receipt['comp_telephone'] : '';
                 $agent_address[] = !empty($receipt['comp_address']) ? $receipt['comp_address'] : '';
-                $adult[] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
-                $child[] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
-                $infant[] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
-                $foc[] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
+                // $adult[] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
+                // $child[] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
+                // $infant[] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
+                // $foc[] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
                 $cot[] = !empty($receipt['total_paid']) ? $receipt['total_paid'] : 0;
                 $start_pickup[] = !empty($receipt['start_pickup']) ? date('H:i', strtotime($receipt['start_pickup'])) : '00:00:00';
                 $car_name[] = !empty($receipt['car_name']) ? $receipt['car_name'] : '';
@@ -91,7 +92,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $zone_dropoff[] = !empty($receipt['zoned_name']) ? ' (' . $receipt['zoned_name'] . ')' : '';
                 $bp_note[] = !empty($receipt['bp_note']) ? $receipt['bp_note'] : '';
                 $product_name[] = !empty($receipt['product_name']) ? $receipt['product_name'] : '';
-                $total[] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+                // $total[] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
 
                 $arr_bo[$receipt['rec_id']]['id'][] = !empty($receipt['id']) ? $receipt['id'] : 0;
                 $arr_bo[$receipt['id']]['inv_id'] = !empty($receipt['inv_id']) ? $receipt['inv_id'] : 0;
@@ -100,14 +101,37 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                 $arr_bo[$receipt['id']]['cus_name'] = !empty($receipt['cus_name']) ? $receipt['cus_name'] : '';
                 $arr_bo[$receipt['id']]['product_name'] = !empty($receipt['product_name']) ? $receipt['product_name'] : '';
                 $arr_bo[$receipt['id']]['voucher_no'] = !empty($receipt['voucher_no']) ? $receipt['voucher_no'] : $receipt['book_full'];
-                $arr_bo[$receipt['id']]['adult'] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : '-';
-                $arr_bo[$receipt['id']]['child'] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : '-';
-                $arr_bo[$receipt['id']]['rate_adult'] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
-                $arr_bo[$receipt['id']]['rate_child'] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
-                $arr_bo[$receipt['id']]['foc'] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : '-';
+                // $arr_bo[$receipt['id']]['adult'] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : '-';
+                // $arr_bo[$receipt['id']]['child'] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : '-';
+                // $arr_bo[$receipt['id']]['rate_adult'] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
+                // $arr_bo[$receipt['id']]['rate_child'] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
+                // $arr_bo[$receipt['id']]['foc'] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : '-';
                 $arr_bo[$receipt['id']]['discount'] = !empty($receipt['discount']) ? $receipt['discount'] : '-';
                 $arr_bo[$receipt['id']]['cot'] = !empty($receipt['total_paid']) ? $receipt['total_paid'] : '-';
-                $arr_bo[$receipt['id']]['total'] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+                // $arr_bo[$receipt['id']]['total'] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+            }
+            # --- get value rates --- #
+            if ((in_array($receipt['bpr_id'], $first_bpr) == false) && !empty($receipt['bpr_id'])) {
+                $first_bpr[] = $receipt['bpr_id'];
+                $bpr_id[$receipt['id']][] = !empty($receipt['bpr_id']) ? $receipt['bpr_id'] : 0;
+                $category_id[$receipt['id']][] = !empty($receipt['category_id']) ? $receipt['category_id'] : 0;
+                $category_name[$receipt['id']][] = !empty($receipt['category_name']) ? $receipt['category_name'] : 0;
+                $category_cus[$receipt['id']][] = !empty($receipt['category_cus']) ? $receipt['category_cus'] : 0;
+                $adult[$receipt['id']][] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
+                $child[$receipt['id']][] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
+                $infant[$receipt['id']][] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
+                $foc[$receipt['id']][] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
+                $total[$receipt['rec_id']][] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+
+                $arr_rates[$receipt['id']]['id'][] = !empty($receipt['bpr_id']) ? $receipt['bpr_id'] : 0;
+                $arr_rates[$receipt['id']]['customer'][] = !empty($receipt['category_cus']) ? $receipt['category_cus'] : 0;
+                $arr_rates[$receipt['id']]['adult'][] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
+                $arr_rates[$receipt['id']]['child'][] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
+                $arr_rates[$receipt['id']]['infant'][] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
+                $arr_rates[$receipt['id']]['foc'][] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
+                $arr_rates[$receipt['id']]['rate_adult'][] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
+                $arr_rates[$receipt['id']]['rate_child'][] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
+                $arr_rates[$receipt['id']]['total'][] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
             }
             # --- get value booking --- #
             if (in_array($receipt['bec_id'], $first_extar) == false && (!empty($receipt['extra_id']) || !empty($receipt['bec_name']))) {
@@ -149,6 +173,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
             data-telephone="<?php echo $agent_telephone[0]; ?>"
             data-address="<?php echo $agent_address[0]; ?>">
         <textarea id="array_invoice" hidden><?php echo !empty($arr_inv) ? json_encode($arr_inv, true) : ''; ?></textarea>
+        <textarea id="array_rates" hidden><?php echo !empty($arr_rates) ? json_encode($arr_rates, true) : ''; ?></textarea>
         <textarea id="array_booking" hidden><?php echo !empty($arr_bo) ? json_encode($arr_bo, true) : ''; ?></textarea>
         <textarea id="array_extar" hidden><?php echo !empty($arr_extar) ? json_encode($arr_extar, true) : ''; ?></textarea>
 
@@ -176,7 +201,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ag
                             <td class="text-center"><?php echo count($bo_id[$rec_id[$i]]); ?></td>
                             <td class="text-center"><?php echo $vat[$i] != '-' ? $vat[$i] == 1 ? 'รวมภาษี 7%' : 'แยกภาษี 7%' : '-'; ?></td>
                             <td class="text-center"><?php echo $withholding[$i] != '-' ? $withholding[$i] . '%' : '-'; ?></td>
-                            <td class="text-center"><?php echo !empty($total) ? !empty($extar_total[$rec_id[$i]]) ? number_format(array_sum($total) + array_sum($extar_total[$rec_id[$i]])) : number_format(array_sum($total)) : ''; ?></td>
+                            <td class="text-center"><?php echo !empty($total[$rec_id[$i]]) ? !empty($extar_total[$rec_id[$i]]) ? number_format(array_sum($total[$rec_id[$i]]) + array_sum($extar_total[$rec_id[$i]])) : number_format(array_sum($total[$rec_id[$i]])) : ''; ?></td>
                         </tr>
                 <?php }
                 } ?>

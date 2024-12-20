@@ -4,7 +4,7 @@ include_once('../../../controllers/Order.php');
 
 $manageObj = new Order();
 
-if (isset($_POST['action']) && $_POST['action'] == "create" && (!empty($_POST['car']))) {
+if (isset($_POST['action']) && $_POST['action'] == "create" && (!empty($_POST['driver']))) {
     // get value from ajax
     $car = !empty($_POST['car']) ? $_POST['car'] : 0;
     $seat = !empty($_POST['seat']) ? $_POST['seat'] : 0;

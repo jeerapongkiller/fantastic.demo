@@ -185,32 +185,36 @@ class Guide extends DB
         return $this->response;
     }
 
-    public function update_language(int $guide_id = 0, array $language, array $before_language)
+    public function update_language(int $guide_id, $language, $before_language)
     {
         // Deleted language
-        $count_belag = count($before_language);
-        for ($i = 0; $i < $count_belag; $i++) {
-            if (in_array($before_language[$i], $language) == 0) {
-                $query = "DELETE FROM guide_language WHERE guide_id = ? AND language_id = ? ";
-                $statement = $this->connection->prepare($query);
-                $statement->bind_param("ii", $guide_id, $before_language[$i]);
-                $statement->execute();
-                if ($statement->execute()) {
-                    $this->response = true;
+        if (!empty($before_language)) {
+            $count_belag = count($before_language);
+            for ($i = 0; $i < $count_belag; $i++) {
+                if (in_array($before_language[$i], $language) == 0) {
+                    $query = "DELETE FROM guide_language WHERE guide_id = ? AND language_id = ? ";
+                    $statement = $this->connection->prepare($query);
+                    $statement->bind_param("ii", $guide_id, $before_language[$i]);
+                    $statement->execute();
+                    if ($statement->execute()) {
+                        $this->response = true;
+                    }
                 }
             }
         }
 
         // Insert language
-        $count_lag = count($language);
-        for ($i = 0; $i < $count_lag; $i++) {
-            if (in_array($language[$i], $before_language) == 0) {
-                $query = "INSERT INTO guide_language (guide_id, language_id, created_at)
-                VALUES (?, ?, NOW())";
-                $statement = $this->connection->prepare($query);
-                $statement->bind_param("ii", $guide_id, $language[$i]);
-                if ($statement->execute()) {
-                    $this->response = true;
+        if (!empty($language)) {
+            $count_lag = count($language);
+            for ($i = 0; $i < $count_lag; $i++) {
+                if (in_array($language[$i], $before_language) == 0) {
+                    $query = "INSERT INTO guide_language (guide_id, language_id, created_at)
+                    VALUES (?, ?, NOW())";
+                    $statement = $this->connection->prepare($query);
+                    $statement->bind_param("ii", $guide_id, $language[$i]);
+                    if ($statement->execute()) {
+                        $this->response = true;
+                    }
                 }
             }
         }

@@ -429,8 +429,9 @@ class Order extends DB
                     BOPAY.id as bopay_id, BOPAY.name as bopay_name, BOPAY.name_class as bopay_name_class, BOPAY.created_at as bopay_created,
                     CUS.id as cus_id, CUS.name as cus_name, CUS.birth_date as birth_date, CUS.id_card as id_card, CUS.telephone as telephone, CUS.head as cus_head, CUS.nationality_id as nationality_id,
                     NATION.id as nation_id, NATION.name as nation_name,
-                    BP.id as bp_id, BP.travel_date as travel_date,  BP.note as bp_note,
+                    BP.id as bp_id, BP.travel_date as travel_date, BP.note as bp_note,
                     PROD.id as product_id, PROD.name as product_name,
+                    BPR.id as bpr_id, BPR.adult as bpr_adult, BPR.child as bpr_child, BPR.infant as bpr_infant, BPR.foc as bpr_foc, 
                     CATE.id as category_id, CATE.name as category_name, CATE.transfer as category_transfer,   
                     BT.id as bt_id, BT.adult as bt_adult, BT.child as bt_child, BT.infant as bt_infant, BT.foc as bt_foc, BT.start_pickup as start_pickup, BT.end_pickup as end_pickup,
                     BT.room_no as room_no, BT.note as bt_note, BT.hotel_pickup as outside, BT.hotel_dropoff as outside_dropoff,
@@ -463,12 +464,16 @@ class Order extends DB
                     ON CUS.nationality_id = NATION.id
                 LEFT JOIN booking_products BP
                     ON BO.id = BP.booking_id
-                LEFT JOIN products PROD
-                    ON BP.product_id = PROD.id
-                LEFT JOIN product_category CATE
-                    ON BP.category_id = CATE.id
                 LEFT JOIN booking_product_rates BPR
                     ON BP.id = BPR.booking_products_id
+                LEFT JOIN products PROD
+                    ON BP.product_id = PROD.id
+                LEFT JOIN product_periods PROP
+                    ON BPR.category_id = PROP.product_category_id
+                    AND PROP.period_from <= BP.travel_date
+                    AND PROP.period_to >= BP.travel_date
+                LEFT JOIN product_category CATE
+                    ON BPR.category_id = CATE.id
                 LEFT JOIN booking_transfer BT
                     ON BP.id = BT.booking_products_id
                 LEFT JOIN hotel PICKUP
@@ -563,7 +568,7 @@ class Order extends DB
             }
             $query .= " ORDER BY PROD.id DESC, BOMANGE.arrange ASC, CATE.id ASC ";
         }
-
+      
         $statement = $this->connection->prepare($query);
         !empty($bind_types) ? $statement->bind_param($bind_types, ...$params) : '';
         $statement->execute();
@@ -875,7 +880,8 @@ class Order extends DB
                     CUS.id as cus_id, CUS.name as cus_name, CUS.birth_date as birth_date, CUS.id_card as id_card, CUS.telephone as telephone, CUS.head as cus_head, CUS.nationality_id as nationality_id,
                     NATION.id as nation_id, NATION.name as nation_name,
                     BP.id as bp_id, BP.travel_date as travel_date,  BP.note as bp_note,
-                    BPR.id as bpr_id, BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_private,   
+                    BPR.id as bpr_id, BPR.adult as bpr_adult, BPR.child as bpr_child, BPR.infant as bpr_infant, BPR.foc as bpr_foc,
+                    BPR.rate_adult as rate_adult, BPR.rate_child as rate_child, BPR.rate_infant as rate_infant, BPR.rate_total as rate_private,   
                     PROD.id as product_id, PROD.name as product_name,
                     CATE.id as category_id, CATE.name as category_name, CATE.transfer as category_transfer, 
                     BT.id as bt_id, BT.adult as bt_adult, BT.child as bt_child, BT.infant as bt_infant, BT.foc as bt_foc, BT.start_pickup as start_pickup, BT.end_pickup as end_pickup,
@@ -923,11 +929,11 @@ class Order extends DB
                 LEFT JOIN products PROD
                     ON BP.product_id = PROD.id
                 LEFT JOIN product_periods PROP
-                    ON BP.category_id = PROP.product_category_id
+                    ON BPR.category_id = PROP.product_category_id
                     AND PROP.period_from <= BP.travel_date
                     AND PROP.period_to >= BP.travel_date
                 LEFT JOIN product_category CATE
-                    ON BP.category_id = CATE.id
+                    ON BPR.category_id = CATE.id
                 LEFT JOIN booking_transfer BT
                     ON BP.id = BT.booking_products_id
                 LEFT JOIN hotel PICKUP
@@ -1022,7 +1028,7 @@ class Order extends DB
                 $bind_types .= "i";
                 array_push($params, $boat);
             }
-            $query .= " ORDER BY BT.pickup_type DESC, BORDB.arrange ASC, CATE.name DESC";
+            $query .= " ORDER BY PROD.id ASC, BT.pickup_type DESC, BORDB.arrange ASC, CATE.name DESC";
         }
 
         if (!empty($type) && $type == 'agent') {
@@ -1038,7 +1044,7 @@ class Order extends DB
 
             $query .= " ORDER BY COMP.name ASC, BT.pickup_type DESC, BORDB.arrange ASC, CATE.name DESC";
         }
-
+        // echo $query . $travel_date;
         $statement = $this->connection->prepare($query);
         !empty($bind_types) ? $statement->bind_param($bind_types, ...$params) : '';
         $statement->execute();

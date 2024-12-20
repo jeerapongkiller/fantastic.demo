@@ -1029,21 +1029,23 @@
                                 if (res_bpr !== '') {
                                     for (let index = 0; index < res_bpr['id'].length; index++) {
                                         if (res_bpr['customer'][index] == 1) {
+                                            document.getElementById('bpr_thai_id').value = res_bpr['id'][index];
                                             document.getElementById('adult_thai').value = res_bpr['adult'][index];
                                             document.getElementById('child_thai').value = res_bpr['child'][index];
                                             document.getElementById('infant_thai').value = res_bpr['infant'][index];
                                             document.getElementById('foc_thai').value = res_bpr['foc'][index];
-                                            if (book_type == 2) {
+                                            if (book_type == 1) {
                                                 document.getElementById('rate_adult_thai').value = res_bpr['rate_adult'][index];
                                                 document.getElementById('rate_child_thai').value = res_bpr['rate_child'][index];
                                                 document.getElementById('rate_infant_thai').value = res_bpr['rate_infant'][index];
                                             } else if (book_type == 2) {
-                                                document.getElementById('private_rates_thai').value = res_bpr['private_rates'][index];
+                                                document.getElementById('private_rates_thai').value = res_bpr['rate_private'][index];
                                             }
                                         }
                                     }
                                 }
 
+                                rows_customer();
                                 check_rate();
                             }
                         }
@@ -1072,21 +1074,23 @@
                                 if (res_bpr !== '') {
                                     for (let index = 0; index < res_bpr['id'].length; index++) {
                                         if (res_bpr['customer'][index] == 2) {
+                                            document.getElementById('bpr_foreign_id').value = res_bpr['id'][index];
                                             document.getElementById('adult_foreign').value = res_bpr['adult'][index];
                                             document.getElementById('child_foreign').value = res_bpr['child'][index];
                                             document.getElementById('infant_foreign').value = res_bpr['infant'][index];
                                             document.getElementById('foc_foreign').value = res_bpr['foc'][index];
-                                            if (book_type == 2) {
+                                            if (book_type == 1) {
                                                 document.getElementById('rate_adult_foreign').value = res_bpr['rate_adult'][index];
                                                 document.getElementById('rate_child_foreign').value = res_bpr['rate_child'][index];
                                                 document.getElementById('rate_infant_foreign').value = res_bpr['rate_infant'][index];
                                             } else if (book_type == 2) {
-                                                document.getElementById('private_rates_foreign').value = res_bpr['private_rates'][index];
+                                                document.getElementById('private_rates_foreign').value = res_bpr['rate_private'][index];
                                             }
                                         }
                                     }
                                 }
 
+                                rows_customer();
                                 check_rate();
                             }
                         }
@@ -1098,14 +1102,6 @@
             document.getElementById('div-foreign').hidden = !showForeign;
             document.getElementById('customer_thai').value = !showThai == false ? 1 : 0;
             document.getElementById('customer_foreign').value = !showForeign == false ? 1 : 0;
-
-
-            // console.log(res_bpr);
-            // if (res_bpr !== '') {
-            //     for (let index = 0; index < res_bpr['id'].length; index++) {
-            //         document.getElementById('adult_thai').value = res_bpr['adult'][index];
-            //     }
-            // }
         }
 
         // function check_category() {
@@ -1159,16 +1155,37 @@
         //     });
         // }
 
-        function duplicate_pax(type) {
-            var adult = document.getElementById('adult');
-            var child = document.getElementById('child');
-            var infant = document.getElementById('infant');
-            var foc = document.getElementById('foc');
+        function rows_customer() {
+            duplicate_pax();
+        }
 
-            document.getElementById('tran_adult_pax').value = adult.value;
-            document.getElementById('tran_child_pax').value = child.value;
-            document.getElementById('tran_infant_pax').value = infant.value;
-            document.getElementById('tran_foc_pax').value = foc.value;
+        function duplicate_pax() {
+            var adult = Number(0);
+            var child = Number(0);
+            var infant = Number(0);
+            var foc = Number(0);
+
+            // Thai
+            if (document.getElementById('customer_thai').value == 1) {
+                adult = Number(document.getElementById('adult_thai')?.value) + adult || adult;
+                child = Number(document.getElementById('child_thai')?.value) + child || child;
+                infant = Number(document.getElementById('infant_thai')?.value) + infant || infant;
+                foc = Number(document.getElementById('foc_thai')?.value) + foc || foc;
+            }
+
+            // Foreign
+            if (document.getElementById('customer_foreign').value == 1) {
+                adult = Number(document.getElementById('adult_foreign')?.value) + adult || adult;
+                child = Number(document.getElementById('child_foreign')?.value) + child || child;
+                infant = Number(document.getElementById('infant_foreign')?.value) + infant || infant;
+                foc = Number(document.getElementById('foc_foreign')?.value) + foc || foc;
+            }
+            // console.log(adult + ' | '  + child + ' | '  + infant + ' | ' + foc);
+
+            document.getElementById('tran_adult_pax').value = adult;
+            document.getElementById('tran_child_pax').value = child;
+            document.getElementById('tran_infant_pax').value = infant;
+            document.getElementById('tran_foc_pax').value = foc;
 
             check_rate();
         }
@@ -1335,9 +1352,6 @@
         //     /* Calculate Rates Total */
         //     rate_total.value = numberWithCommas(total_product);
         // }
-        function rows_customer() {
-            
-        }
 
         // Script Function Payment
         // ------------------------------------------------------------------------------------
@@ -1699,9 +1713,23 @@
         }
 
         function check_extar_type(select) {
-            var adult = document.getElementById('adult').value;
-            var child = document.getElementById('child').value;
-            var infant = document.getElementById('infant').value;
+            var adult = Number(0);
+            var child = Number(0);
+            var infant = Number(0);
+
+            // Thai
+            if (document.getElementById('customer_thai').value == 1) {
+                adult = Number(document.getElementById('adult_thai')?.value) + adult || adult;
+                child = Number(document.getElementById('child_thai')?.value) + child || child;
+                infant = Number(document.getElementById('infant_thai')?.value) + infant || infant;
+            }
+
+            // Foreign
+            if (document.getElementById('customer_foreign').value == 1) {
+                adult = Number(document.getElementById('adult_foreign')?.value) + adult || adult;
+                child = Number(document.getElementById('child_foreign')?.value) + child || child;
+                infant = Number(document.getElementById('infant_foreign')?.value) + infant || infant;
+            }
 
             var div_name_perpax = select.name.replace('[extra_type]', '[div_extar_perpax]');
             document.getElementsByName(div_name_perpax)[0].hidden = select.value == 1 ? false : true;

@@ -17,6 +17,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
 
     # --- get data --- #
     $first_book = array();
+    $first_bpr = array();
     $first_btr = array();
     $first_pay = array();
     $first_ext = array();
@@ -51,20 +52,20 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                 $status_by_name[] = !empty($booking['status_by']) ? $booking['stabyFname'] . ' ' . $booking['stabyLname'] : '';
                 $status[] = '<span class="badge badge-pill ' . $booking['booksta_class'] . ' text-capitalized"> ' . $booking['booksta_name'] . ' </span>';
                 $category_transfer[] = !empty(!empty($booking['category_transfer'])) ? $booking['category_transfer'] : 0;
-                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
-                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
-                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
-                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                // $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                // $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                // $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                // $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $note[] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
-                $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
-                $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
+                // $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
+                // $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
                 $created_at[] = !empty(!empty($booking['created_at'])) ? $booking['created_at'] : '0000-00-00';
-                // $payment[] = !empty($booking['bookpay_name']) ? !empty($booking['paid_id']) ? '<span class="badge badge-pill badge-light-success text-capitalized"> ' . $booking['bookpay_name'] . '<br> ชำระเงินแล้ว </span>' : '<span class="badge badge-pill ' . $booking['bookpay_name_class'] . ' text-capitalized"> ' . $booking['bookpay_name'] . ' </span>' : '<span class="badge badge-pill badge-light-primary text-capitalized"> Add Payment </span></br>';
-                $rate_total[] = !empty($booking['rate_total']) ? $booking['rate_total'] : 0;
+                // $rate_total[] = !empty($booking['rate_total']) ? $booking['rate_total'] : 0;
                 $transfer_type[] = !empty($booking['transfer_type']) ? $booking['transfer_type'] : 0;
                 $btr_rate_adult[] = !empty($booking['transfer_type']) && $booking['transfer_type'] == 1 ? $booking['bt_adult'] * $booking['btr_rate_adult'] : 0;
                 $btr_rate_child[] = !empty($booking['transfer_type']) && $booking['transfer_type'] == 1 ? $booking['bt_child'] * $booking['btr_rate_child'] : 0;
                 $btr_rate_infant[] = !empty($booking['transfer_type']) && $booking['transfer_type'] == 1 ? $booking['bt_infant'] * $booking['btr_rate_infant'] : 0;
+                $confirm_id[] = !empty($booking['confirm_id']) ? $booking['confirm_id'] : 0;
                 switch ($booking['booksta_id']) {
                     case '1':
                         $count_confirm = $count_confirm + 1;
@@ -77,12 +78,12 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                         break;
                 }
                 # --- Programe --- #
-                $prod_id[] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
-                $prod_name[$booking['product_id']] = !empty($booking['product_name']) ? $booking['product_name'] : '';
-                $prod_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
-                $prod_child[$booking['product_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
-                $prod_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
-                $prod_foc[$booking['product_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                // $prod_id[] = !empty($booking['product_id']) ? $booking['product_id'] : 0;
+                // $prod_name[$booking['product_id']] = !empty($booking['product_name']) ? $booking['product_name'] : '';
+                // $prod_adult[$booking['product_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                // $prod_child[$booking['product_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                // $prod_infant[$booking['product_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                // $prod_foc[$booking['product_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 # --- order boat --- #
                 if (!empty(!empty($booking['mange_id'])) && !empty($booking['mange_id']) > 0) {
                     # --- Boat --- #
@@ -97,6 +98,23 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                     $boat_infant[$booking['mange_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                     $boat_foc[$booking['mange_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 }
+            }
+            # --- get value booking rates --- #
+            if ((in_array($booking['bpr_id'], $first_bpr) == false) && !empty($booking['bpr_id'])) {
+                $first_bpr[] = $booking['bpr_id'];
+                $bpr_id[$booking['id']][] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;
+                $category_id[$booking['id']][] = !empty($booking['category_id']) ? $booking['category_id'] : 0;
+                $category_name[$booking['id']][] = !empty($booking['category_name']) ? $booking['category_name'] : 0;
+                $category_cus[$booking['id']][] = !empty($booking['category_cus']) ? $booking['category_cus'] : 0;
+                $adult[$booking['id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[$booking['id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[$booking['id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[$booking['id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                $rate_adult[$booking['id']][] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
+                $rate_child[$booking['id']][] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
+                $rate_infant[$booking['id']][] = !empty($booking['rate_infant']) ? $booking['rate_infant'] : 0;
+                $rate_total[$booking['id']][] = !empty($booking['rate_total']) ? $booking['rate_total'] : 0;
+                $rate_private[$booking['id']][] = !empty($booking['rate_private']) ? $booking['rate_private'] : 0;
             }
             # --- get value manage transfer --- #
             if (!empty($booking['manget_id']) && (in_array($booking['bomange_id'], $frist_bomange) == false)) {
@@ -128,7 +146,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
             # --- get value booking transfer rate --- #
             if ((in_array($booking['btr_id'], $first_btr) == false) && (!empty($booking['transfer_type']) && $booking['transfer_type'] == 2)) {
                 $first_btr[] = $booking['btr_id'];
-                $rate_private[$booking['id']][] = $booking['rate_private'];
+                // $rate_private[$booking['id']][] = $booking['rate_private'];
             }
             # --- get value booking payment --- #
             if ((in_array($booking['bopa_id'], $first_pay) == false) && !empty($booking['bopa_id'])) {
@@ -142,261 +160,6 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
         }
     }
 ?>
-
-    <div hidden>
-        <div class="row match-height">
-            <!-- Status Card -->
-            <div class="col-xl-6 col-md-6 col-6">
-                <div class="card card-statistics">
-                    <div class="card-header p-1">
-                        <h4 class="card-title">Booking Status</h4>
-                    </div>
-                    <div class="card-body statistics-body border-top">
-                        <div class="row">
-                            <div class="col-4 mb-2 mb-xl-0">
-                                <div class="media">
-                                    <div class="avatar bg-light-success mr-2">
-                                        <div class="avatar-content">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="media-body my-auto">
-                                        <h4 class="font-weight-bolder mb-0"><?php echo $count_confirm; ?></h4>
-                                        <p class="card-text font-small-3 mb-0">Confirm</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4 mb-2 mb-xl-0">
-                                <div class="media">
-                                    <div class="avatar bg-light-danger mr-2">
-                                        <div class="avatar-content">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="media-body my-auto">
-                                        <h4 class="font-weight-bolder mb-0"><?php echo $count_cancel; ?></h4>
-                                        <p class="card-text font-small-3 mb-0">Cancel</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4 mb-2 mb-xl-0">
-                                <div class="media">
-                                    <div class="avatar bg-light-secondary mr-2">
-                                        <div class="avatar-content">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="media-body my-auto">
-                                        <h4 class="font-weight-bolder mb-0"><?php echo $count_noshow; ?></h4>
-                                        <p class="card-text font-small-3 mb-0">No Show</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ Status Card -->
-
-            <!-- Customer no Card -->
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header p-1">
-                        <h5 class="card-title">จำนวนลูกค้า</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="row text-center mx-0">
-                            <div class="col-4 border-top border-right py-2 pb-4">
-                                <p class="card-text text-muted mb-0">ทั้งหมด</p>
-                                <h3 class="font-weight-bolder mb-0">
-                                    <?php $total = 0;
-                                    $total = !empty($adult) ? $total + array_sum($adult) : $total;
-                                    $total = !empty($child) ? $total + array_sum($child) : $total;
-                                    $total = !empty($infant) ? $total + array_sum($infant) : $total;
-                                    $total = !empty($foc) ? $total + array_sum($foc) : $total;
-                                    echo $total; ?>
-                                </h3>
-                            </div>
-                            <div class="col-2 border-top border-right py-2 pb-4">
-                                <p class="card-text text-muted mb-0">Adult</p>
-                                <h3 class="font-weight-bolder mb-0"><?php echo !empty($adult) ? array_sum($adult) : 0; ?></h3>
-                            </div>
-                            <div class="col-2 border-top border-right py-2 pb-4">
-                                <p class="card-text text-muted mb-0">Children</p>
-                                <h3 class="font-weight-bolder mb-0"><?php echo !empty($child) ? array_sum($child) : 0; ?></h3>
-                            </div>
-                            <div class="col-2 border-top border-right py-2 pb-4">
-                                <p class="card-text text-muted mb-0">Infant</p>
-                                <h3 class="font-weight-bolder mb-0"><?php echo !empty($infant) ? array_sum($infant) : 0; ?></h3>
-                            </div>
-                            <div class="col-2 border-top py-2 pb-4">
-                                <p class="card-text text-muted mb-0">FOC</p>
-                                <h3 class="font-weight-bolder mb-0"><?php echo !empty($foc) ? array_sum($foc) : 0; ?></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ Customer no Card -->
-        </div>
-
-        <div class="row match-height">
-            <!-- Boat Table Card -->
-            <div class="col-6">
-                <div class="card card-boat-table">
-                    <div class="card-header p-1">
-                        <h5 class="card-title">Boats</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Boat Name</th>
-                                        <!-- <th>Captain</th> -->
-                                        <th>Programe</th>
-                                        <th>AD</th>
-                                        <th>CHD</th>
-                                        <th>INF</th>
-                                        <th>FOC</th>
-                                        <th>รวม</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (!empty($boat_order_id)) {
-                                        foreach ($boat_order_id as $x => $val) { ?>
-                                            <tr>
-                                                <td><span class="font-weight-bolder"><?php echo $boat_name[$val[0]]; ?></span></td>
-                                                <!-- <td><span class="font-weight-bolder"><?php echo $capt_name[$val[0]]; ?></span></td> -->
-                                                <td><span class="font-weight-bolder"><?php echo $prod_name[$boat_product[$x]]; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($boat_adult[$x]) ? array_sum($boat_adult[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($boat_child[$x]) ? array_sum($boat_child[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($boat_infant[$x]) ? array_sum($boat_infant[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($boat_foc[$x]) ? array_sum($boat_foc[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder">
-                                                        <?php
-                                                        $total = 0;
-                                                        $total = !empty($boat_adult) ? $total + array_sum($boat_adult) : $total;
-                                                        $total = !empty($boat_child) ? $total + array_sum($boat_child) : $total;
-                                                        $total = !empty($boat_infant) ? $total + array_sum($boat_infant) : $total;
-                                                        $total = !empty($boat_foc) ? $total + array_sum($boat_foc) : $total;
-                                                        echo $total; ?>
-                                                    </span></td>
-                                            </tr>
-                                    <?php }
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ Boat Table Card -->
-
-            <!-- Car Table Card -->
-            <div class="col-6">
-                <div class="card card-car-table">
-                    <div class="card-header p-1">
-                        <h5 class="card-title">รถ (Pickup)</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Cars</th>
-                                        <!-- <th>Driver</th> -->
-                                        <th>Programe</th>
-                                        <th>AD</th>
-                                        <th>CHD</th>
-                                        <th>INF</th>
-                                        <th>FOC</th>
-                                        <th>รวม</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($manget_id)) {
-                                        foreach ($manget_id as $x => $val) {  ?>
-                                            <tr>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($car_name[$x]) ? $car_name[$x] : 'ไม่ได้ระบุ'; ?></span></td>
-                                                <!-- <td><span class="font-weight-bolder"><?php echo !empty($driver_name[$x]) ? $driver_name[$x] : 'ไม่ได้ระบุ'; ?></span></td> -->
-                                                <td><span class="font-weight-bolder"><?php echo !empty($ortran_product[$x]) ? $prod_name[$ortran_product[$x]] : ''; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($car_adult[$x]) ? array_sum($car_adult[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($car_child[$x]) ? array_sum($car_child[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($car_infant[$x]) ? array_sum($car_infant[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo !empty($car_foc[$x]) ? array_sum($car_foc[$x]) : 0; ?></span></td>
-                                                <td><span class="font-weight-bolder"><?php echo array_sum($car_adult[$x]) + array_sum($car_child[$x]) + array_sum($car_infant[$x]) + array_sum($car_foc[$x]); ?></span></td>
-                                            </tr>
-                                    <?php }
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ Car Table Card -->
-        </div>
-
-        <div class="row match-height">
-            <!-- Products Table Card -->
-            <div class="col-12">
-                <div class="card card-company-table">
-                    <div class="card-header p-1">
-                        <h5 class="card-title">Programe</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Programe Name</th>
-                                        <th>จำนวน</th>
-                                        <th>AD</th>
-                                        <th>CHD</th>
-                                        <th>INF</th>
-                                        <th>FOC</th>
-                                        <th>รวม</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (!empty($prod_id)) {
-                                        $age = array_count_values($prod_id);
-                                        arsort($age);
-                                        foreach ($age as $x => $x_value) {
-                                            if (!empty($prod_name[$x])) {
-                                    ?>
-                                                <tr>
-                                                    <td><span class="font-weight-bolder"><?php echo $prod_name[$x]; ?></span></td>
-                                                    <td><span class="font-weight-bolder"><?php echo $x_value; ?></span></td>
-                                                    <td><span class="font-weight-bolder"><?php echo !empty($prod_adult[$x]) ? array_sum($prod_adult[$x]) : 0; ?></span></td>
-                                                    <td><span class="font-weight-bolder"><?php echo !empty($prod_child[$x]) ? array_sum($prod_child[$x]) : 0; ?></span></td>
-                                                    <td><span class="font-weight-bolder"><?php echo !empty($prod_infant[$x]) ? array_sum($prod_infant[$x]) : 0; ?></span></td>
-                                                    <td><span class="font-weight-bolder"><?php echo !empty($prod_foc[$x]) ? array_sum($prod_foc[$x]) : 0; ?></span></td>
-                                                    <td><span class="font-weight-bolder"><?php echo !empty($prod_foc[$x]) &&  !empty($prod_adult[$x]) && !empty($prod_child[$x]) && !empty($prod_infant[$x]) ? array_sum($prod_adult[$x]) + array_sum($prod_child[$x]) + array_sum($prod_infant[$x])  + array_sum($prod_foc[$x]) : 0; ?></span></td>
-                                                </tr>
-                                    <?php }
-                                        }
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ Products Table Card -->
-        </div>
-    </div>
-
     <div class="card">
         <div class="card-datatable pt-0">
             <table class="booking-list-table table table-responsive">
@@ -473,27 +236,14 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                                 </td>
                                 <td class="text-center">
                                     <a <?php echo $href; ?>>
-                                        <?php echo $adult[$i]; ?></a>
+                                        <?php echo !empty($adult[$bo_id[$i]]) ? array_sum($adult[$bo_id[$i]]) : '-'; ?>
                                     </a>
                                 </td>
                                 <td class="text-center">
                                     <a <?php echo $href; ?>>
-                                        <?php echo $child[$i]; ?></a>
+                                        <?php echo !empty($child[$bo_id[$i]]) ? array_sum($child[$bo_id[$i]]) : '-'; ?>
                                     </a>
                                 </td>
-                                <!-- <td class="text-center">
-                                    <a <?php echo $href; ?>>
-                                        <?php
-                                        $total_sum = $rate_total[$i];
-                                        // $total_sum = $transfer_type[$i] == 1 ? $total_sum + ($btr_rate_adult[$i] + $btr_rate_child[$i] + $btr_rate_infant[$i]) : $total_sum;
-                                        // $total_sum = $transfer_type[$i] == 2 ? $total_sum + array_sum($rate_private[$bo_id[$i]]) : $total_sum;
-                                        $total_sum = !empty($bec_id[$bo_id[$i]]) ? $total_sum + array_sum($bec_rate_total[$bo_id[$i]]) : $total_sum;
-                                        $total_t = $total_t + $total_sum;
-                                        $total_sum = !empty($discount[$i]) ? $total_sum - $discount[$i] : $total_sum;
-                                        echo number_format($total_sum);
-                                        ?></a>
-                                    </a>
-                                </td> -->
                                 <td>
                                     <a <?php echo $href; ?>>
                                         <?php echo $start_pickup[$i]; ?>
@@ -523,7 +273,8 @@ if (isset($_POST['action']) && $_POST['action'] == "search") {
                         <?php } ?>
                     </tbody>
                 <?php }
-                // echo $total_t; echo ' : ' .  array_sum($discount); ?>
+                // echo $total_t; echo ' : ' .  array_sum($discount); 
+                ?>
             </table>
         </div>
     </div>

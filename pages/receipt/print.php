@@ -71,6 +71,7 @@ if (isset($action) && !empty($id)) {
     $first_rec = array();
     $first_cover = array();
     $first_booking = array();
+    $first_bpr = array();
     $first_extar = array();
     $receipts = $recObj->showlist('receipts', '0000-00-00', 'all', $id);
     if (!empty($receipts)) {
@@ -126,12 +127,12 @@ if (isset($action) && !empty($id)) {
                 $inv_no[] = !empty($receipt['inv_no']) ? $receipt['inv_no'] : 0;
                 $bo_id[] = !empty($receipt['id']) ? $receipt['id'] : 0;
                 $travel_date[] = !empty($receipt['travel_date']) ? $receipt['travel_date'] : '0000-00-00';
-                $adult[] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
-                $child[] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
-                $rate_adult[] = !empty($receipt['rate_adult']) ? $receipt['rate_adult'] : 0;
-                $rate_child[] = !empty($receipt['rate_child']) ? $receipt['rate_child'] : 0;
-                $infant[] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
-                $foc[] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
+                // $adult[] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
+                // $child[] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
+                // $rate_adult[] = !empty($receipt['rate_adult']) ? $receipt['rate_adult'] : 0;
+                // $rate_child[] = !empty($receipt['rate_child']) ? $receipt['rate_child'] : 0;
+                // $infant[] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
+                // $foc[] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
                 $cot[] = !empty($receipt['total_paid']) ? $receipt['total_paid'] : 0;
                 $start_pickup[] = !empty($receipt['start_pickup']) ? date('H:i', strtotime($receipt['start_pickup'])) : '00:00:00';
                 $car_name[] = !empty($receipt['car_name']) ? $receipt['car_name'] : '';
@@ -147,7 +148,7 @@ if (isset($action) && !empty($id)) {
                 $bp_note[] = !empty($receipt['bp_note']) ? $receipt['bp_note'] : '';
                 $product_name[] = !empty($receipt['product_name']) ? $receipt['product_name'] : '';
                 $discount[] = !empty($receipt['discount']) ? $receipt['discount'] : 0;
-                $total[] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+                // $total[] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
 
                 $arr_bo['id'][] = !empty($receipt['id']) ? $receipt['id'] : 0;
                 $arr_bo[$receipt['id']]['travel_date'] = !empty($receipt['travel_date']) ? $receipt['travel_date'] : '';
@@ -155,14 +156,39 @@ if (isset($action) && !empty($id)) {
                 $arr_bo[$receipt['id']]['cus_name'] = !empty($receipt['cus_name']) ? $receipt['cus_name'] : '';
                 $arr_bo[$receipt['id']]['product_name'] = !empty($receipt['product_name']) ? $receipt['product_name'] : '';
                 $arr_bo[$receipt['id']]['voucher_no'] = !empty($receipt['voucher_no']) ? $receipt['voucher_no'] : $receipt['book_full'];
-                $arr_bo[$receipt['id']]['adult'] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : '-';
-                $arr_bo[$receipt['id']]['child'] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : '-';
-                $arr_bo[$receipt['id']]['rate_adult'] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
-                $arr_bo[$receipt['id']]['rate_child'] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
-                $arr_bo[$receipt['id']]['foc'] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : '-';
+                // $arr_bo[$receipt['id']]['adult'] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : '-';
+                // $arr_bo[$receipt['id']]['child'] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : '-';
+                // $arr_bo[$receipt['id']]['rate_adult'] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
+                // $arr_bo[$receipt['id']]['rate_child'] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
+                // $arr_bo[$receipt['id']]['foc'] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : '-';
                 $arr_bo[$receipt['id']]['discount'] = !empty($receipt['discount']) ? $receipt['discount'] : '-';
                 $arr_bo[$receipt['id']]['cot'] = !empty($receipt['total_paid']) ? $receipt['total_paid'] : '-';
-                $arr_bo[$receipt['id']]['total'] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+                // $arr_bo[$receipt['id']]['total'] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+            }
+            # --- get value rates --- #
+            if ((in_array($receipt['bpr_id'], $first_bpr) == false) && !empty($receipt['bpr_id'])) {
+                $first_bpr[] = $receipt['bpr_id'];
+                $bpr_id[$receipt['id']][] = !empty($receipt['bpr_id']) ? $receipt['bpr_id'] : 0;
+                $category_id[$receipt['id']][] = !empty($receipt['category_id']) ? $receipt['category_id'] : 0;
+                $category_name[$receipt['id']][] = !empty($receipt['category_name']) ? $receipt['category_name'] : 0;
+                $category_cus[$receipt['id']][] = !empty($receipt['category_cus']) ? $receipt['category_cus'] : 0;
+                $adult[$receipt['id']][] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
+                $child[$receipt['id']][] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
+                $infant[$receipt['id']][] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
+                $foc[$receipt['id']][] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
+                $rate_adult[$receipt['id']][] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
+                $rate_child[$receipt['id']][] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
+                $total[$receipt['id']][] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
+
+                $arr_rates[$receipt['id']]['id'][] = !empty($receipt['bpr_id']) ? $receipt['bpr_id'] : 0;
+                $arr_rates[$receipt['id']]['customer'][] = !empty($receipt['category_cus']) ? $receipt['category_cus'] : 0;
+                $arr_rates[$receipt['id']]['adult'][] = !empty($receipt['bpr_adult']) ? $receipt['bpr_adult'] : 0;
+                $arr_rates[$receipt['id']]['child'][] = !empty($receipt['bpr_child']) ? $receipt['bpr_child'] : 0;
+                $arr_rates[$receipt['id']]['infant'][] = !empty($receipt['bpr_infant']) ? $receipt['bpr_infant'] : 0;
+                $arr_rates[$receipt['id']]['foc'][] = !empty($receipt['bpr_foc']) ? $receipt['bpr_foc'] : 0;
+                $arr_rates[$receipt['id']]['rate_adult'][] = !empty($receipt['rate_adult']) && $receipt['bpr_adult'] > 0 ? $receipt['rate_adult'] : '-';
+                $arr_rates[$receipt['id']]['rate_child'][] = !empty($receipt['rate_child']) && $receipt['bpr_child'] > 0 ? $receipt['rate_child'] : '-';
+                $arr_rates[$receipt['id']]['total'][] = $receipt['bp_private_type'] == 1 ? ($receipt['bpr_adult'] * $receipt['rate_adult']) + ($receipt['bpr_child'] * $receipt['rate_child']) : $receipt['rate_total'];
             }
             # --- get value booking --- #
             if (in_array($receipt['bec_id'], $first_extar) == false && !empty($receipt['bec_id'])) {
@@ -230,6 +256,7 @@ if (isset($action) && !empty($id)) {
             data-cheque_date="<?php echo $cheque_date[0]; ?>"
             data-note="<?php echo $rec_note[0]; ?>">
         <textarea id="array_invoice" hidden><?php echo !empty($arr_inv) ? json_encode($arr_inv, true) : ''; ?></textarea>
+        <textarea id="array_rates" hidden><?php echo !empty($arr_rates) ? json_encode($arr_rates, true) : ''; ?></textarea>
         <textarea id="array_booking" hidden><?php echo !empty($arr_bo) ? json_encode($arr_bo, true) : ''; ?></textarea>
         <textarea id="array_extar" hidden><?php echo !empty($arr_extar) ? json_encode($arr_extar, true) : ''; ?></textarea>
 
@@ -364,24 +391,41 @@ if (isset($action) && !empty($id)) {
                 <td class="text-center"><small>เงินมัดจำ</small></td>
             </tr>
             <?php if (!empty($inv_id)) {
+                $no = 1;
                 for ($i = 0; $i < count($inv_id); $i++) {
-                    $amount = $total[$i] + $amount;
-                    $sum_total = $total[$i] + $sum_total; ?>
-                    <tr class="default-td">
-                        <td class="text-center"><?php echo $i + 1; ?></td>
-                        <td class="text-center"><?php echo $inv_full[0] . '/' . $inv_no[$i]; ?></td>
-                        <td class="text-center"><?php echo date("d/m/Y", strtotime($travel_date[$i])); ?></td>
-                        <td><?php echo $cus_name[$i]; ?></td>
-                        <td><?php echo $product_name[$i]; ?></td>
-                        <td class="text-center"><?php echo $voucher_no[$i]; ?></td>
-                        <td class="text-center"><?php echo $adult[$i]; ?></td>
-                        <td class="text-center"><?php echo $child[$i]; ?></td>
-                        <td class="text-center"><?php echo $rate_adult[$i] != '-' ? number_format($rate_adult[$i]) : $rate_adult[$i]; ?></td>
-                        <td class="text-center"><?php echo $rate_child[$i] != '-' ? number_format($rate_child[$i]) : $rate_child[$i]; ?></td>
-                        <td class="text-center"><?php echo $discount[$i] != '-' ? number_format($discount[$i]) : $discount[$i]; ?></td>
-                        <td class="text-center"><?php echo $total[$i] != '-' ? number_format($total[$i]) : $total[$i]; ?></td>
-                        <td class="text-center"><?php echo $cot[$i] != '-' ? number_format($cot[$i]) : $cot[$i]; ?></td>
-                    </tr>
+                    $rowspan = count($bpr_id[$bo_id[$i]]);
+                    for ($r = 0; $r < $rowspan; $r++) {
+                        $amount = $total[$bo_id[$i]][$r] + $amount;
+                        $sum_total = $total[$bo_id[$i]][$r] + $sum_total;
+                        $customer = $category_cus[$bo_id[$i]][$r] == 1 ? ' (Thai)' : ' (Foreign)';
+                        if ($r == 0) { ?>
+                            <tr class="default-td">
+                                <td class="text-center"><?php echo $no++; ?></td>
+                                <td class="text-center" rowspan="<?php echo $rowspan; ?>"><?php echo date("d/m/Y", strtotime($travel_date[$i])); ?></td>
+                                <td rowspan="<?php echo $rowspan; ?>"><?php echo $cus_name[$i]; ?></td>
+                                <td><?php echo $product_name[$i] . $customer; ?></td>
+                                <td class="text-center" rowspan="<?php echo $rowspan; ?>"><?php echo $voucher_no[$i]; ?></td>
+                                <td class="text-center"><?php echo $adult[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $child[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $rate_adult[$bo_id[$i]][$r] != '-' ? number_format($rate_adult[$bo_id[$i]][$r]) : $rate_adult[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $rate_child[$bo_id[$i]][$r] != '-' ? number_format($rate_child[$bo_id[$i]][$r]) : $rate_child[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center" rowspan="<?php echo $rowspan; ?>"><?php echo $discount[$i] != '-' ? number_format($discount[$i]) : $discount[$i]; ?></td>
+                                <td class="text-center"><?php echo $total[$bo_id[$i]][$r] != '-' ? number_format($total[$bo_id[$i]][$r]) : $total[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center" rowspan="<?php echo $rowspan; ?>"><?php echo $cot[$i] != '-' ? number_format($cot[$i]) : $cot[$i]; ?></td>
+                            </tr>
+                        <?php } elseif ($r > 0) {
+                            $customer = $category_cus[$bo_id[$i]][$r] == 1 ? ' (Thai)' : ' (Foreign)'; ?>
+                            <tr class="default-td">
+                                <td class="text-center"><?php echo $no++; ?></td>
+                                <td><?php echo $product_name[$i] . $customer; ?></td>
+                                <td class="text-center"><?php echo $adult[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $child[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $rate_adult[$bo_id[$i]][$r] != '-' ? number_format($rate_adult[$bo_id[$i]][$r]) : $rate_adult[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $rate_child[$bo_id[$i]][$r] != '-' ? number_format($rate_child[$bo_id[$i]][$r]) : $rate_child[$bo_id[$i]][$r]; ?></td>
+                                <td class="text-center"><?php echo $total[$bo_id[$i]][$r] != '-' ? number_format($total[$bo_id[$i]][$r]) : $total[$bo_id[$i]][$r]; ?></td>
+                            </tr>
+                    <?php }
+                    } ?>
 
                     <?php if (!empty($arr_extar[$bo_id[$i]]['id'])) {
                         for ($e = 0; $e < count($arr_extar[$bo_id[$i]]['id']); $e++) {
@@ -433,8 +477,8 @@ if (isset($action) && !empty($id)) {
             </tr>
 
             <?php
-                $amount = !empty($discount) ? $amount - array_sum($discount) : $amount;
-                $amount = !empty($cot) ? $amount - array_sum($cot) : $amount;
+            $amount = !empty($discount) ? $amount - array_sum($discount) : $amount;
+            $amount = !empty($cot) ? $amount - array_sum($cot) : $amount;
             ?>
 
             <tr class="default-td">

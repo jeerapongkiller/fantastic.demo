@@ -178,8 +178,8 @@ if ($bookings[0]['id'] > 0) {
         }
         $payment_name = !empty($booking['bopay_name']) ? $booking['bopay_name'] : '';
     }
-    $total_sum = !empty($rates['rate_total']) ? array_sum($rates['rate_total']) + $total_product : $total_product;
-    $total_product = !empty($rates['rate_total']) ? array_sum($rates['rate_total']) + $total_product : $total_product;
+    $total_sum = ($book_type > 0) ? ($book_type == 1) ?  array_sum($rates['rate_total']) + $total_product + $total_sum : array_sum($rates['rate_private']) + $total_product + $total_sum : $total_product + $total_sum;
+    $total_product = ($book_type > 0) ? ($book_type == 1) ?  array_sum($rates['rate_total']) + $total_product : array_sum($rates['rate_private']) + $total_product : $total_product;
     $product_total = ($adult * $rate_adult) + ($child * $rate_child) + ($infant * $rate_infant);
     $payment_total = !empty($cot) ? $cot : 0;
     $transfer_total = ($transfer_type == 1) ? ($bt_adult * $btr_rate_adult) + ($bt_child * $btr_rate_child) + ($bt_infant * $btr_rate_infant) : $btr_rate_private;
@@ -480,18 +480,7 @@ if (!empty($bookings[0]['bp_id'])) {
                     <td colspan="3" align="right">
                         <table>
                             <tr>
-                                <td style="border-top: 0; padding: 0"><b class="mr-1">Discount : </b></td>
-                                <td style="border-top: 0; padding: 0">
-                                    <div id="div-discound">
-                                        <input type="hidden" id="inc_bp_id" name="inc_bp_id" value="<?php echo $bo_id; ?>">
-                                        <div class="input-group" style="width: 200px">
-                                            <input type="text" class="form-control numeral-mask" id="inc_discount" name="inc_discount" placeholder="1,000" value="<?php echo $discount > 0 ? '฿ ' . number_format($discount) : '';  ?>">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text p-0"><button type="button" style="padding: 10px; border-radius: 0 0.357rem 0.357rem 0;" class="btn btn-primary" onclick="add_discount();">Add</button></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
+                                <td style="border-top: 0; padding: 0"><b>Discount : </b><?php echo $discount > 0 ? '฿ ' . number_format($discount) : '';  ?></td>
                             </tr>
                         </table>
                     </td>

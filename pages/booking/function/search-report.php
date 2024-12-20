@@ -78,7 +78,6 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ty
 
                     $mange_product[$booking['product_id']]['bpr_id'][] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;
                     $mange_product[$booking['product_id']]['totalrist'][] = $booking['bpr_adult'] + $booking['bpr_child'] + $booking['bpr_infant'] + $booking['bpr_foc'];
-                    $mange_product[$booking['product_id']]['adult'][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
                 }
             }
         }
@@ -207,20 +206,20 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ty
                 <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($foc) ? array_sum($foc) : 0; ?></h1>
             </div>
             <div class="col-1 border-top border-right py-50 pb-1">
-                <small class="card-text text-muted mb-0">Form Phuket</small>
-                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[12]['totalrist']) ? array_sum($mange_product[12]['totalrist']) : 0; ?></h1>
+                <small class="card-text text-muted mb-0">BW - Phi Phi  Khai  Maiton</small>
+                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[1]['totalrist']) ? array_sum($mange_product[1]['totalrist']) : 0; ?></h1>
             </div>
             <div class="col-1 border-top border-right py-50 pb-1">
-                <small class="card-text text-muted mb-0">Form Khaolak</small>
-                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[13]['totalrist']) ? array_sum($mange_product[13]['totalrist']) : 0; ?></h1>
+                <small class="card-text text-muted mb-0">PRD - Phi Phi  Khai  Maiton</small>
+                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[2]['totalrist']) ? array_sum($mange_product[2]['totalrist']) : 0; ?></h1>
             </div>
             <div class="col-1 border-top border-right py-50 pb-1">
-                <small class="card-text text-muted mb-0">From Karbi</small>
-                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[14]['totalrist']) ? array_sum($mange_product[14]['totalrist']) : 0; ?></h1>
+                <small class="card-text text-muted mb-0">Racha Coral Sunset</small>
+                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[3]['totalrist']) ? array_sum($mange_product[3]['totalrist']) : 0; ?></h1>
             </div>
             <div class="col-1 border-top py-50 pb-1">
-                <small class="card-text text-muted mb-0">No Transfer</small>
-                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[15]['totalrist']) ? array_sum($mange_product[15]['totalrist']) : 0; ?></h1>
+                <small class="card-text text-muted mb-0">Halfday Coral Sunset Phomthep</small>
+                <h1 class="font-weight-bolder text-primary mb-0"><?php echo !empty($mange_product[4]['totalrist']) ? array_sum($mange_product[4]['totalrist']) : 0; ?></h1>
             </div>
         </div>
     <?php } ?>

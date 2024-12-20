@@ -9,7 +9,7 @@ class DB
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'demo_fantastic';
+    private $database = 'together.travel';
     protected $connection;
 
     public function __construct()

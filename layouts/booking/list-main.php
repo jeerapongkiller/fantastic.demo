@@ -427,22 +427,22 @@
                             contentType: false,
                             data: formData,
                             success: function(response) {
-                                $('#div-show').html(response);
-                                // if (response != false && response > 0) {
-                                //     Swal.fire({
-                                //         title: "The information has been updated.",
-                                //         icon: "success",
-                                //     }).then(function(isConfirm) {
-                                //         if (isConfirm) {
-                                //             window.location.href = './?pages=booking/list';
-                                //         }
-                                //     })
-                                // } else {
-                                //     Swal.fire({
-                                //         title: "Please try again.",
-                                //         icon: "error",
-                                //     });
-                                // }
+                                // $('#div-show').html(response);
+                                if (response != false && response > 0) {
+                                    Swal.fire({
+                                        title: "The information has been updated.",
+                                        icon: "success",
+                                    }).then(function(isConfirm) {
+                                        if (isConfirm) {
+                                            window.location.href = './?pages=booking/list';
+                                        }
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        title: "Please try again.",
+                                        icon: "error",
+                                    });
+                                }
                             }
                         });
                     }
@@ -464,6 +464,65 @@
 
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function search_form_report(search_travel) {
+            // console.log(search_travel)
+            var formData = new FormData();
+            formData.append('action', 'search');
+            formData.append('search_travel', search_travel);
+            $.ajax({
+                url: "pages/booking/function/search.php",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(response) {
+                    if (response != false) {
+                        $("#booking-search-table").html(response);
+
+                        $('.booking-list-table').DataTable({
+                            "searching": false,
+                            order: [
+                                // [4, 'desc']
+                            ],
+                            dom: '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
+                                '<"col-lg-12 col-xl-6" l>' +
+                                '<"col-lg-12 col-xl-6 pl-xl-75 pl-0"<"dt-action-buttons text-xl-right text-lg-left text-md-right text-left d-flex align-items-center justify-content-lg-end align-items-center flex-sm-nowrap flex-wrap mr-1"<"mr-1"f>B>>' +
+                                '>t' +
+                                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                                '<"col-sm-12 col-md-6"i>' +
+                                '<"col-sm-12 col-md-6"p>' +
+                                '>',
+                            columnDefs: [{
+                                // targets: [<?php echo $columntarget; ?>],
+                                orderable: false
+                            }],
+                            language: {
+                                sLengthMenu: 'Show _MENU_'
+                            },
+                            // Buttons with Dropdown
+                            buttons: [],
+                            language: {
+                                paginate: {
+                                    // remove previous & next text from pagination
+                                    previous: '&nbsp;',
+                                    next: '&nbsp;'
+                                }
+                            },
+                        });
+
+                        if (feather) {
+                            feather.replace({
+                                width: 14,
+                                height: 14
+                            });
+                        }
+
+                        search_start_date('custom', 'booking', $('#search_travel').val());
+                    }
+                }
+            });
         }
 
         function search_start_date(type_date, type, date) {
@@ -602,7 +661,7 @@
             document.getElementById('div-transfer').hidden = (transfer == false) ? true : false;
             document.getElementById('start_pickup').value = (transfer == true) ? '08:15' : '';
             document.getElementById('end_pickup').value = (transfer == true) ? '08:15' : '';
-            document.getElementById('include').value = (transfer === false) ? '1' : '2';
+            document.getElementById('include').value = (transfer === true) ? '1' : '2';
         }
 
         function check_rate() {
@@ -873,9 +932,23 @@
         }
 
         function check_extar_type(select) {
-            var adult = document.getElementById('cover-adult').value;
-            var child = document.getElementById('cover-child').value;
-            var infant = document.getElementById('cover-infant').value;
+            var adult = Number(0);
+            var child = Number(0);
+            var infant = Number(0);
+
+            // Thai
+            if (document.getElementById('customer_thai').value == 1) {
+                adult = Number(document.getElementById('adult_thai')?.value) + adult || adult;
+                child = Number(document.getElementById('child_thai')?.value) + child || child;
+                infant = Number(document.getElementById('infant_thai')?.value) + infant || infant;
+            }
+
+            // Foreign
+            if (document.getElementById('customer_foreign').value == 1) {
+                adult = Number(document.getElementById('adult_foreign')?.value) + adult || adult;
+                child = Number(document.getElementById('child_foreign')?.value) + child || child;
+                infant = Number(document.getElementById('infant_foreign')?.value) + infant || infant;
+            }
 
             var div_name_perpax = select.name.replace('[extra_type]', '[div_extar_perpax]');
             document.getElementsByName(div_name_perpax)[0].hidden = select.value == 1 ? false : true;

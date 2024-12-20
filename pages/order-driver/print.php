@@ -183,8 +183,8 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
             <div class="row">
                 <span class="col-6 brand-logo"><img src="app-assets/images/logo/logo-500.png" height="50"></span>
                 <span class="col-6 text-right" style="color: #000;">
-                    โทร : 062-3322800 / 084-7443000 / 083-1757444 </br>
-                    Email : Fantasticsimilantravel11@gmail.com
+                    บริษัท ทูเกทเตอร์ ทราเวล จํากัด </br>
+                    35/720 หมู่ที 2 ตําบลเกาะแก้ว อําเภอเมือง จังหวัดภูเก็ต 83000
                 </span>
             </div>
             <div class="text-center card-text">
@@ -216,8 +216,8 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['date_t
                                             <div class="row">
                                                 <span class="col-6 brand-logo"><img src="app-assets/images/logo/logo-500.png" height="50"></span>
                                                 <span class="col-6 text-right" style="color: #000;">
-                                                    โทร : 062-3322800 / 084-7443000 / 083-1757444 </br>
-                                                    Email : Fantasticsimilantravel11@gmail.com
+                                                    บริษัท ทูเกทเตอร์ ทราเวล จํากัด </br>
+                                                    35/720 หมู่ที 2 ตําบลเกาะแก้ว อําเภอเมือง จังหวัดภูเก็ต 83000
                                                 </span>
                                             </div>
                                             <div class="text-center card-text">

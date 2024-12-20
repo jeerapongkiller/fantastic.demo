@@ -29,7 +29,7 @@ if (isset($_POST['action']) && $_POST['action'] == "edit" && isset($_POST['guide
     $languageArray = $_POST['language'];
 
     $before_languageArray = array();
-    $before_languageArray = $_POST['before_language'];
+    $before_languageArray = !empty($_POST['before_language']) ? $_POST['before_language'] : array();
 
     $check_guide_id = $guideObj->update_data($is_approved, $name, $telephone, $picArray, $guide_id);
 

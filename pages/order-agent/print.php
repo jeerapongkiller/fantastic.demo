@@ -16,6 +16,7 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['agent_
 
     $first_booking = array();
     $first_ext = array();
+    $first_bpr = array();
     $bookings = $bookingObj->showlistboats('agent', $agent_id, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
@@ -24,12 +25,12 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['agent_
                 $first_booking[] = $booking['id'];
                 $bo_id[] = !empty($booking['id']) ? $booking['id'] : 0;
                 $agent_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
-                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
-                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
-                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
-                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
-                $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
-                $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
+                // $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                // $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                // $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                // $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                // $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
+                // $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
                 $cot[] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
                 $start_pickup[] = !empty($booking['start_pickup']) ? date('H:i', strtotime($booking['start_pickup'])) : '00:00:00';
                 $end_pickup[] = !empty($booking['end_pickup']) ? date('H:i', strtotime($booking['end_pickup'])) : '00:00:00';
@@ -47,6 +48,18 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['agent_
                 $bp_note[] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
                 $product_name[] = !empty($booking['product_name']) ? $booking['product_name'] : '';
                 $total[] = $booking['booktye_id'] == 1 ? ($booking['bpr_adult'] * $booking['rate_adult']) + ($booking['bpr_child'] * $booking['rate_child']) + ($booking['rate_infant'] * $booking['rate_infant']) : $booking['rate_private'];
+            }
+            # --- get value rates --- #
+            if ((in_array($booking['bpr_id'], $first_bpr) == false) && !empty($booking['bpr_id'])) {
+                $first_bpr[] = $booking['bpr_id'];
+                $bpr_id[$booking['id']][] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;
+                $category_id[$booking['id']][] = !empty($booking['category_id']) ? $booking['category_id'] : 0;
+                $category_name[$booking['id']][] = !empty($booking['category_name']) ? $booking['category_name'] : 0;
+                $category_cus[$booking['id']][] = !empty($booking['category_cus']) ? $booking['category_cus'] : 0;
+                $adult[$booking['id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[$booking['id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[$booking['id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[$booking['id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
             }
             # --- get value booking extra chang --- #
             if ((in_array($booking['bec_id'], $first_ext) == false) && !empty($booking['bec_id'])) {
@@ -72,8 +85,8 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['agent_
         <div class="row">
             <span class="col-6 brand-logo"><img src="app-assets/images/logo/logo-500.png" height="50"></span>
             <span class="col-6 text-right" style="color: #000;">
-                โทร : 062-3322800 / 084-7443000 / 083-1757444 </br>
-                Email : Fantasticsimilantravel11@gmail.com
+                บริษัท ทูเกทเตอร์ ทราเวล จํากัด </br>
+                35/720 หมู่ที 2 ตําบลเกาะแก้ว อําเภอเมือง จังหวัดภูเก็ต 83000
             </span>
         </div>
         <div class="text-center card-text">
@@ -115,11 +128,12 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['agent_
                 $total_foc = 0;
                 if (!empty($bo_id)) {
                     for ($i = 0; $i < count($bo_id); $i++) {
-                        $total_tourist = $total_tourist + $adult[$i] + $child[$i] + $infant[$i] + $foc[$i];
-                        $total_adult = $total_adult + $adult[$i];
-                        $total_child = $total_child + $child[$i];
-                        $total_infant = $total_infant + $infant[$i];
-                        $total_foc = $total_foc + $foc[$i];
+                        $id = $bo_id[$i];
+                        $total_tourist = $total_tourist + array_sum($adult[$id]) + array_sum($child[$id]) + array_sum($infant[$id]) + array_sum($foc[$id]);
+                        $total_adult = $total_adult + array_sum($adult[$id]);
+                        $total_child = $total_child + array_sum($child[$id]);
+                        $total_infant = $total_infant + array_sum($infant[$id]);
+                        $total_foc = $total_foc + array_sum($foc[$id]);
                         $class_tr = ($a % 2 == 1) ? 'table-active' : ''; ?>
                         <tr class="<?php echo $class_tr; ?>">
                             <td class="text-center"><?php echo $start_pickup[$i] . ' - ' . $end_pickup[$i]; ?></td>
@@ -135,10 +149,10 @@ if (isset($_GET['action']) && $_GET['action'] == "print" && !empty($_GET['agent_
                                 } ?>
                             </td>
                             <td><?php echo $room_no[$i]; ?></td>
-                            <td class="text-center"><?php echo $adult[$i]; ?></td>
-                            <td class="text-center"><?php echo $child[$i]; ?></td>
-                            <td class="text-center"><?php echo $infant[$i]; ?></td>
-                            <td class="text-center"><?php echo $foc[$i]; ?></td>
+                            <td class="text-center"><?php echo array_sum($adult[$id]); ?></td>
+                            <td class="text-center"><?php echo array_sum($child[$id]); ?></td>
+                            <td class="text-center"><?php echo array_sum($infant[$id]); ?></td>
+                            <td class="text-center"><?php echo array_sum($foc[$id]); ?></td>
                             <!-- <td class="text-center"><?php echo !empty($bec_rate_total[$bo_id[$i]]) ? number_format($total[$i] + array_sum($bec_rate_total[$bo_id[$i]])) : number_format($total[$i]); ?></td> -->
                             <td class="text-nowrap"><b class="text-danger"><?php echo !empty($cot[$i]) ? number_format($cot[$i]) : ''; ?></b></td>
                             <td><b class="text-info">

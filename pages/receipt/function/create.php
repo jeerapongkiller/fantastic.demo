@@ -30,6 +30,7 @@ if (isset($_POST['action']) && $_POST['action'] == "create" && isset($_POST['cov
     $date_check = !empty($_POST['date_check']) ? $_POST['date_check'] : 0;
     $amount = !empty($_POST['amount']) ? $_POST['amount'] : 0;
     $note = $_POST['note'] != "" ? $_POST['note'] : '';
+
     # --- recipet no full --- #
     if ($cover_id > 0) {
         $rec_no = $recObj->checkrecno();

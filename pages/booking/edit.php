@@ -322,13 +322,6 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                <div class="form-group col-md-2 col-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="cot">COT</label>
-                                                        <input type="text" class="form-control numeral-mask" id="cot" name="cot" value="<?php echo !empty($cot) ? $cot : 0; ?>" />
-                                                        <input type="hidden" id="cot_id" name="cot_id" value="<?php echo !empty($cot_id) ? $cot_id : 0; ?>" />
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-12">
@@ -339,13 +332,18 @@ if (!empty($_GET['id']) && $_GET['id'] > 0) {
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-2 col-12">
+                                                    <label class="form-label" for="cot">COT</label>
+                                                    <input type="text" class="form-control numeral-mask" id="cot" name="cot" value="<?php echo !empty($cot) ? $cot : 0; ?>" />
+                                                    <input type="hidden" id="cot_id" name="cot_id" value="<?php echo !empty($cot_id) ? $cot_id : 0; ?>" />
+                                                </div>
+                                                <div class="form-group col-md-2">
                                                     <div class="form-group">
                                                         <label class="form-label" for="discount">Discount (ส่วนลด)</label>
                                                         <input type="text" class="form-control numeral-mask" id="discount" name="discount" value="<?php echo number_format($discount); ?>" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-md-4" id="div-total">
+                                                <div class="form-group col-md-2" id="div-total">
                                                     <label for="rate_total">Total Price</label>
                                                     <p id="text-total-price"></p>
                                                     <input type="hidden" id="rate_total" name="rate_total" value="0" />

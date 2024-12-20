@@ -184,7 +184,7 @@ foreach ($manages as $manage) {
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" hidden>
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -352,8 +352,8 @@ foreach ($manages as $manage) {
                                     <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing">
                                         <span class="brand-logo"><img src="app-assets/images/logo/logo-500.png" height="50"></span>
                                         <span style="color: #000;">
-                                            โทร : 062-3322800 / 084-7443000 / 083-1757444 </br>
-                                            Email : Fantasticsimilantravel11@gmail.com
+                                            บริษัท ทูเกทเตอร์ ทราเวล จํากัด </br>
+                                            35/720 หมู่ที 2 ตําบลเกาะแก้ว อําเภอเมือง จังหวัดภูเก็ต 83000
                                         </span>
                                     </div>
                                     <div class="text-center card-text">
@@ -513,8 +513,8 @@ foreach ($manages as $manage) {
                                     <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing">
                                         <span class="brand-logo"><img src="app-assets/images/logo/logo-500.png" height="50"></span>
                                         <span style="color: #000;">
-                                            โทร : 062-3322800 / 084-7443000 / 083-1757444 </br>
-                                            Email : Fantasticsimilantravel11@gmail.com
+                                            บริษัท ทูเกทเตอร์ ทราเวล จํากัด </br>
+                                            35/720 หมู่ที 2 ตําบลเกาะแก้ว อําเภอเมือง จังหวัดภูเก็ต 83000
                                         </span>
                                     </div>
                                     <div class="text-center card-text">
@@ -567,11 +567,11 @@ foreach ($manages as $manage) {
                                                     for ($i = 0; $i < count($check_dropoff[$programe_id[$a]]); $i++) {
                                                         if (empty($check_book[2]) || (!empty($check_book[2]) && in_array($check_dropoff[$programe_id[$a]][$i], $check_book[2]) == false)) {
                                                             $id = $check_dropoff[$programe_id[$a]][$i];
-                                                            $total_tourist = $total_tourist + $adult[$id] + $child[$id] + $infant[$id] + $foc[$id];
-                                                            $total_adult = $total_adult + $adult[$id];
-                                                            $total_child = $total_child + $child[$id];
-                                                            $total_infant = $total_infant + $infant[$id];
-                                                            $total_foc = $total_foc + $foc[$id];
+                                                            $total_tourist = $total_tourist + $bt_adult[$id][$mange_retrun] + $bt_child[$id][$mange_retrun] + $bt_infant[$id][$mange_retrun] + $bt_foc[$id][$mange_retrun];
+                                                            $total_adult = $total_adult + $bt_adult[$id][$mange_retrun];
+                                                            $total_child = $total_child + $bt_child[$id][$mange_retrun];
+                                                            $total_infant = $total_infant + $bt_infant[$id][$mange_retrun];
+                                                            $total_foc = $total_foc + $bt_foc[$id][$mange_retrun];
                                                     ?>
                                                             <tr>
                                                                 <td><?php echo !empty($start_pickup[$id][$retrun]) ? date("H:i", strtotime($start_pickup[$id][$retrun])) . ' - ' . date("H:i", strtotime($end_pickup[$id][$retrun])) : '00:00'; ?></td>

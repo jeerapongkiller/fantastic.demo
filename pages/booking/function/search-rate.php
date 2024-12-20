@@ -65,6 +65,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ca
     }
 ?>
     <?php if ($dataCustomer == 1) { ?> <!--  Thai -->
+        <input type="hidden" id="bpr_thai_id" name="bpr_thai_id" value="" />
         <input type="hidden" id="category_id_thai" name="category_id_thai" value="<?php echo $category_id; ?>" />
         <input type="hidden" id="pror_id_thai" name="pror_id_thai" value="<?php echo $rate_arr['prodrid']; ?>" />
         <?php if ($book_type == 1) { ?> <!--  Join -->
@@ -174,6 +175,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['ca
             </div>
         <?php } ?>
     <?php } elseif ($dataCustomer == 2) { ?> <!--  foreign -->
+        <input type="hidden" id="bpr_foreign_id" name="bpr_foreign_id" value="" />
         <input type="hidden" id="category_id_foreign" name="category_id_foreign" value="<?php echo $category_id; ?>" />
         <input type="hidden" id="pror_id_foreign" name="pror_id_foreign" value="<?php echo $rate_arr['prodrid']; ?>" />
         <?php if ($book_type == 1) { ?> <!--  Join -->

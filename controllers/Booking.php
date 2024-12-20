@@ -1707,7 +1707,7 @@ class Booking extends DB
         return $this->response;
     }
 
-    public function update_booking_product(int $id, string $travel_date, int $adult, int $child, int $infant, int $foc, string $note, int $product_id, int $category_id)
+    public function update_booking_product(int $id, string $travel_date, string $note, int $product_id)
     {
         $bind_types = "";
         $params = array();
@@ -1718,22 +1718,6 @@ class Booking extends DB
         $bind_types .= "s";
         array_push($params, $travel_date);
 
-        $query .= " adult = ?,";
-        $bind_types .= "i";
-        array_push($params, $adult);
-
-        $query .= " child = ?,";
-        $bind_types .= "i";
-        array_push($params, $child);
-
-        $query .= " infant = ?,";
-        $bind_types .= "i";
-        array_push($params, $infant);
-
-        $query .= " foc = ?,";
-        $bind_types .= "i";
-        array_push($params, $foc);
-
         $query .= " note = ?,";
         $bind_types .= "s";
         array_push($params, $note);
@@ -1741,10 +1725,6 @@ class Booking extends DB
         $query .= " product_id = ?,";
         $bind_types .= "i";
         array_push($params, $product_id);
-
-        $query .= " category_id = ?,";
-        $bind_types .= "i";
-        array_push($params, $category_id);
 
         $query .= " updated_at = now()";
 
@@ -1816,12 +1796,28 @@ class Booking extends DB
         return $this->response;
     }
 
-    public function update_booking_rate(int $id, string $rate_adult, string $rate_child, string $rate_infant, string $rate_total, int $pror_id)
+    public function update_booking_rate(int $id, int $adult, int $child, int $infant, int $foc, string $rate_adult, string $rate_child, string $rate_infant, string $rate_private, string $rate_total, int $pror_id, int $category_id)
     {
         $bind_types = "";
         $params = array();
 
         $query = "UPDATE booking_product_rates SET";
+
+        $query .= " adult = ?,";
+        $bind_types .= "i";
+        array_push($params, $adult);
+
+        $query .= " child = ?,";
+        $bind_types .= "i";
+        array_push($params, $child);
+
+        $query .= " infant = ?,";
+        $bind_types .= "i";
+        array_push($params, $infant);
+
+        $query .= " foc = ?,";
+        $bind_types .= "i";
+        array_push($params, $foc);
 
         $query .= " rate_adult = ?,";
         $bind_types .= "d";
@@ -1835,6 +1831,10 @@ class Booking extends DB
         $bind_types .= "d";
         array_push($params, $rate_infant);
 
+        $query .= " rate_private = ?,";
+        $bind_types .= "d";
+        array_push($params, $rate_private);
+
         $query .= " rate_total = ?,";
         $bind_types .= "d";
         array_push($params, $rate_total);
@@ -1842,6 +1842,10 @@ class Booking extends DB
         $query .= " product_rates_id = ?,";
         $bind_types .= "i";
         array_push($params, $pror_id);
+
+        $query .= " category_id = ?,";
+        $bind_types .= "i";
+        array_push($params, $category_id);
 
         $query .= " updated_at = now()";
 
@@ -2334,6 +2338,20 @@ class Booking extends DB
 
         return $booing_arr;
     }
+
+    public function delete_booking_rate(int $id)
+    {
+        $query = "DELETE FROM booking_product_rates WHERE id = ? ";
+        $statement = $this->connection->prepare($query);
+        $statement->bind_param("i", $id);
+        $statement->execute();
+        if ($statement->execute()) {
+            $this->response = true;
+        }
+
+        return $this->response;
+    }
+
 
     public function delete_booking_extra(int $booking_extra_id)
     {

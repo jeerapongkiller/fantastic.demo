@@ -49,7 +49,7 @@ function check_in($var)
                 </div>
             </div>
         </div>
-        
+
         <div class="content-body">
             <!-- order job list start -->
             <section class="app-user-list">
@@ -172,6 +172,7 @@ function check_in($var)
                         $first_bo = array();
                         $first_cus = array();
                         $first_ext = array();
+                        $first_bpr = array();
                         $first_pay = array();
                         $first_bomanage = array();
                         $sum_programe = 0;
@@ -216,16 +217,34 @@ function check_in($var)
                                     $bp_note[$order['mange_id']][] = !empty($order['bp_note']) ? $order['bp_note'] : '';
                                     $product_name[$order['mange_id']][] = !empty($order['product_name']) ? $order['product_name'] : '';
                                     $booking_type[$order['mange_id']][] = !empty($order['bp_private_type']) && $order['bp_private_type'] == 2 ? 'Private' : 'Join';
-                                    $adult[$order['mange_id']][] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : 0;
-                                    $child[$order['mange_id']][] = !empty($order['bpr_child']) ? $order['bpr_child'] : 0;
-                                    $infant[$order['mange_id']][] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : 0;
-                                    $foc[$order['mange_id']][] = !empty($order['bpr_foc']) ? $order['bpr_foc'] : 0;
-                                    $rate_adult[$order['mange_id']][] = !empty($order['rate_adult']) ? $order['rate_adult'] : 0;
-                                    $rate_child[$order['mange_id']][] = !empty($order['rate_child']) ? $order['rate_child'] : 0;
+                                    // $adult[$order['mange_id']][] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : 0;
+                                    // $child[$order['mange_id']][] = !empty($order['bpr_child']) ? $order['bpr_child'] : 0;
+                                    // $infant[$order['mange_id']][] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : 0;
+                                    // $foc[$order['mange_id']][] = !empty($order['bpr_foc']) ? $order['bpr_foc'] : 0;
+                                    // $rate_adult[$order['mange_id']][] = !empty($order['rate_adult']) ? $order['rate_adult'] : 0;
+                                    // $rate_child[$order['mange_id']][] = !empty($order['rate_child']) ? $order['rate_child'] : 0;
                                     $car_name[$order['mange_id']][] = !empty($order['car_id']) ? $order['car_name'] : '';
                                     $start_pickup[$order['mange_id']][] = !empty($order['start_pickup']) ? date('H:i', strtotime($order['start_pickup'])) : '00:00:00';
                                     $pickup_type[$order['mange_id']][] = !empty($order['pickup_type']) ? $order['pickup_type'] : 0;
                                     $total[$order['mange_id']][] = $order['booktye_id'] == 1 ? ($order['bpr_adult'] * $order['rate_adult']) + ($order['bpr_child'] * $order['rate_child']) + ($order['rate_infant'] * $order['rate_infant']) : $order['rate_private'];
+                                }
+
+                                # --- get value rates --- #
+                                if ((in_array($order['bpr_id'], $first_bpr) == false) && !empty($order['bpr_id'])) {
+                                    $first_bpr[] = $order['bpr_id'];
+                                    $bpr_id[$order['id']][] = !empty($order['bpr_id']) ? $order['bpr_id'] : 0;
+                                    $category_id[$order['id']][] = !empty($order['category_id']) ? $order['category_id'] : 0;
+                                    $category_name[$order['id']][] = !empty($order['category_name']) ? $order['category_name'] : '';
+                                    $category_cus[$order['id']][] = !empty($order['category_cus']) ? $order['category_cus'] : 0;
+                                    $adult[$order['id']][] = !empty($order['bpr_adult']) ? $order['bpr_adult'] : 0;
+                                    $child[$order['id']][] = !empty($order['bpr_child']) ? $order['bpr_child'] : 0;
+                                    $infant[$order['id']][] = !empty($order['bpr_infant']) ? $order['bpr_infant'] : 0;
+                                    $foc[$order['id']][] = !empty($order['bpr_foc']) ? $order['bpr_foc'] : 0;
+                                    $rate_adult[$order['id']][] = !empty($order['rate_adult']) ? $order['rate_adult'] : 0;
+                                    $rate_child[$order['id']][] = !empty($order['rate_child']) ? $order['rate_child'] : 0;
+                                    $rate_infant[$order['id']][] = !empty($order['rate_infant']) ? $order['rate_infant'] : 0;
+                                    $rate_total[$order['id']][] = !empty($order['rate_total']) ? $order['rate_total'] : 0;
+                                    $rate_private[$order['id']][] = !empty($order['rate_private']) ? $order['rate_private'] : 0;
                                 }
 
                                 $bopay_name[$order['id']] = !empty($order['bopay_name']) ? $order['bopay_name'] : '';
@@ -296,8 +315,8 @@ function check_in($var)
                                 <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing">
                                     <span class="brand-logo"><img src="app-assets/images/logo/logo-500.png" height="50"></span>
                                     <span style="color: #000;">
-                                        โทร : 062-3322800 / 084-7443000 / 083-1757444 </br>
-                                        Email : Fantasticsimilantravel11@gmail.com
+                                        บริษัท ทูเกทเตอร์ ทราเวล จํากัด </br>
+                                        35/720 หมู่ที 2 ตําบลเกาะแก้ว อําเภอเมือง จังหวัดภูเก็ต 83000
                                     </span>
                                 </div>
                                 <div class="text-center card-text">
@@ -343,10 +362,11 @@ function check_in($var)
                                                     </th>
                                                     <th width="5%">เวลารับ</th>
                                                     <th width="5%">Driver</th>
+                                                    <th width="20%">โปรแกรม</th>
                                                     <th width="15%">เอเยนต์</th>
                                                     <th width="15%">ชื่อลูกค้า</th>
                                                     <th width="5%">V/C</th>
-                                                    <th width="20%">โรงแรม</th>
+                                                    <!-- <th width="20%">โรงแรม</th> -->
                                                     <th width="9%">ห้อง</th>
                                                     <th class="text-center" width="1%">A</th>
                                                     <th class="text-center" width="1%">C</th>
@@ -366,12 +386,12 @@ function check_in($var)
                                                 $total_foc = 0;
                                                 if (!empty($bo_id[$mange_id[$i]])) {
                                                     for ($a = 0; $a < count($bo_id[$mange_id[$i]]); $a++) {
-                                                        $total_tourist = $total_tourist + $adult[$mange_id[$i]][$a] + $child[$mange_id[$i]][$a] + $infant[$mange_id[$i]][$a] + $foc[$mange_id[$i]][$a];
-                                                        $total_adult = $total_adult + $adult[$mange_id[$i]][$a];
-                                                        $total_child = $total_child + $child[$mange_id[$i]][$a];
-                                                        $total_infant = $total_infant + $infant[$mange_id[$i]][$a];
-                                                        $total_foc = $total_foc + $foc[$mange_id[$i]][$a];
                                                         $id = $bo_id[$mange_id[$i]][$a];
+                                                        $total_tourist = $total_tourist + array_sum($adult[$id]) + array_sum($child[$id]) + array_sum($infant[$id]) + array_sum($foc[$id]);
+                                                        $total_adult = $total_adult + array_sum($adult[$id]);
+                                                        $total_child = $total_child + array_sum($child[$id]);
+                                                        $total_infant = $total_infant + array_sum($infant[$id]);
+                                                        $total_foc = $total_foc + array_sum($foc[$id]);
                                                 ?>
                                                         <tr>
                                                             <td class="text-center">
@@ -382,22 +402,30 @@ function check_in($var)
                                                             </td>
                                                             <td class="text-center"><?php echo $pickup_time[$mange_id[$i]][$a]; ?></td>
                                                             <td style="padding: 5px;"><?php echo (!empty($managet['car'][$id][1])) ? $managet['car'][$id][1] : ''; ?></td>
+                                                            <td><?php echo $product_name[$mange_id[$i]][$a];
+                                                                if (!empty($category_name[$id])) {
+                                                                    echo ' (';
+                                                                    for ($c = 0; $c < count($category_name[$id]); $c++) {
+                                                                        echo $c > 0 ? ', ' . $category_name[$id][$c] : $category_name[$id][$c];
+                                                                    }
+                                                                }
+                                                                echo ')'; ?></td>
                                                             <td><?php echo $agent[$mange_id[$i]][$a]; ?></td>
                                                             <td><?php echo !empty($telephone[$bo_id[$mange_id[$i]][$a]][0]) ? $cus_name[$bo_id[$mange_id[$i]][$a]][0] . ' <br>(' . $telephone[$bo_id[$mange_id[$i]][$a]][0] . ')' : $cus_name[$bo_id[$mange_id[$i]][$a]][0]; ?></td>
                                                             <td><?php echo !empty($voucher_no[$mange_id[$i]][$a]) ? $voucher_no[$mange_id[$i]][$a] : $book_full[$mange_id[$i]][$a]; ?></td>
-                                                            <td style="padding: 5px;">
+                                                            <!-- <td style="padding: 5px;">
                                                                 <?php if ($pickup_type[$mange_id[$i]][$a] == 1) {
                                                                     echo (!empty($hotel_pickup[$mange_id[$i]][$a])) ? '<b>Pickup : </b>' . $hotel_pickup[$mange_id[$i]][$a] . $zone_pickup[$mange_id[$i]][$a] : '';
                                                                     echo (!empty($hotel_dropoff[$mange_id[$i]][$a])) ? '</br><b>Dropoff : </b>' . $hotel_dropoff[$mange_id[$i]][$a] . $zone_dropoff[$mange_id[$i]][$a] : '';
                                                                 } else {
                                                                     echo 'เดินทางมาเอง';
                                                                 } ?>
-                                                            </td>
+                                                            </td> -->
                                                             <td><?php echo $room_no[$mange_id[$i]][$a]; ?></td>
-                                                            <td class="text-center"><?php echo $adult[$mange_id[$i]][$a]; ?></td>
-                                                            <td class="text-center"><?php echo $child[$mange_id[$i]][$a]; ?></td>
-                                                            <td class="text-center"><?php echo $infant[$mange_id[$i]][$a]; ?></td>
-                                                            <td class="text-center"><?php echo $foc[$mange_id[$i]][$a]; ?></td>
+                                                            <td class="text-center"><?php echo array_sum($adult[$id]); ?></td>
+                                                            <td class="text-center"><?php echo array_sum($child[$id]); ?></td>
+                                                            <td class="text-center"><?php echo array_sum($infant[$id]); ?></td>
+                                                            <td class="text-center"><?php echo array_sum($foc[$id]); ?></td>
                                                             <td class="text-center"><?php echo !empty($bec_rate_total[$id]) ? number_format($total[$mange_id[$i]][$a] + array_sum($bec_rate_total[$id])) : number_format($total[$mange_id[$i]][$a]); ?></td>
                                                             <!-- <td class="text-nowrap"><b class="text-danger"><?php echo !empty($cot[$id]) ? array_sum($cot[$id]) : ''; ?></b></td> -->
                                                             <td><b class="text-info">

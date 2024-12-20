@@ -143,25 +143,25 @@ $day7 = date("Y-m-d", strtotime(" +6 day"));
                                 <div class="card-body">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="today-tab" data-toggle="tab" href="#today" aria-controls="today" role="tab" aria-selected="true">Today</a>
+                                            <a class="nav-link active" id="today-tab" data-toggle="tab" href="#today" aria-controls="today" role="tab" aria-selected="true" onclick="search_form_report('<?php echo $today; ?>')">Today</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tomorrow-tab" data-toggle="tab" href="#tomorrow" aria-controls="tomorrow" role="tab" aria-selected="false">Tomorrow</a>
+                                            <a class="nav-link" id="tomorrow-tab" data-toggle="tab" href="#tomorrow" aria-controls="tomorrow" role="tab" aria-selected="false" onclick="search_form_report('<?php echo $tomorrow; ?>')">Tomorrow</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="day3-tab" data-toggle="tab" href="#day3" aria-controls="day3" role="tab" aria-selected="false"><?php echo date('j F', strtotime($day3)); ?></a>
+                                            <a class="nav-link" id="day3-tab" data-toggle="tab" href="#day3" aria-controls="day3" role="tab" aria-selected="false" onclick="search_form_report('<?php echo $day3; ?>')"><?php echo date('j F', strtotime($day3)); ?></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="day4-tab" data-toggle="tab" href="#day4" aria-controls="day4" role="tab" aria-selected="false"><?php echo date('j F', strtotime($day4)); ?></a>
+                                            <a class="nav-link" id="day4-tab" data-toggle="tab" href="#day4" aria-controls="day4" role="tab" aria-selected="false" onclick="search_form_report('<?php echo $day4; ?>')"><?php echo date('j F', strtotime($day4)); ?></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="day5-tab" data-toggle="tab" href="#day5" aria-controls="day5" role="tab" aria-selected="false"><?php echo date('j F', strtotime($day5)); ?></a>
+                                            <a class="nav-link" id="day5-tab" data-toggle="tab" href="#day5" aria-controls="day5" role="tab" aria-selected="false" onclick="search_form_report('<?php echo $day5; ?>')"><?php echo date('j F', strtotime($day5)); ?></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="day6-tab" data-toggle="tab" href="#day6" aria-controls="day6" role="tab" aria-selected="false"><?php echo date('j F', strtotime($day6)); ?></a>
+                                            <a class="nav-link" id="day6-tab" data-toggle="tab" href="#day6" aria-controls="day6" role="tab" aria-selected="false" onclick="search_form_report('<?php echo $day6; ?>')"><?php echo date('j F', strtotime($day6)); ?></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="day7-tab" data-toggle="tab" href="#day7" aria-controls="day7" role="tab" aria-selected="false"><?php echo date('j F', strtotime($day7)); ?></a>
+                                            <a class="nav-link" id="day7-tab" data-toggle="tab" href="#day7" aria-controls="day7" role="tab" aria-selected="false" onclick="search_form_report('<?php echo $day7; ?>')"><?php echo date('j F', strtotime($day7)); ?></a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="customh-tab" data-toggle="tab" href="#custom" aria-controls="custom" role="tab" aria-selected="true">Custom</a>
@@ -261,7 +261,7 @@ $day7 = date("Y-m-d", strtotime(" +6 day"));
                                 $note[] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
                                 // $rate_adult[] = !empty($booking['rate_adult']) ? $booking['rate_adult'] : 0;
                                 // $rate_child[] = !empty($booking['rate_child']) ? $booking['rate_child'] : 0;
-                                // $created_at[] = !empty(!empty($booking['created_at'])) ? $booking['created_at'] : '0000-00-00';
+                                $created_at[] = !empty(!empty($booking['created_at'])) ? $booking['created_at'] : '0000-00-00';
                                 // $rate_total[] = !empty($booking['rate_total']) ? $booking['rate_total'] : 0;
                                 $transfer_type[] = !empty($booking['transfer_type']) ? $booking['transfer_type'] : 0;
                                 $btr_rate_adult[] = !empty($booking['transfer_type']) && $booking['transfer_type'] == 1 ? $booking['bt_adult'] * $booking['btr_rate_adult'] : 0;

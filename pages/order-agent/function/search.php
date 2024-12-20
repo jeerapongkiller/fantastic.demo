@@ -16,6 +16,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['tr
 
     $first_booking = array();
     $first_company = array();
+    $first_bpr = array();
     $bookings = $orderObj->showlistboats('agent', 0, $travel_date, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
         foreach ($bookings as $booking) {
@@ -30,12 +31,25 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && !empty($_POST['tr
             if ((in_array($booking['id'], $first_booking) == false) && !empty($booking['comp_id'])) {
                 $first_booking[] = $booking['id'];
                 $bo_id[$booking['comp_id']][] = !empty($booking['id']) ? $booking['id'] : 0;
+                // $adult[$booking['comp_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                // $child[$booking['comp_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                // $infant[$booking['comp_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                // $foc[$booking['comp_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                // $total_tourist[$booking['comp_id']][] = $booking['bpr_adult'] + $booking['bpr_child'] + $booking['bpr_infant'] + $booking['bpr_foc'];
+                $cot[$booking['comp_id']][] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
+            }
+            # --- get value rates --- #
+            if ((in_array($booking['bpr_id'], $first_bpr) == false) && !empty($booking['bpr_id'])) {
+                $first_bpr[] = $booking['bpr_id'];
+                $bpr_id[$booking['comp_id']][] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;
+                $category_id[$booking['comp_id']][] = !empty($booking['category_id']) ? $booking['category_id'] : 0;
+                $category_name[$booking['comp_id']][] = !empty($booking['category_name']) ? $booking['category_name'] : 0;
+                $category_cus[$booking['comp_id']][] = !empty($booking['category_cus']) ? $booking['category_cus'] : 0;
                 $adult[$booking['comp_id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
                 $child[$booking['comp_id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
                 $infant[$booking['comp_id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
                 $foc[$booking['comp_id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $total_tourist[$booking['comp_id']][] = $booking['bpr_adult'] + $booking['bpr_child'] + $booking['bpr_infant'] + $booking['bpr_foc'];
-                $cot[$booking['comp_id']][] = !empty($booking['total_paid']) ? $booking['total_paid'] : 0;
             }
         }
     }

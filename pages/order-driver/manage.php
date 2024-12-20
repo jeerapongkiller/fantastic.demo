@@ -167,7 +167,7 @@ foreach ($manages as $manage) {
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" hidden>
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -451,11 +451,12 @@ foreach ($manages as $manage) {
                                                 $total_foc = 0;
                                                 for ($i = 0; $i < count($bo_id[$programe_id[$a]]); $i++) {
                                                     if (empty($check_book[1]) || !empty($check_book[1]) && in_array($bo_id[$programe_id[$a]][$i], $check_book[1]) == false) {
-                                                        $total_tourist = $total_tourist + $adult[$bo_id[$programe_id[$a]][$i]] + $child[$bo_id[$programe_id[$a]][$i]] + $infant[$bo_id[$programe_id[$a]][$i]] + $foc[$bo_id[$programe_id[$a]][$i]];
-                                                        $total_adult = $total_adult + $adult[$bo_id[$programe_id[$a]][$i]];
-                                                        $total_child = $total_child + $child[$bo_id[$programe_id[$a]][$i]];
-                                                        $total_infant = $total_infant + $infant[$bo_id[$programe_id[$a]][$i]];
-                                                        $total_foc = $total_foc + $foc[$bo_id[$programe_id[$a]][$i]];
+                                                        
+                                                        $total_tourist = $total_tourist + $bt_adult[$bo_id[$programe_id[$a]][$i]][$retrun] + $bt_child[$bo_id[$programe_id[$a]][$i]][$retrun] + $bt_infant[$bo_id[$programe_id[$a]][$i]][$retrun] + $bt_foc[$bo_id[$programe_id[$a]][$i]][$retrun];
+                                                        $total_adult = $total_adult + $bt_adult[$bo_id[$programe_id[$a]][$i]][$retrun];
+                                                        $total_child = $total_child + $bt_child[$bo_id[$programe_id[$a]][$i]][$retrun];
+                                                        $total_infant = $total_infant + $bt_infant[$bo_id[$programe_id[$a]][$i]][$retrun];
+                                                        $total_foc = $total_foc + $bt_foc[$bo_id[$programe_id[$a]][$i]][$retrun];
                                                 ?>
                                                         <tr>
                                                             <td><a href="javascript:void(0);" data-toggle="modal" data-target="#edit_manage_transfer" onclick="modal_manage_transfer(<?php echo $bt_id[$bo_id[$programe_id[$a]][$i]][$retrun]; ?>, 1, 0);"><span class="badge badge-light-danger">ไม่มีการจัดรถ <?php // echo $bt_id[$bo_id[$programe_id[$a]][$i]][$retrun]; 
@@ -516,7 +517,7 @@ foreach ($manages as $manage) {
                                     <input type="hidden" id="manage_id" name="manage_id" value="">
                                     <input type="hidden" id="retrun" name="retrun" value="">
                                     <div class="row">
-                                        <div class="col-md-3 col-12">
+                                        <div class="col-md-3 col-12" hidden>
                                             <div class="form-group" id="frm-car">
                                                 <label for="car">ชื่อรถ</label>
                                                 <select class="form-control select2" id="car" name="car" onchange="check_outside('car');">
@@ -568,7 +569,7 @@ foreach ($manages as $manage) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-3 col-12">
+                                        <div class="form-group col-md-3 col-12" hidden>
                                             <label for="seat">ที่นั่ง</label>
                                             <select class="form-control select2" id="seat" name="seat">
                                                 <option value="0">กรุญาเลือกจำนวนที่นั่ง...</option>

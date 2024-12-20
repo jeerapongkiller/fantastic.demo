@@ -17,6 +17,7 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
     // $name = $_POST['name'] != "" ? $_POST['name'] : '';
 
     $first_bo = array();
+    $first_bpr = array();
     $first_manage_bo = array();
     $bookings = $manageObj->showlistboats('manage', 0, $travel, 'all', 'all', 'all', 'all', 'all', '', '', '', '');
     if (!empty($bookings)) {
@@ -26,17 +27,17 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
                 $first_bo[] = $booking['id'];
                 $bo_id[] = !empty($booking['id']) ? $booking['id'] : 0;
                 $travel_date[] = !empty(!empty($booking['travel_date'])) ? $booking['travel_date'] : '0000-00-00';
-                $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
-                $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
-                $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
-                $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                // $adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                // $child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                // $infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                // $foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $book_full[] = !empty($booking['book_full']) ? $booking['book_full'] : '';
                 $voucher_no[] = !empty(!empty($booking['voucher_no_agent'])) ? $booking['voucher_no_agent'] : '';
                 $agent_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
                 $cus_name[] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
                 $mange_id[] = !empty($booking['mange_id']) ? $booking['mange_id'] : 0;
                 $product_name[] = !empty($booking['product_name']) ? $booking['product_name'] : '';
-                $category_name[] = !empty($booking['category_name']) ? $booking['category_name'] : '';
+                // $category_name[] = !empty($booking['category_name']) ? $booking['category_name'] : '';
                 $booktye_name[] = !empty($booking['booktye_name']) ? $booking['booktye_name'] : '';
                 $hotel_name[] = !empty($booking['pickup_id']) ? $booking['pickup_name'] : '';
                 $outside[] = !empty($booking['outside']) ? $booking['outside'] : '';
@@ -46,19 +47,31 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
             if (($booking['mange_id'] == $manage_id && $booking['mange_id'] > 0) && in_array($booking['id'], $first_manage_bo) == false) {
                 $first_manage_bo[] = $booking['id'];
                 $manage_bo[] = !empty($booking['id']) ? $booking['id'] : 0;
-                $manage_adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
-                $manage_child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
-                $manage_infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
-                $manage_foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
+                // $manage_adult[] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                // $manage_child[] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                // $manage_infant[] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                // $manage_foc[] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
                 $manage_book_full[] = !empty($booking['book_full']) ? $booking['book_full'] : '';
                 $manage_voucher_no[] = !empty(!empty($booking['voucher_no_agent'])) ? $booking['voucher_no_agent'] : '';
                 $manage_agent_name[] = !empty($booking['comp_name']) ? $booking['comp_name'] : '';
                 $manage_cus_name[] = !empty($booking['cus_name']) ? $booking['cus_name'] : '';
                 $manage_product_name[] = !empty($booking['product_name']) ? $booking['product_name'] : '';
-                $manage_category_name[] = !empty($booking['category_name']) ? $booking['category_name'] : '';
+                // $manage_category_name[] = !empty($booking['category_name']) ? $booking['category_name'] : '';
                 $manage_booktye_name[] = !empty($booking['booktye_name']) ? $booking['booktye_name'] : '';
                 $manage_hotel_name[] = !empty($booking['pickup_id']) ? $booking['pickup_name'] : '';
                 $manage_note[] = !empty($booking['bp_note']) ? $booking['bp_note'] : '';
+            }
+            # --- get value rates --- #
+            if ((in_array($booking['bpr_id'], $first_bpr) == false) && !empty($booking['bpr_id'])) {
+                $first_bpr[] = $booking['bpr_id'];
+                $bpr_id[$booking['id']][] = !empty($booking['bpr_id']) ? $booking['bpr_id'] : 0;
+                $category_id[$booking['id']][] = !empty($booking['category_id']) ? $booking['category_id'] : 0;
+                $category_name[$booking['id']][] = !empty($booking['category_name']) ? $booking['category_name'] : 0;
+                $category_cus[$booking['id']][] = !empty($booking['category_cus']) ? $booking['category_cus'] : 0;
+                $adult[$booking['id']][] = !empty($booking['bpr_adult']) ? $booking['bpr_adult'] : 0;
+                $child[$booking['id']][] = !empty($booking['bpr_child']) ? $booking['bpr_child'] : 0;
+                $infant[$booking['id']][] = !empty($booking['bpr_infant']) ? $booking['bpr_infant'] : 0;
+                $foc[$booking['id']][] = !empty($booking['bpr_foc']) ? $booking['bpr_foc'] : 0;
             }
         }
 ?>
@@ -94,8 +107,8 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
                             <label class="custom-control-label" for="checkbo_all"></label>
                         </div>
                     </th>
+                    <th>Programe</th>
                     <th>Category</th>
-                    <th>Hotel</th>
                     <th>Name</th>
                     <th class="cell-fit text-center">Total</th>
                     <th class="cell-fit text-center">A</th>
@@ -110,22 +123,27 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
             <tbody>
                 <?php for ($b = 0; $b < count($bo_id); $b++) {
                     if ($mange_id[$b] == 0) {
+                        $class_tr = ($b % 2 == 1) ? 'table-active' : '';
                 ?>
-                        <tr>
+                        <tr class="<?php echo $class_tr; ?>">
                             <td>
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input dt-checkboxes checkbox-bookings" type="checkbox" id="checkbox<?php echo $bo_id[$b]; ?>" name="bo_id[]" value="<?php echo $bo_id[$b]; ?>" onclick="sum_checkbox();">
                                     <label class="custom-control-label" for="checkbox<?php echo $bo_id[$b]; ?>"></label>
                                 </div>
                             </td>
-                            <td><span class="fw-bold"><?php echo $category_name[$b]; ?></span></td>
-                            <td><?php echo !empty($hotel_name[$b]) ? $hotel_name[$b] : $outside[$b]; ?></td>
+                            <td><?php echo $product_name[$b]; ?></td>
+                            <td><span class="fw-bold"><?php if (!empty($category_name[$bo_id[$b]])) {
+                                                            for ($c = 0; $c < count($category_name[$bo_id[$b]]); $c++) {
+                                                                echo $c > 0 ? ', ' . $category_name[$bo_id[$b]][$c] : $category_name[$bo_id[$b]][$c];
+                                                            }
+                                                        } ?></span></td>
                             <td><span class="fw-bold"><?php echo $cus_name[$b]; ?></span></td>
-                            <td class="text-center" id="toc-bookings<?php echo $bo_id[$b]; ?>"><?php echo $adult[$b] + $child[$b] + $infant[$b] + $foc[$b]; ?></td>
-                            <td class="text-center"><?php echo $adult[$b]; ?></td>
-                            <td class="text-center"><?php echo $child[$b]; ?></td>
-                            <td class="text-center"><?php echo $infant[$b]; ?></td>
-                            <td class="text-center"><?php echo $foc[$b]; ?></td>
+                            <td class="text-center" id="toc-bookings<?php echo $bo_id[$b]; ?>"><?php echo array_sum($adult[$bo_id[$b]]) + array_sum($child[$bo_id[$b]]) + array_sum($infant[$bo_id[$b]]) + array_sum($foc[$bo_id[$b]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($adult[$bo_id[$b]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($child[$bo_id[$b]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($infant[$bo_id[$b]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($foc[$bo_id[$b]]); ?></td>
                             <td><?php echo $agent_name[$b]; ?></td>
                             <td><span class="fw-bold"><?php echo !empty($voucher_no[$b]) ? $voucher_no[$b] : $book_full[$b]; ?></span></td>
                             <td><?php echo $note[$b]; ?></td>
@@ -136,7 +154,9 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
         </table>
         <?php if (!empty($manage_bo)) { ?>
             <div class="divider divider-dark">
-                <div class="divider-text"><h3 class="text-bold mb-0">จัดเรือ</h3></div>
+                <div class="divider-text">
+                    <h3 class="text-bold mb-0">จัดเรือ</h3>
+                </div>
             </div>
             <input type="hidden" id="before_managebo" name="before_managebo" value="<?php echo json_encode($manage_bo, true); ?>">
             <table class="table" id="list-group">
@@ -148,8 +168,8 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
                                 <label class="custom-control-label" for="checkmanage_all"></label>
                             </div>
                         </th>
+                        <th>Programe</th>
                         <th>Category</th>
-                        <th>Hotel</th>
                         <th>Name</th>
                         <th class="cell-fit text-center">Total</th>
                         <th class="cell-fit text-center">A</th>
@@ -162,22 +182,27 @@ if (isset($_POST['action']) && $_POST['action'] == "search" && isset($_POST['tra
                     </tr>
                 </thead>
                 <tbody>
-                    <?php for ($c = 0; $c < count($manage_bo); $c++) { ?>
-                        <tr>
+                    <?php for ($c = 0; $c < count($manage_bo); $c++) {
+                        $class_tr = ($c % 2 == 1) ? 'table-active' : ''; ?>
+                        <tr class="<?php echo $class_tr; ?>">
                             <td>
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input dt-checkboxes checkbox-manage" type="checkbox" id="checkbox<?php echo $manage_bo[$c]; ?>" name="manage_bo[]" value="<?php echo $manage_bo[$c]; ?>" onclick="sum_checkbox();" checked>
                                     <label class="custom-control-label" for="checkbox<?php echo $manage_bo[$c]; ?>"></label>
                                 </div>
                             </td>
-                            <td><span class="fw-bold"><?php echo $manage_category_name[$c]; ?></span></td>
-                            <td><?php echo $manage_hotel_name[$c]; ?></td>
+                            <td><?php echo $product_name[$c]; ?></td>
+                            <td><span class="fw-bold"><?php if (!empty($category_name[$manage_bo[$c]])) {
+                                                            for ($t = 0; $t < count($category_name[$manage_bo[$c]]); $t++) {
+                                                                echo $t > 0 ? ', ' . $category_name[$manage_bo[$c]][$t] : $category_name[$manage_bo[$c]][$t];
+                                                            }
+                                                        } ?></span></td>
                             <td><span class="fw-bold"><?php echo $manage_cus_name[$c]; ?></span></td>
-                            <td class="text-center" id="toc-manage<?php echo $manage_bo[$c]; ?>"><?php echo $manage_adult[$c] + $manage_child[$c] + $manage_infant[$c] + $manage_foc[$c]; ?></td>
-                            <td class="text-center"><?php echo $manage_adult[$c]; ?></td>
-                            <td class="text-center"><?php echo $manage_child[$c]; ?></td>
-                            <td class="text-center"><?php echo $manage_infant[$c]; ?></td>
-                            <td class="text-center"><?php echo $manage_foc[$c]; ?></td>
+                            <td class="text-center" id="toc-manage<?php echo $manage_bo[$c]; ?>"><?php echo array_sum($adult[$manage_bo[$c]]) + array_sum($child[$manage_bo[$c]]) + array_sum($infant[$manage_bo[$c]]) + array_sum($foc[$manage_bo[$c]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($adult[$manage_bo[$c]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($child[$manage_bo[$c]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($infant[$manage_bo[$c]]); ?></td>
+                            <td class="text-center"><?php echo array_sum($foc[$manage_bo[$c]]); ?></td>
                             <td><?php echo $manage_agent_name[$c]; ?></td>
                             <td><span class="fw-bold"><?php echo !empty($manage_voucher_no[$c]) ? $manage_voucher_no[$c] : $manage_book_full[$c]; ?></span></td>
                             <td><?php echo $manage_note[$c]; ?></td>

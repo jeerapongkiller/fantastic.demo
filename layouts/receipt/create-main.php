@@ -293,12 +293,13 @@
         }
 
         function modal_receipt(cover_id) {
-
             var array_booking = document.getElementById('array_booking').value;
+            var array_rates = document.getElementById('array_rates').value;
             var array_extar = document.getElementById('array_extar').value;
             var array_invoice = document.getElementById('array_invoice').value;
             if (cover_id > 0 && array_booking !== '') {
                 var res = $.parseJSON(array_booking);
+                var res_rates = array_rates !== '' ? $.parseJSON(array_rates) : '';
                 var res_extar = array_extar !== '' ? $.parseJSON(array_extar) : '';
                 var res_invoice = array_invoice !== '' ? $.parseJSON(array_invoice) : '';
 
@@ -323,25 +324,52 @@
                 var no = 1;
                 if (res !== undefined && (res[cover_id] !== undefined)) {
                     for (let index = 0; index < res[cover_id].id.length; index++) {
+                        var rowspan = 0;
+                        text_rates = '';
                         var id = res[cover_id].id[index];
                         discount = res[id].discount !== '-' ? Number(discount + res[id].discount) : Number(discount);
                         cot = res[id].cot !== '-' ? Number(cot + res[id].cot) : Number(cot);
-                        amount = res[id].total !== '-' ? Number(amount + res[id].total) : Number(amount);
 
-                        text_html += '<tr>' +
-                            '<td class="text-center">' + Number(no++) + '<input type="hidden" name="bo_id[]" value="' + id + '"></td>' +
-                            '<td class="text-center"> ' + res[id].text_date + ' </td>' +
-                            '<td> ' + res[id].cus_name + ' </td>' +
-                            '<td> ' + res[id].product_name + ' </td>' +
-                            '<td class="text-center"> ' + res[id].voucher_no + ' </td>' +
-                            '<td class="text-center"> ' + res[id].adult + ' </td>' +
-                            '<td class="text-center"> ' + res[id].child + ' </td>' +
-                            '<td class="text-center"> ' + numberWithCommas(res[id].rate_adult) + ' </td>' +
-                            '<td class="text-center"> ' + numberWithCommas(res[id].rate_child) + ' </td>' +
-                            '<td class="text-center"> ' + res[id].discount + ' </td>' +
-                            '<td class="text-center"> ' + numberWithCommas(res[id].total) + ' </td>' +
-                            '<td class="text-center"> ' + numberWithCommas(res[id].cot) + ' </td>' +
-                            '</tr>';
+                        text_html += '<input type="hidden" name="bo_id[]" value="' + id + '">';
+
+                        if (res_rates !== undefined && (res_rates[id] !== undefined)) {
+                            rowspan = res_rates[id].id.length;
+                            for (let y = 0; y < res_rates[id].id.length; y++) {
+                                if (y == 0) {
+                                    var customer = res_rates[id].customer[y] == 1 ? ' (Thai)' : ' (Foreign)';
+                                    text_html += '<tr>' +
+                                        '<td class="text-center">' + Number(no++) + '</td>' +
+                                        '<td class="text-center" rowspan="' + rowspan + '"> ' + res[id].text_date + ' </td>' +
+                                        '<td rowspan="' + rowspan + '"> ' + res[id].cus_name + ' </td>' +
+                                        '<td> ' + res[id].product_name + customer + ' </td>' +
+                                        '<td class="text-center" rowspan="' + rowspan + '"> ' + res[id].voucher_no + ' </td>' +
+                                        '<td class="text-center"> ' + res_rates[id].adult[y] + ' </td>' +
+                                        '<td class="text-center"> ' + res_rates[id].child[y] + ' </td>' +
+                                        '<td class="text-center"> ' + numberWithCommas(res_rates[id].rate_adult[y]) + ' </td>' +
+                                        '<td class="text-center"> ' + numberWithCommas(res_rates[id].rate_child[y]) + ' </td>' +
+                                        '<td class="text-center" rowspan="' + rowspan + '"> ' + res[id].discount + ' </td>' +
+                                        '<td class="text-center"> ' + numberWithCommas(res_rates[id].total[y]) + ' </td>' +
+                                        '<td class="text-center" rowspan="' + rowspan + '"> ' + numberWithCommas(res[id].cot) + ' </td>' +
+                                        '</tr>';
+
+                                    amount = res_rates[id].total[y] !== '-' ? Number(amount + res_rates[id].total[y]) : Number(amount);
+                                } else if (y > 0) {
+                                    var customer = res_rates[id].customer[y] == 1 ? ' (Thai)' : ' (Foreign)';
+                                    text_html += '<tr>' +
+                                        '<td class="text-center">' + Number(no++) + '</td>' +
+                                        '<td> ' + res[id].product_name + customer + ' </td>' +
+                                        '<td class="text-center"> ' + res_rates[id].adult[y] + ' </td>' +
+                                        '<td class="text-center"> ' + res_rates[id].child[y] + ' </td>' +
+                                        '<td class="text-center"> ' + numberWithCommas(res_rates[id].rate_adult[y]) + ' </td>' +
+                                        '<td class="text-center"> ' + numberWithCommas(res_rates[id].rate_child[y]) + ' </td>' +
+                                        '<td class="text-center"> ' + numberWithCommas(res_rates[id].total[y]) + ' </td>' +
+                                        '</tr>';
+
+                                    amount = res_rates[id].total[y] !== '-' ? Number(amount + res_rates[id].total[y]) : Number(amount);
+                                }
+                            }
+                        }
+                        '</tr>';
 
                         if (res_extar !== undefined && (res_extar[id] !== undefined)) {
                             for (let index = 0; index < res_extar[id].id.length; index++) {
